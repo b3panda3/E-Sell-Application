@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "E-Sell - Blockchain-Powered E-Commerce for Lagos",
+  title: "E-Sell — Where Commerce Meets the Chain",
   description: "Launch your online business on the blockchain. Accept crypto payments, deploy BEP-20 tokens, and build trust on Binance Smart Chain.",
 };
 

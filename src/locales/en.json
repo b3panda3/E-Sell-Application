@@ -11,7 +11,7 @@
   },
   "hero": {
     "title": "E-Sell",
-    "subtitle": "Blockchain-Powered E-Commerce for Lagos, Nigeria",
+    "subtitle": "Where Commerce Meets the Chain",
     "description": "Launch your online business on the blockchain. Accept crypto payments, deploy your own BEP-20 token, and build trust with verified transactions on Binance Smart Chain.",
     "startSelling": "Start Selling",
     "browseStores": "Browse Stores"
@@ -116,7 +116,7 @@
     "warning": "This will permanently delete your account, storefront, products, and all associated data."
   },
   "footer": {
-    "tagline": "E-Sell - Blockchain-Powered E-Commerce for Lagos",
+    "tagline": "E-Sell — Where Commerce Meets the Chain",
     "about": "About",
     "contact": "Contact",
     "terms": "Terms",

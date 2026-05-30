@@ -97,6 +97,7 @@ export default function MerchantDashboardPage() {
           <Button
             className="h-auto py-4 px-6 bg-[#006633] hover:bg-[#1B6B3A] text-white flex items-center gap-3 justify-start"
             render={<Link href="/dashboard/merchant/products" />}
+            nativeButton={false}
           >
             <Plus className="h-5 w-5" />
             <div className="text-left">
@@ -109,6 +110,7 @@ export default function MerchantDashboardPage() {
           <Button
             className="h-auto py-4 px-6 bg-[#00875A] hover:bg-[#006633] text-white flex items-center gap-3 justify-start"
             render={<Link href="/dashboard/merchant/contracts" />}
+            nativeButton={false}
           >
             <Coins className="h-5 w-5" />
             <div className="text-left">
@@ -122,6 +124,7 @@ export default function MerchantDashboardPage() {
             className="h-auto py-4 px-6 border-[#006633] text-[#006633] hover:bg-[#006633]/5 flex items-center gap-3 justify-start"
             variant="outline"
             render={<Link href="/dashboard/merchant/storefront" />}
+            nativeButton={false}
           >
             <Store className="h-5 w-5" />
             <div className="text-left">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useTranslation } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
@@ -38,10 +39,14 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-[#006633] font-bold text-lg">E</span>
-            </div>
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <Image
+              src="/logo.png"
+              alt="E-Sell"
+              width={36}
+              height={36}
+              className="rounded-lg"
+            />
             <span className="text-xl font-bold tracking-tight">E-Sell</span>
           </Link>
 
@@ -128,6 +133,7 @@ export default function Header() {
                   size="sm"
                   className="bg-white text-[#006633] hover:bg-white/90 font-semibold"
                   render={<Link href="/register" />}
+                  nativeButton={false}
                 >
                   {t('nav.register')}
                 </Button>
@@ -143,7 +149,10 @@ export default function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="w-72">
                 <div className="flex flex-col gap-4 mt-8">
-                  <Link href="/" className="text-2xl font-bold text-[#006633]">E-Sell</Link>
+                  <Link href="/" className="flex items-center gap-2">
+                    <Image src="/logo.png" alt="E-Sell" width={28} height={28} className="rounded-lg" />
+                    <span className="text-2xl font-bold text-[#006633]">E-Sell</span>
+                  </Link>
                   <nav className="flex flex-col gap-2">
                     {navLinks.map((link) => (
                       <Link
@@ -180,6 +189,7 @@ export default function Header() {
                         <Button
                           className="w-full bg-[#006633] hover:bg-[#1B6B3A] text-white"
                           render={<Link href="/login" />}
+                          nativeButton={false}
                           onClick={() => setMobileOpen(false)}
                         >
                           {t('nav.login')}
@@ -188,6 +198,7 @@ export default function Header() {
                           variant="outline"
                           className="w-full border-[#006633] text-[#006633]"
                           render={<Link href="/register" />}
+                          nativeButton={false}
                           onClick={() => setMobileOpen(false)}
                         >
                           {t('nav.register')}

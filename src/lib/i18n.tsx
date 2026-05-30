@@ -34,6 +34,7 @@ interface I18nContextType {
   localeNames: Record<Locale, string>;
   localeFlags: Record<Locale, string>;
   locales: Locale[];
+  loaded: boolean;
 }
 
 const I18nContext = createContext<I18nContextType | null>(null);
@@ -76,18 +77,23 @@ function getNestedValue(obj: Translations, path: string): string {
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('en');
+  const [loaded, setLoaded] = useState(false);
   const [, forceUpdate] = useState(0);
 
   useEffect(() => {
-    const saved = localStorage.getItem('esell-locale') as Locale | null;
-    if (saved && LOCALE_NAMES[saved]) {
-      void loadTranslations(saved).then(() => {
+    const init = async () => {
+      const saved = localStorage.getItem('esell-locale') as Locale | null;
+      if (saved && LOCALE_NAMES[saved]) {
+        await loadTranslations(saved);
+        await loadTranslations('en'); // Always preload English as fallback
         setLocaleState(saved);
-        forceUpdate((n) => n + 1);
-      });
-    } else {
-      void loadTranslations('en');
-    }
+      } else {
+        await loadTranslations('en');
+      }
+      setLoaded(true);
+      forceUpdate((n) => n + 1);
+    };
+    init();
   }, []);
 
   const setLocale = useCallback(async (newLocale: Locale) => {
@@ -114,6 +120,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   const locales = Object.keys(LOCALE_NAMES) as Locale[];
 
+  // Don't render children until translations are loaded
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <I18nContext.Provider
       value={{
@@ -123,6 +134,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
         localeNames: LOCALE_NAMES,
         localeFlags: LOCALE_FLAGS,
         locales,
+        loaded,
       }}
     >
       {children}
@@ -133,7 +145,6 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 export function useTranslation() {
   const context = useContext(I18nContext);
   if (!context) {
-    // Fallback for when context is not available
     return {
       locale: 'en' as Locale,
       setLocale: () => {},
@@ -141,6 +152,7 @@ export function useTranslation() {
       localeNames: {} as Record<Locale, string>,
       localeFlags: {} as Record<Locale, string>,
       locales: [] as Locale[],
+      loaded: false,
     };
   }
   return context;

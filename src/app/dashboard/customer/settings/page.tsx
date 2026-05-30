@@ -47,7 +47,7 @@ export default function CustomerSettingsPage() {
           <p className="text-sm text-gray-600 mb-4">
             Permanently delete your account and all associated data.
           </p>
-          <Button variant="destructive" render={<Link href="/dashboard/customer/delete" />}>
+          <Button variant="destructive" render={<Link href="/dashboard/customer/delete" />} nativeButton={false}>
               <Trash2 className="h-4 w-4 mr-2" />
               {t('dashboard.customer.deleteAccount')}
           </Button>

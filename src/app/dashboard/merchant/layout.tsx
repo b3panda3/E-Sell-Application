@@ -22,6 +22,7 @@ import {
   X,
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import Image from 'next/image';
 
 const NAV_ITEMS = [
   { href: '/dashboard/merchant', icon: LayoutDashboard, labelKey: 'dashboard.merchant.title', exact: true },
@@ -54,9 +55,7 @@ function SidebarContent({
     <div className="flex flex-col h-full bg-white border-r border-gray-200 w-64">
       <div className="flex items-center justify-between p-4 border-b border-gray-100">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#006633] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">E</span>
-          </div>
+          <Image src="/logo.png" alt="E-Sell" width={28} height={28} className="rounded-lg" />
           <span className="font-bold text-[#006633]">Merchant</span>
         </div>
       </div>

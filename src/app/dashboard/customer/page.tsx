@@ -91,6 +91,7 @@ export default function CustomerDashboardPage() {
           <Button
             className="h-auto py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-3 justify-start"
             render={<Link href="/dashboard/customer/browse" />}
+            nativeButton={false}
           >
             <Store className="h-5 w-5" />
             <div className="text-left">
@@ -104,6 +105,7 @@ export default function CustomerDashboardPage() {
             className="h-auto py-4 px-6 border-blue-600 text-blue-600 hover:bg-blue-50 flex items-center gap-3 justify-start"
             variant="outline"
             render={<Link href="/dashboard/customer/purchases" />}
+            nativeButton={false}
           >
             <ShoppingBag className="h-5 w-5" />
             <div className="text-left">

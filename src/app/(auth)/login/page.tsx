@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -55,6 +56,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md shadow-xl border-[#006633]/10">
         <CardHeader className="text-center space-y-2 pb-2">
           <Link href="/" className="inline-block">
+            <Image src="/logo.png" alt="E-Sell" width={48} height={48} className="mx-auto rounded-xl mb-2" />
             <h1 className="text-3xl font-bold text-[#006633]">E-Sell</h1>
           </Link>
           <CardTitle className="text-xl">Welcome Back</CardTitle>

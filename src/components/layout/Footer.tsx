@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslation } from '@/lib/i18n';
 import { Separator } from '@/components/ui/separator';
 
@@ -12,8 +14,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div>
-            <h3 className="text-xl font-bold mb-2">E-Sell</h3>
-            <p className="text-white/70 text-sm">{t('footer.tagline')}</p>
+            <Link href="/" className="flex items-center gap-2.5 mb-3">
+              <Image src="/logo.png" alt="E-Sell" width={32} height={32} className="rounded-lg" />
+              <h3 className="text-xl font-bold">E-Sell</h3>
+            </Link>
+            <p className="text-white/70 text-sm leading-relaxed">{t('footer.tagline')}</p>
           </div>
 
           {/* Links */}

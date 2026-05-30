@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Mail, Lock, Eye, EyeOff, Phone, User, Store, ShoppingCart } from 'lucide-react';
+import Image from 'next/image';
 
 const BUSINESS_CATEGORIES = [
   'Electronics',
@@ -86,6 +87,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-xl border-[#006633]/10">
         <CardHeader className="text-center space-y-2 pb-2">
           <Link href="/" className="inline-block">
+            <Image src="/logo.png" alt="E-Sell" width={48} height={48} className="mx-auto rounded-xl mb-2" />
             <h1 className="text-3xl font-bold text-[#006633]">E-Sell</h1>
           </Link>
           <CardTitle className="text-xl">Create Account</CardTitle>

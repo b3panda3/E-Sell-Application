@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslation } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -103,6 +104,22 @@ export default function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
           <div className="max-w-3xl mx-auto text-center">
+            {/* Logo */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6 inline-block"
+            >
+              <Image
+                src="/logo.png"
+                alt="E-Sell"
+                width={80}
+                height={80}
+                className="mx-auto rounded-2xl shadow-2xl"
+              />
+            </motion.div>
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -140,6 +157,7 @@ export default function HomePage() {
                 size="lg"
                 className="bg-white text-[#006633] hover:bg-white/90 font-semibold text-base px-8 h-12"
                 render={<Link href="/register?role=merchant" />}
+                nativeButton={false}
               >
                 {t('hero.startSelling')}
               </Button>
@@ -148,6 +166,7 @@ export default function HomePage() {
                 variant="outline"
                 className="border-white/30 text-white hover:bg-white/10 font-semibold text-base px-8 h-12"
                 render={<Link href="/browse" />}
+                nativeButton={false}
               >
                 {t('hero.browseStores')}
               </Button>
@@ -271,6 +290,7 @@ export default function HomePage() {
               size="lg"
               className="border-[#006633] text-[#006633] hover:bg-[#006633]/5"
               render={<Link href="/education" />}
+              nativeButton={false}
             >
               {t('education.seeMore')}
             </Button>
@@ -291,13 +311,14 @@ export default function HomePage() {
               Ready to Start Your Blockchain Business?
             </h2>
             <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-              Join hundreds of Lagos merchants already selling on E-Sell. Set up your storefront in minutes and start accepting crypto payments.
+              Join merchants worldwide already selling on E-Sell. Set up your storefront in minutes and start accepting crypto payments from anywhere.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
                 className="bg-white text-[#006633] hover:bg-white/90 font-semibold px-8 h-12"
                 render={<Link href="/register?role=merchant" />}
+                nativeButton={false}
               >
                 Get Started Free
               </Button>
@@ -306,6 +327,7 @@ export default function HomePage() {
                 variant="outline"
                 className="border-white/30 text-white hover:bg-white/10 font-semibold px-8 h-12"
                 render={<Link href="/browse" />}
+                nativeButton={false}
               >
                 Browse Stores
               </Button>
