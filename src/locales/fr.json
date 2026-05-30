@@ -1,0 +1,33 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "browse": "Parcourir",
+    "education": "Centre Éducatif",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion",
+    "language": "Langue"
+  },
+  "hero": {
+    "title": "E-Sell",
+    "subtitle": "E-Commerce Blockchain pour Lagos, Nigeria",
+    "description": "Lancez votre entreprise en ligne sur la blockchain. Acceptez les paiements crypto, déployez votre propre jeton BEP-20.",
+    "startSelling": "Commencer à vendre",
+    "browseStores": "Parcourir les boutiques"
+  },
+  "features": {
+    "title": "Pourquoi E-Sell?",
+    "deployToken": { "title": "Déployez Votre Jeton", "description": "Créez des jetons BEP-20 sur BSC en quelques minutes." },
+    "acceptCrypto": { "title": "Acceptez les Paiements Crypto", "description": "Recevez BNB, USDT et jetons personnalisés." },
+    "professionalStore": { "title": "Boutique Professionnelle", "description": "Choisissez parmi 5 beaux thèmes." },
+    "secureTrusted": { "title": "Sécurisé et Fiable", "description": "Transactions vérifiées par blockchain avec badges de confiance." }
+  },
+  "education": { "title": "Apprenez Crypto & Blockchain", "subtitle": "Regardez ces tutoriels", "seeMore": "Voir Plus de Vidéos" },
+  "roles": { "merchant": "Marchand", "customer": "Client", "merchantDesc": "Vendez produits et services", "customerDesc": "Parcourez et achetez" },
+  "common": { "save": "Enregistrer", "cancel": "Annuler", "delete": "Supprimer", "edit": "Modifier", "loading": "Chargement...", "search": "Rechercher", "noResults": "Aucun résultat", "confirm": "Confirmer", "back": "Retour", "next": "Suivant", "submit": "Soumettre", "close": "Fermer" },
+  "auth": { "login": "Connexion", "register": "Créer un compte", "email": "Email", "password": "Mot de passe", "confirmPassword": "Confirmer le mot de passe", "name": "Nom complet", "phone": "Téléphone", "forgotPassword": "Mot de passe oublié?", "noAccount": "Pas de compte?", "hasAccount": "Déjà un compte?", "signUp": "S'inscrire", "signIn": "Se connecter", "signInWith": "Se connecter avec {provider}", "registerAs": "S'inscrire en tant que", "businessCategory": "Catégorie d'entreprise" },
+  "dashboard": { "welcome": "Bienvenue", "merchant": { "title": "Tableau de bord Marchand", "totalProducts": "Total Produits", "messages": "Messages", "tokenDeployments": "Déploiements de Jetons", "trustBadge": "Badge de Confiance", "addProduct": "Ajouter Produit", "deployToken": "Déployer Jeton", "viewStorefront": "Voir la Boutique", "myStorefront": "Ma Boutique", "productsServices": "Produits & Services", "contractDeployment": "Déploiement de Contrat", "walletAddresses": "Adresses de Portefeuille", "staff": "Personnel", "settings": "Paramètres", "deleteAccount": "Supprimer le Compte" }, "customer": { "title": "Tableau de bord Client", "storesVisited": "Boutiques Visitées", "purchases": "Achats", "messages": "Messages", "browseStores": "Parcourir les Boutiques", "myPurchases": "Mes Achats", "settings": "Paramètres", "deleteAccount": "Supprimer le Compte" } },
+  "deleteAccount": { "title": "Supprimer le Compte", "description": "Supprimez définitivement votre compte.", "confirmLabel": "Tapez DELETE pour confirmer", "confirmPlaceholder": "DELETE", "button": "Supprimer Mon Compte", "warning": "Cela supprimera définitivement votre compte." },
+  "footer": { "tagline": "E-Sell - E-Commerce Blockchain pour Lagos", "about": "À propos", "contact": "Contact", "terms": "Conditions", "privacy": "Confidentialité", "rights": "Tous droits réservés." }
+}

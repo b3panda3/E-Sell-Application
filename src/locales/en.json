@@ -1,0 +1,126 @@
+{
+  "nav": {
+    "home": "Home",
+    "browse": "Browse",
+    "education": "Education Hub",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "language": "Language"
+  },
+  "hero": {
+    "title": "E-Sell",
+    "subtitle": "Blockchain-Powered E-Commerce for Lagos, Nigeria",
+    "description": "Launch your online business on the blockchain. Accept crypto payments, deploy your own BEP-20 token, and build trust with verified transactions on Binance Smart Chain.",
+    "startSelling": "Start Selling",
+    "browseStores": "Browse Stores"
+  },
+  "features": {
+    "title": "Why E-Sell?",
+    "deployToken": {
+      "title": "Deploy Your Token",
+      "description": "Create BEP-20 tokens on BSC in minutes. Customize supply, minting, and pausing features for your business."
+    },
+    "acceptCrypto": {
+      "title": "Accept Crypto Payments",
+      "description": "Receive BNB, USDT, and custom tokens. No bank account needed — just your crypto wallet."
+    },
+    "professionalStore": {
+      "title": "Professional Storefront",
+      "description": "Choose from 5 beautiful themes, customize colors, and showcase your products to the world."
+    },
+    "secureTrusted": {
+      "title": "Secure & Trusted",
+      "description": "Blockchain-verified transactions with trust badges. Every trade is transparent and immutable."
+    }
+  },
+  "education": {
+    "title": "Learn Crypto & Blockchain",
+    "subtitle": "Watch these tutorials to get started with crypto wallets and BSC",
+    "seeMore": "See More Videos"
+  },
+  "roles": {
+    "merchant": "Merchant",
+    "customer": "Customer",
+    "merchantDesc": "Sell products & services, deploy tokens, accept crypto payments",
+    "customerDesc": "Browse stores, purchase with crypto, track orders"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "search": "Search",
+    "noResults": "No results found",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "close": "Close"
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "phone": "Phone",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "signInWith": "Sign in with {provider}",
+    "registerAs": "Register as",
+    "businessCategory": "Business Category"
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "merchant": {
+      "title": "Merchant Dashboard",
+      "totalProducts": "Total Products",
+      "messages": "Messages",
+      "tokenDeployments": "Token Deployments",
+      "trustBadge": "Trust Badge",
+      "addProduct": "Add Product",
+      "deployToken": "Deploy Token",
+      "viewStorefront": "View Storefront",
+      "myStorefront": "My Storefront",
+      "productsServices": "Products & Services",
+      "contractDeployment": "Contract Deployment",
+      "walletAddresses": "Wallet Addresses",
+      "staff": "Staff",
+      "settings": "Settings",
+      "deleteAccount": "Delete Account"
+    },
+    "customer": {
+      "title": "Customer Dashboard",
+      "storesVisited": "Stores Visited",
+      "purchases": "Purchases",
+      "messages": "Messages",
+      "browseStores": "Browse Stores",
+      "myPurchases": "My Purchases",
+      "settings": "Settings",
+      "deleteAccount": "Delete Account"
+    }
+  },
+  "deleteAccount": {
+    "title": "Delete Account",
+    "description": "Permanently delete your account and all associated data. This action cannot be undone.",
+    "confirmLabel": "Type DELETE to confirm",
+    "confirmPlaceholder": "DELETE",
+    "button": "Delete My Account",
+    "warning": "This will permanently delete your account, storefront, products, and all associated data."
+  },
+  "footer": {
+    "tagline": "E-Sell - Blockchain-Powered E-Commerce for Lagos",
+    "about": "About",
+    "contact": "Contact",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "rights": "All rights reserved."
+  }
+}
