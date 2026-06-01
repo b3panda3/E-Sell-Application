@@ -9,16 +9,28 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { Trash2, Camera, User } from 'lucide-react';
+import { Trash2, Camera, Check } from 'lucide-react';
 
 export default function MerchantSettingsPage() {
-  const { data: session } = useSession();
+  const { data: session, update: updateSession } = useSession();
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [profileImage, setProfileImage] = useState<string | null>(
-    session?.user?.image || null
-  );
+  const prevSessionRef = useRef<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [name, setName] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  // Sync from session (only when session ID changes)
+  const sessionId = session?.user?.id ?? null;
+  if (sessionId !== prevSessionRef.current) {
+    prevSessionRef.current = sessionId;
+    if (session?.user) {
+      setName(session.user.name || '');
+      setProfileImage(session.user.image || null);
+    }
+  }
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -31,15 +43,69 @@ export default function MerchantSettingsPage() {
     };
     reader.readAsDataURL(file);
 
-    // TODO: Upload to Cloudinary in Phase 2
+    // Upload to API
     setIsUploading(true);
-    setTimeout(() => setIsUploading(false), 1000);
+    try {
+      const base64 = await new Promise<string>((resolve) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result as string);
+        r.readAsDataURL(file);
+      });
+      const res = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64 }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setProfileImage(data.user.image || base64);
+        await updateSession();
+      }
+    } catch (error) {
+      console.error('Image upload error:', error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
-  const handleRemoveImage = () => {
+  const handleRemoveImage = async () => {
     setProfileImage(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
-    // TODO: Delete from Cloudinary & update DB in Phase 2
+    try {
+      await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: '' }),
+      });
+      await updateSession();
+    } catch (error) {
+      console.error('Remove image error:', error);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!name.trim()) return;
+    setSaving(true);
+    setSaved(false);
+    try {
+      const body: { name: string; image?: string } = { name: name.trim() };
+      if (profileImage) body.image = profileImage;
+
+      const res = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        setSaved(true);
+        await updateSession();
+        setTimeout(() => setSaved(false), 3000);
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const userInitials = session?.user?.name
@@ -117,14 +183,18 @@ export default function MerchantSettingsPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label className="text-gray-700 dark:text-gray-300">{t('auth.name')}</Label>
-            <Input defaultValue={session?.user?.name || ''} className="dark:bg-gray-800 dark:border-gray-700 dark:text-white" />
+            <Input value={name} onChange={(e) => setName(e.target.value)} className="dark:bg-gray-800 dark:border-gray-700 dark:text-white" />
           </div>
           <div className="space-y-2">
             <Label className="text-gray-700 dark:text-gray-300">{t('auth.email')}</Label>
-            <Input defaultValue={session?.user?.email || ''} disabled className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" />
+            <Input value={session?.user?.email || ''} disabled className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" />
           </div>
-          <Button className="bg-[#006633] hover:bg-[#1B6B3A] text-white">
-            {t('common.save')}
+          <Button
+            onClick={handleSave}
+            disabled={saving || !name.trim()}
+            className="bg-[#006633] hover:bg-[#1B6B3A] text-white"
+          >
+            {saving ? t('common.loading') : saved ? <><Check className="h-4 w-4 mr-1" />Saved!</> : t('common.save')}
           </Button>
         </CardContent>
       </Card>

@@ -18,6 +18,7 @@ import {
   Menu,
   LogOut,
   X,
+  Bot,
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
@@ -29,6 +30,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/customer/purchases', icon: ShoppingBag, labelKey: 'dashboard.customer.myPurchases' },
   { href: '/dashboard/customer/messages', icon: MessageSquare, labelKey: 'dashboard.customer.messages' },
   { href: '/dashboard/customer/notifications', icon: Bell, labelKey: 'dashboard.customer.notifications' },
+  { href: '/dashboard/customer/assistant', icon: Bot, labelKey: 'dashboard.customer.assistant' },
   { href: '/dashboard/customer/settings', icon: Settings, labelKey: 'dashboard.customer.settings' },
   { href: '/dashboard/customer/delete', icon: Trash2, labelKey: 'dashboard.customer.deleteAccount' },
 ];

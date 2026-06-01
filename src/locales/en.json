@@ -12,27 +12,35 @@
   "hero": {
     "title": "E-Sell",
     "subtitle": "Trade the Future, Today",
-    "description": "Launch your online business on the blockchain. Accept crypto payments, deploy your own BEP-20 token, and build trust with verified transactions on Binance Smart Chain.",
+    "description": "The AI-powered e-commerce platform that makes online selling accessible to everyone. Get smart assistance, voice navigation, and blockchain-secured payments — all in one place.",
     "startSelling": "Start Selling",
     "browseStores": "Browse Stores"
   },
   "features": {
     "title": "Why E-Sell?",
-    "deployToken": {
-      "title": "Deploy Your Token",
-      "description": "Create BEP-20 tokens on BSC in minutes. Customize supply, minting, and pausing features for your business."
+    "aiAssistant": {
+      "title": "AI-Powered Assistant",
+      "description": "Get instant help with our AI chatbot. Ask questions about setting up your store, managing products, or accepting payments — in 8 languages."
     },
-    "acceptCrypto": {
-      "title": "Accept Crypto Payments",
-      "description": "Receive BNB, USDT, and custom tokens. No bank account needed — just your crypto wallet."
+    "voiceCommands": {
+      "title": "Voice Commands",
+      "description": "Navigate E-Sell hands-free. Use voice to search products, manage your store, and get step-by-step guidance."
     },
     "professionalStore": {
       "title": "Professional Storefront",
       "description": "Choose from 5 beautiful themes, customize colors, and showcase your products to the world."
     },
+    "multiplePayments": {
+      "title": "Multiple Payment Options",
+      "description": "Accept crypto payments on BSC, or use Paystack for traditional bank transfers and card payments."
+    },
     "secureTrusted": {
       "title": "Secure & Trusted",
       "description": "Blockchain-verified transactions with trust badges. Every trade is transparent and immutable."
+    },
+    "aiLearning": {
+      "title": "AI Learning Hub",
+      "description": "Our AI simplifies complex blockchain and business concepts. Learn at your pace with interactive tutorials and real-time guidance."
     }
   },
   "featured": {
@@ -41,15 +49,37 @@
     "viewAll": "View All Stores"
   },
   "education": {
-    "title": "Learn Crypto & Blockchain",
-    "subtitle": "Watch these tutorials to get started with crypto wallets and BSC",
-    "seeMore": "See More Videos"
+    "title": "Learn to Run Your E-Store",
+    "subtitle": "Watch these tutorials to get started with setting up your E-Sell storefront",
+    "seeMore": "See More Tutorials"
+  },
+  "news": {
+    "title": "Financial News",
+    "subtitle": "Stay updated with the latest in finance, crypto, and economy",
+    "readMore": "Read More News",
+    "source": "Source",
+    "noNews": "Unable to load news at this time"
   },
   "cta": {
-    "title": "Ready to Start Your Blockchain Business?",
-    "subtitle": "Join merchants worldwide already selling on E-Sell. Set up your storefront in minutes and start accepting crypto payments from anywhere.",
+    "title": "Ready to Start Your AI-Powered Business?",
+    "subtitle": "Join merchants worldwide using AI tools to sell smarter. Set up your storefront in minutes with our AI assistant guiding you every step.",
     "getStarted": "Get Started Free",
     "browseStores": "Browse Stores"
+  },
+  "chat": {
+    "title": "AI Assistant",
+    "subtitle": "Ask me anything about E-Sell, setting up your store, payments, or blockchain",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "listening": "Listening...",
+    "voiceInput": "Voice Input",
+    "suggestedPrompts": "Try asking...",
+    "prompt1": "How do I set up my storefront?",
+    "prompt2": "What payment methods are available?",
+    "prompt3": "How do I accept crypto payments?",
+    "prompt4": "Explain trust badges to me",
+    "prompt5": "How do I add products to my store?",
+    "prompt6": "What is Binance Smart Chain?"
   },
   "roles": {
     "merchant": "Merchant",
@@ -108,7 +138,8 @@
       "walletAddresses": "Wallet Addresses",
       "staff": "Staff",
       "settings": "Settings",
-      "deleteAccount": "Delete Account"
+      "deleteAccount": "Delete Account",
+      "assistant": "AI Assistant"
     },
     "customer": {
       "title": "Customer Dashboard",
@@ -123,7 +154,8 @@
       "removeFromCart": "Remove",
       "checkout": "Checkout",
       "settings": "Settings",
-      "deleteAccount": "Delete Account"
+      "deleteAccount": "Delete Account",
+      "assistant": "AI Assistant"
     }
   },
   "storefront": {
@@ -242,6 +274,7 @@
     "contact": "Contact",
     "terms": "Terms",
     "privacy": "Privacy",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "builtBy": "Built by the E-Sell Team"
   }
 }

@@ -8,7 +8,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { TrustBadge } from '@/components/TrustBadge';
-import { Coins, Wallet, Store, ShieldCheck, Play, ArrowRight } from 'lucide-react';
+import {
+  Bot,
+  Mic,
+  Store,
+  CreditCard,
+  ShieldCheck,
+  BookOpen,
+  Play,
+  ArrowRight,
+  Newspaper,
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const fadeUp = {
@@ -23,10 +33,10 @@ const stagger = {
 };
 
 const YOUTUBE_VIDEOS = [
-  { id: 'G_JiU-6dcu8', title: 'MetaMask Full Tutorial' },
-  { id: 'ePcaRPCP8Rs', title: 'How to Set Up MetaMask 2025' },
-  { id: 'x4aDoPIuTnw', title: 'How to Add BSC to MetaMask' },
-  { id: 'MeKrZW324zM', title: 'How to Protect Your Crypto Wallet' },
+  { id: 'placeholder1', title: 'How to Set Up Your E-Sell Store', isPlaceholder: true },
+  { id: 'placeholder2', title: 'Using the AI Chatbot on E-Sell', isPlaceholder: true },
+  { id: 'G_JiU-6dcu8', title: 'How to Set Up MetaMask for Payments', isPlaceholder: false },
+  { id: 'MeKrZW324zM', title: 'Securing Your Crypto Wallet', isPlaceholder: false },
 ];
 
 interface FeaturedStore {
@@ -40,6 +50,14 @@ interface FeaturedStore {
   };
 }
 
+interface NewsItem {
+  title: string;
+  source: string;
+  date: string;
+  image: string | null;
+  url: string;
+}
+
 const THEME_GRADIENTS: Record<string, string> = {
   MarketHub: 'from-[#006633] to-[#00875A]',
   ProServe: 'from-[#1E40AF] to-[#3B82F6]',
@@ -51,6 +69,7 @@ const THEME_GRADIENTS: Record<string, string> = {
 export default function HomePage() {
   const { t } = useTranslation();
   const [featuredStores, setFeaturedStores] = useState<FeaturedStore[]>([]);
+  const [news, setNews] = useState<NewsItem[]>([]);
 
   useEffect(() => {
     async function fetchFeatured() {
@@ -65,30 +84,61 @@ export default function HomePage() {
     fetchFeatured();
   }, []);
 
+  useEffect(() => {
+    async function fetchNews() {
+      try {
+        const res = await fetch('/api/news');
+        if (res.ok) {
+          const data = await res.json();
+          setNews((data.articles || []).slice(0, 6));
+        }
+      } catch { /* ignore */ }
+    }
+    fetchNews();
+  }, []);
+
   const features = [
     {
-      icon: Coins,
-      title: t('features.deployToken.title'),
-      description: t('features.deployToken.description'),
+      icon: Bot,
+      title: t('features.aiAssistant.title'),
+      description: t('features.aiAssistant.description'),
       color: 'from-emerald-500 to-green-600',
+      emoji: '🤖',
     },
     {
-      icon: Wallet,
-      title: t('features.acceptCrypto.title'),
-      description: t('features.acceptCrypto.description'),
+      icon: Mic,
+      title: t('features.voiceCommands.title'),
+      description: t('features.voiceCommands.description'),
       color: 'from-green-500 to-teal-600',
+      emoji: '🎙️',
     },
     {
       icon: Store,
       title: t('features.professionalStore.title'),
       description: t('features.professionalStore.description'),
       color: 'from-teal-500 to-emerald-600',
+      emoji: '🏪',
+    },
+    {
+      icon: CreditCard,
+      title: t('features.multiplePayments.title'),
+      description: t('features.multiplePayments.description'),
+      color: 'from-[#006633] to-[#00875A]',
+      emoji: '💳',
     },
     {
       icon: ShieldCheck,
       title: t('features.secureTrusted.title'),
       description: t('features.secureTrusted.description'),
-      color: 'from-[#006633] to-[#00875A]',
+      color: 'from-emerald-600 to-teal-700',
+      emoji: '🔐',
+    },
+    {
+      icon: BookOpen,
+      title: t('features.aiLearning.title'),
+      description: t('features.aiLearning.description'),
+      color: 'from-teal-600 to-green-700',
+      emoji: '📚',
     },
   ];
 
@@ -190,52 +240,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={stagger}
-            className="text-center mb-12"
-          >
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {t('features.title')}
-            </motion.h2>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            variants={stagger}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {features.map((feature) => (
-              <motion.div key={feature.title} variants={fadeUp}>
-                <Card className="h-full hover:shadow-xl transition-shadow duration-300 border-gray-100 dark:border-gray-800 dark:bg-gray-900 group">
-                  <CardContent className="p-6 text-center">
-                    <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className="h-7 w-7 text-white" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Featured Stores Section */}
+      {/* Featured Stores Section - BEFORE features */}
       {featuredStores.length > 0 && (
-        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+        <section className="py-20 bg-white dark:bg-gray-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial="hidden"
@@ -315,8 +322,130 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Education Section */}
+      {/* Features Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={stagger}
+            className="text-center mb-12"
+          >
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {t('features.title')}
+            </motion.h2>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+            variants={stagger}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {features.map((feature) => (
+              <motion.div key={feature.title} variants={fadeUp}>
+                <Card className="h-full hover:shadow-xl transition-shadow duration-300 border-gray-100 dark:border-gray-800 dark:bg-gray-900 group">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-4xl mb-3">{feature.emoji}</div>
+                    <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <feature.icon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* News Section */}
       <section className="py-20 bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={stagger}
+            className="text-center mb-12"
+          >
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {t('news.title')}
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              {t('news.subtitle')}
+            </motion.p>
+          </motion.div>
+
+          {news.length > 0 ? (
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+              variants={stagger}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {news.map((item, index) => (
+                <motion.div key={index} variants={fadeUp}>
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    <Card className="h-full hover:shadow-xl transition-shadow duration-300 cursor-pointer group dark:bg-gray-900 dark:border-gray-800 overflow-hidden">
+                      <div className="h-40 bg-gray-100 dark:bg-gray-800 relative overflow-hidden">
+                        {item.image ? (
+                          <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        ) : (
+                          <div className="flex items-center justify-center h-full">
+                            <Newspaper className="h-10 w-10 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-sm text-gray-900 dark:text-white line-clamp-2 group-hover:text-[#006633] dark:group-hover:text-emerald-400 transition-colors">
+                          {item.title}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                          <span>{item.source}</span>
+                          <span>·</span>
+                          <span>{item.date}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </a>
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            <p className="text-center text-gray-500 dark:text-gray-400">{t('news.noNews')}</p>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-10"
+          >
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-[#006633] text-[#006633] hover:bg-[#006633]/5 dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-400/10"
+              render={<Link href="/news" />}
+              nativeButton={false}
+            >
+              {t('news.readMore')}
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Education Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -344,17 +473,28 @@ export default function HomePage() {
               <motion.div key={video.id} variants={fadeUp}>
                 <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 group dark:bg-gray-800 dark:border-gray-700">
                   <div className="relative aspect-video bg-gray-200 dark:bg-gray-700">
-                    <iframe
-                      className="absolute inset-0 w-full h-full"
-                      src={`https://www.youtube.com/embed/${video.id}`}
-                      title={video.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 pointer-events-none">
-                      <Play className="h-12 w-12 text-white" />
-                    </div>
+                    {video.isPlaceholder ? (
+                      <div className="flex flex-col items-center justify-center h-full gap-2">
+                        <div className="w-12 h-12 rounded-full bg-[#006633]/20 dark:bg-emerald-400/20 flex items-center justify-center">
+                          <Play className="h-6 w-6 text-[#006633] dark:text-emerald-400" />
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 text-center px-3">{video.title}</p>
+                      </div>
+                    ) : (
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src={`https://www.youtube.com/embed/${video.id}`}
+                        title={video.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        loading="lazy"
+                      />
+                    )}
+                    {!video.isPlaceholder && (
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 pointer-events-none">
+                        <Play className="h-12 w-12 text-white" />
+                      </div>
+                    )}
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-medium text-sm text-gray-900 dark:text-white line-clamp-2">

@@ -53,7 +53,7 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-white/60">
           <p>&copy; {new Date().getFullYear()} E-Sell. {t('footer.rights')}</p>
-          <p>Powered by Binance Smart Chain</p>
+          <p>{t('footer.builtBy')}</p>
         </div>
       </div>
     </footer>

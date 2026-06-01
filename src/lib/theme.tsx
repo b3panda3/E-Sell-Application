@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -12,21 +12,29 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
+function getInitialTheme(): Theme {
+  if (typeof window === 'undefined') return 'light';
+  const saved = localStorage.getItem('esell-theme') as Theme | null;
+  if (saved === 'dark' || saved === 'light') return saved;
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  return 'light';
+}
+
+const emptySubscribe = () => () => {};
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light');
+  const initialTheme = useSyncExternalStore(emptySubscribe, getInitialTheme, () => 'light' as Theme);
+  const [theme, setThemeState] = useState<Theme>(initialTheme);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('esell-theme') as Theme | null;
-    if (saved === 'dark' || saved === 'light') {
-      setThemeState(saved);
-      document.documentElement.classList.toggle('dark', saved === 'dark');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setThemeState('dark');
-      document.documentElement.classList.add('dark');
+  // Apply theme to DOM on mount via sync external store
+  useSyncExternalStore(emptySubscribe, () => {
+    if (!mounted) {
+      document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+      setMounted(true);
     }
-    setMounted(true);
-  }, []);
+    return initialTheme;
+  }, () => 'light');
 
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
@@ -55,7 +63,7 @@ export function useTheme() {
   if (!context) {
     return {
       theme: 'light' as Theme,
-      setTheme: (_theme: Theme) => {},
+      setTheme: (_t: Theme) => {},
       toggleTheme: () => {},
     };
   }

@@ -20,6 +20,7 @@ import {
   Menu,
   LogOut,
   X,
+  Bot,
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
@@ -33,6 +34,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/merchant/messages', icon: MessageSquare, labelKey: 'dashboard.merchant.messages' },
   { href: '/dashboard/merchant/notifications', icon: Bell, labelKey: 'dashboard.merchant.notifications' },
   { href: '/dashboard/merchant/staff', icon: Users, labelKey: 'dashboard.merchant.staff' },
+  { href: '/dashboard/merchant/assistant', icon: Bot, labelKey: 'dashboard.merchant.assistant' },
   { href: '/dashboard/merchant/settings', icon: Settings, labelKey: 'dashboard.merchant.settings' },
   { href: '/dashboard/merchant/delete', icon: Trash2, labelKey: 'dashboard.merchant.deleteAccount' },
 ];

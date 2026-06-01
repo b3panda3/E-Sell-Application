@@ -7,9 +7,16 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
-  const connectionString = process.env.DATABASE_URL;
+  // For the Next.js runtime, prefer the transaction pooler (port 6543) for
+  // better scalability on serverless. Fall back to DATABASE_URL if not set.
+  // Prisma CLI (db push, migrate) uses prisma.config.ts which has its own logic.
+  const connectionString =
+    process.env.DATABASE_POOLER_URL || process.env.DATABASE_URL;
+
   if (!connectionString) {
-    throw new Error("DATABASE_URL environment variable is not set");
+    throw new Error(
+      "DATABASE_URL or DATABASE_POOLER_URL environment variable is not set"
+    );
   }
 
   const pool = new pg.Pool({ connectionString });
