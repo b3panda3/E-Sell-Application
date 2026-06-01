@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   Store,
   ShoppingBag,
+  ShoppingCart,
   MessageSquare,
   Bell,
   Settings,
@@ -24,9 +25,10 @@ import Image from 'next/image';
 const NAV_ITEMS = [
   { href: '/dashboard/customer', icon: LayoutDashboard, labelKey: 'dashboard.customer.title', exact: true },
   { href: '/dashboard/customer/browse', icon: Store, labelKey: 'dashboard.customer.browseStores' },
+  { href: '/dashboard/customer/cart', icon: ShoppingCart, labelKey: 'dashboard.customer.cart' },
   { href: '/dashboard/customer/purchases', icon: ShoppingBag, labelKey: 'dashboard.customer.myPurchases' },
   { href: '/dashboard/customer/messages', icon: MessageSquare, labelKey: 'dashboard.customer.messages' },
-  { href: '/dashboard/customer/notifications', icon: Bell, labelKey: 'dashboard.customer.messages' },
+  { href: '/dashboard/customer/notifications', icon: Bell, labelKey: 'dashboard.customer.notifications' },
   { href: '/dashboard/customer/settings', icon: Settings, labelKey: 'dashboard.customer.settings' },
   { href: '/dashboard/customer/delete', icon: Trash2, labelKey: 'dashboard.customer.deleteAccount' },
 ];
@@ -46,11 +48,11 @@ function SidebarContent({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border-r border-gray-200 w-64">
-      <div className="flex items-center justify-between p-4 border-b border-gray-100">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 w-64">
+      <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center gap-2">
           <Image src="/logo.png" alt="E-Sell" width={28} height={28} className="rounded-lg" />
-          <span className="font-bold text-blue-600">Customer</span>
+          <span className="font-bold text-blue-600 dark:text-blue-400">Customer</span>
         </div>
       </div>
 
@@ -64,21 +66,21 @@ function SidebarContent({
               onClick={onNavClick}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium ${
                 active
-                  ? 'bg-blue-50 text-blue-600'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
-              <item.icon className={`h-5 w-5 shrink-0 ${active ? 'text-blue-600' : ''}`} />
+              <item.icon className={`h-5 w-5 shrink-0 ${active ? 'text-blue-600 dark:text-blue-400' : ''}`} />
               <span>{t(item.labelKey)}</span>
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-2 border-t border-gray-100">
+      <div className="p-2 border-t border-gray-100 dark:border-gray-800">
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium text-red-600 hover:bg-red-50 w-full"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 w-full"
         >
           <LogOut className="h-5 w-5 shrink-0" />
           <span>{t('nav.logout')}</span>
@@ -118,12 +120,12 @@ export default function CustomerDashboardLayout({
         </SheetContent>
       </Sheet>
 
-      <div className="flex-1 overflow-auto">
-        <div className="lg:hidden flex items-center gap-3 p-4 border-b border-gray-200 bg-white">
+      <div className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-950">
+        <div className="lg:hidden flex items-center gap-3 p-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)}>
             <Menu className="h-5 w-5" />
           </Button>
-          <h2 className="font-semibold text-blue-600">Customer Dashboard</h2>
+          <h2 className="font-semibold text-blue-600 dark:text-blue-400">Customer Dashboard</h2>
         </div>
 
         <div className="p-4 md:p-6 lg:p-8">

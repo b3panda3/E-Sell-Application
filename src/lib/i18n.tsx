@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
-type Locale = 'en' | 'fr' | 'sw' | 'es' | 'yo' | 'ig' | 'ha';
+type Locale = 'en' | 'fr' | 'sw' | 'es' | 'yo' | 'ig' | 'ha' | 'ar';
 
 const LOCALE_NAMES: Record<Locale, string> = {
   en: 'English',
@@ -12,6 +12,7 @@ const LOCALE_NAMES: Record<Locale, string> = {
   yo: 'Yorùbá',
   ig: 'Igbo',
   ha: 'Hausa',
+  ar: 'العربية',
 };
 
 const LOCALE_FLAGS: Record<Locale, string> = {
@@ -22,7 +23,10 @@ const LOCALE_FLAGS: Record<Locale, string> = {
   yo: '🇳🇬',
   ig: '🇳🇬',
   ha: '🇳🇬',
+  ar: '🇸🇦',
 };
+
+const RTL_LOCALES: Locale[] = ['ar'];
 
 type TranslationValue = string | { [key: string]: TranslationValue };
 type Translations = Record<string, TranslationValue>;
@@ -35,6 +39,7 @@ interface I18nContextType {
   localeFlags: Record<Locale, string>;
   locales: Locale[];
   loaded: boolean;
+  isRTL: boolean;
 }
 
 const I18nContext = createContext<I18nContextType | null>(null);
@@ -47,6 +52,7 @@ const translationsCache: Record<Locale, Translations | null> = {
   yo: null,
   ig: null,
   ha: null,
+  ar: null,
 };
 
 async function loadTranslations(locale: Locale): Promise<Translations> {
@@ -75,6 +81,14 @@ function getNestedValue(obj: Translations, path: string): string {
   return typeof current === 'string' ? current : path;
 }
 
+function updateDocumentLocale(locale: Locale) {
+  if (typeof document !== 'undefined') {
+    const html = document.documentElement;
+    html.lang = locale;
+    html.dir = RTL_LOCALES.includes(locale) ? 'rtl' : 'ltr';
+  }
+}
+
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('en');
   const [loaded, setLoaded] = useState(false);
@@ -87,8 +101,10 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
         await loadTranslations(saved);
         await loadTranslations('en'); // Always preload English as fallback
         setLocaleState(saved);
+        updateDocumentLocale(saved);
       } else {
         await loadTranslations('en');
+        updateDocumentLocale('en');
       }
       setLoaded(true);
       forceUpdate((n) => n + 1);
@@ -100,6 +116,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     setLocaleState(newLocale);
     localStorage.setItem('esell-locale', newLocale);
     await loadTranslations(newLocale);
+    updateDocumentLocale(newLocale);
     forceUpdate((n) => n + 1);
   }, []);
 
@@ -119,6 +136,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   );
 
   const locales = Object.keys(LOCALE_NAMES) as Locale[];
+  const isRTL = RTL_LOCALES.includes(locale);
 
   // Don't render children until translations are loaded
   if (!loaded) {
@@ -135,6 +153,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
         localeFlags: LOCALE_FLAGS,
         locales,
         loaded,
+        isRTL,
       }}
     >
       {children}
@@ -147,12 +166,13 @@ export function useTranslation() {
   if (!context) {
     return {
       locale: 'en' as Locale,
-      setLocale: () => {},
+      setLocale: (_locale: Locale) => {},
       t: (key: string) => key,
       localeNames: {} as Record<Locale, string>,
       localeFlags: {} as Record<Locale, string>,
       locales: [] as Locale[],
       loaded: false,
+      isRTL: false,
     };
   }
   return context;

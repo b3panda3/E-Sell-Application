@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useTranslation } from '@/lib/i18n';
+import { useTheme } from '@/lib/theme';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -18,11 +19,12 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Menu, Globe, User, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
+import { Menu, Globe, User, LogOut, LayoutDashboard, ChevronDown, Sun, Moon } from 'lucide-react';
 
 export default function Header() {
   const { data: session } = useSession();
   const { locale, setLocale, t, localeNames, localeFlags, locales } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const userRole = session?.user ? (session.user as Record<string, unknown>).role as string : null;
@@ -63,8 +65,19 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Right Side: Language + Auth */}
-          <div className="flex items-center gap-3">
+          {/* Right Side: Theme + Language + Auth */}
+          <div className="flex items-center gap-2">
+            {/* Theme Toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/10"
+              onClick={toggleTheme}
+              aria-label={theme === 'light' ? t('common.darkMode') : t('common.lightMode')}
+            >
+              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            </Button>
+
             {/* Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -166,6 +179,16 @@ export default function Header() {
                     ))}
                   </nav>
                   <div className="border-t pt-4">
+                    {/* Theme toggle for mobile */}
+                    <button
+                      onClick={toggleTheme}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium w-full text-left"
+                    >
+                      {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+                      {theme === 'light' ? t('common.darkMode') : t('common.lightMode')}
+                    </button>
+                  </div>
+                  <div className="border-t pt-4">
                     {session?.user ? (
                       <div className="flex flex-col gap-2">
                         <Link
@@ -178,7 +201,7 @@ export default function Header() {
                         </Link>
                         <button
                           onClick={() => { signOut({ callbackUrl: '/' }); setMobileOpen(false); }}
-                          className="px-3 py-2 rounded-lg hover:bg-red-50 transition-colors font-medium text-red-600 flex items-center gap-2 text-left"
+                          className="px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors font-medium text-red-600 flex items-center gap-2 text-left"
                         >
                           <LogOut className="h-4 w-4" />
                           {t('nav.logout')}

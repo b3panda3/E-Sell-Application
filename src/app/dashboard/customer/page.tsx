@@ -5,7 +5,7 @@ import { useTranslation } from '@/lib/i18n';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Store, ShoppingBag, MessageSquare, Shield, ArrowRight } from 'lucide-react';
+import { Store, ShoppingBag, ShoppingCart, MessageSquare, Shield, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CustomerDashboardPage() {
@@ -38,10 +38,10 @@ export default function CustomerDashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          {t('dashboard.welcome')}, {userName}! 👋
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          {t('dashboard.welcome')}, {userName}!
         </h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-gray-600 dark:text-gray-400 mt-1">
           {t('dashboard.customer.title')}
         </p>
       </div>
@@ -49,12 +49,12 @@ export default function CustomerDashboardPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {stats.map((stat) => (
-          <Card key={stat.title} className="hover:shadow-lg transition-shadow">
+          <Card key={stat.title} className="hover:shadow-lg transition-shadow dark:bg-gray-900 dark:border-gray-800">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">{stat.title}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
                 </div>
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
                   <stat.icon className="h-5 w-5 text-white" />
@@ -66,7 +66,7 @@ export default function CustomerDashboardPage() {
       </div>
 
       {/* Trust Badge */}
-      <Card className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+      <Card className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white dark:from-blue-700 dark:to-indigo-700">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
@@ -86,8 +86,8 @@ export default function CustomerDashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Button
             className="h-auto py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-3 justify-start"
             render={<Link href="/dashboard/customer/browse" />}
@@ -102,7 +102,20 @@ export default function CustomerDashboardPage() {
           </Button>
 
           <Button
-            className="h-auto py-4 px-6 border-blue-600 text-blue-600 hover:bg-blue-50 flex items-center gap-3 justify-start"
+            className="h-auto py-4 px-6 bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-3 justify-start"
+            render={<Link href="/dashboard/customer/cart" />}
+            nativeButton={false}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <div className="text-left">
+              <div className="font-semibold">{t('dashboard.customer.cart')}</div>
+              <div className="text-xs text-white/70">View your items</div>
+            </div>
+            <ArrowRight className="h-4 w-4 ml-auto" />
+          </Button>
+
+          <Button
+            className="h-auto py-4 px-6 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20 flex items-center gap-3 justify-start"
             variant="outline"
             render={<Link href="/dashboard/customer/purchases" />}
             nativeButton={false}
@@ -110,7 +123,7 @@ export default function CustomerDashboardPage() {
             <ShoppingBag className="h-5 w-5" />
             <div className="text-left">
               <div className="font-semibold">{t('dashboard.customer.myPurchases')}</div>
-              <div className="text-xs text-gray-500">View purchase history</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">View purchase history</div>
             </div>
             <ArrowRight className="h-4 w-4 ml-auto" />
           </Button>

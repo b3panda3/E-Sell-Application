@@ -45,10 +45,10 @@ export default function MerchantDashboardPage() {
     <div className="space-y-6">
       {/* Welcome */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          {t('dashboard.welcome')}, {userName}! 👋
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          {t('dashboard.welcome')}, {userName}!
         </h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-gray-600 dark:text-gray-400 mt-1">
           {t('dashboard.merchant.title')}
         </p>
       </div>
@@ -56,12 +56,12 @@ export default function MerchantDashboardPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => (
-          <Card key={stat.title} className="hover:shadow-lg transition-shadow">
+          <Card key={stat.title} className="hover:shadow-lg transition-shadow dark:bg-gray-900 dark:border-gray-800">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">{stat.title}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
                 </div>
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
                   <stat.icon className="h-5 w-5 text-white" />
@@ -74,7 +74,7 @@ export default function MerchantDashboardPage() {
 
       {/* E-Sell Code */}
       {String((session?.user as Record<string, unknown>)?.esellCode) && (
-        <Card className="bg-gradient-to-r from-[#006633] to-[#00875A] text-white">
+        <Card className="bg-gradient-to-r from-[#006633] to-[#00875A] text-white dark:from-emerald-700 dark:to-emerald-600">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
@@ -92,7 +92,7 @@ export default function MerchantDashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Button
             className="h-auto py-4 px-6 bg-[#006633] hover:bg-[#1B6B3A] text-white flex items-center gap-3 justify-start"
@@ -121,7 +121,7 @@ export default function MerchantDashboardPage() {
           </Button>
 
           <Button
-            className="h-auto py-4 px-6 border-[#006633] text-[#006633] hover:bg-[#006633]/5 flex items-center gap-3 justify-start"
+            className="h-auto py-4 px-6 border-[#006633] text-[#006633] hover:bg-[#006633]/5 dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-400/10 flex items-center gap-3 justify-start"
             variant="outline"
             render={<Link href="/dashboard/merchant/storefront" />}
             nativeButton={false}
@@ -129,7 +129,7 @@ export default function MerchantDashboardPage() {
             <Store className="h-5 w-5" />
             <div className="text-left">
               <div className="font-semibold">{t('dashboard.merchant.viewStorefront')}</div>
-              <div className="text-xs text-gray-500">Customize your store</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Customize your store</div>
             </div>
             <ArrowRight className="h-4 w-4 ml-auto" />
           </Button>

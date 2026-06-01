@@ -11,7 +11,7 @@
   },
   "hero": {
     "title": "E-Sell",
-    "subtitle": "Where Commerce Meets the Chain",
+    "subtitle": "Trade the Future, Today",
     "description": "Launch your online business on the blockchain. Accept crypto payments, deploy your own BEP-20 token, and build trust with verified transactions on Binance Smart Chain.",
     "startSelling": "Start Selling",
     "browseStores": "Browse Stores"
@@ -35,10 +35,21 @@
       "description": "Blockchain-verified transactions with trust badges. Every trade is transparent and immutable."
     }
   },
+  "featured": {
+    "title": "Featured Stores",
+    "subtitle": "Discover trusted merchants on E-Sell",
+    "viewAll": "View All Stores"
+  },
   "education": {
     "title": "Learn Crypto & Blockchain",
     "subtitle": "Watch these tutorials to get started with crypto wallets and BSC",
     "seeMore": "See More Videos"
+  },
+  "cta": {
+    "title": "Ready to Start Your Blockchain Business?",
+    "subtitle": "Join merchants worldwide already selling on E-Sell. Set up your storefront in minutes and start accepting crypto payments from anywhere.",
+    "getStarted": "Get Started Free",
+    "browseStores": "Browse Stores"
   },
   "roles": {
     "merchant": "Merchant",
@@ -58,7 +69,9 @@
     "back": "Back",
     "next": "Next",
     "submit": "Submit",
-    "close": "Close"
+    "close": "Close",
+    "lightMode": "Light",
+    "darkMode": "Dark"
   },
   "auth": {
     "login": "Sign In",
@@ -83,6 +96,7 @@
       "title": "Merchant Dashboard",
       "totalProducts": "Total Products",
       "messages": "Messages",
+      "notifications": "Notifications",
       "tokenDeployments": "Token Deployments",
       "trustBadge": "Trust Badge",
       "addProduct": "Add Product",
@@ -101,11 +115,118 @@
       "storesVisited": "Stores Visited",
       "purchases": "Purchases",
       "messages": "Messages",
+      "notifications": "Notifications",
       "browseStores": "Browse Stores",
       "myPurchases": "My Purchases",
+      "cart": "Cart",
+      "cartEmpty": "Your cart is empty",
+      "removeFromCart": "Remove",
+      "checkout": "Checkout",
       "settings": "Settings",
       "deleteAccount": "Delete Account"
     }
+  },
+  "storefront": {
+    "title": "My Storefront",
+    "subtitle": "Choose a theme and customize your online store",
+    "customize": "Customize Store",
+    "yourEsellCode": "Your E-Sell Code",
+    "shareCode": "Share this code with customers to find your store",
+    "active": "Active",
+    "selectTheme": "Select a Theme",
+    "activeTheme": "Active Theme",
+    "selectThemeBtn": "Select Theme",
+    "themePreview": "Theme Preview",
+    "noStorefront": "You need to select a theme first to create your storefront.",
+    "goSelectTheme": "Go to Theme Selection",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "logo": "Store Logo",
+    "logoHint": "Upload a logo for your store (recommended 200x200px)",
+    "logoComingSoon": "Image upload coming soon",
+    "colors": "Color Customization",
+    "primaryColor": "Primary Color",
+    "secondaryColor": "Secondary Color",
+    "accentColor": "Accent Color",
+    "aboutUs": "About Us",
+    "aboutUsPlaceholder": "Tell customers about your business, what you sell, and why they should trust you...",
+    "socialLinks": "Social Media Links",
+    "contactInfo": "Contact Information",
+    "address": "Address",
+    "addressPlaceholder": "Your store address",
+    "phone": "Phone",
+    "staffManagement": "Staff Management",
+    "addStaff": "Add New Staff Member",
+    "staffName": "Name",
+    "staffNamePlaceholder": "Full name",
+    "staffRole": "Role",
+    "staffRolePlaceholder": "e.g. Manager, Sales, Support",
+    "staffBio": "Bio",
+    "staffBioPlaceholder": "Short description about this team member",
+    "addStaffBtn": "Add Staff",
+    "customizeDesc": "Personalize your storefront with your brand colors, info, and team"
+  },
+  "products": {
+    "subtitle": "Manage your products and services",
+    "tab": "Products",
+    "addProduct": "Add Product",
+    "noProducts": "No products yet. Add your first product to get started!",
+    "addFirst": "Add Your First Product",
+    "productDetails": "Product Details",
+    "name": "Product Name",
+    "namePlaceholder": "Enter product name",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your product...",
+    "priceNGN": "Price (NGN)",
+    "priceCrypto": "Price (Crypto)",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "images": "Product Images",
+    "addImage": "Add Image",
+    "imageHint": "Images are stored locally. Cloud upload coming soon.",
+    "active": "Active",
+    "inactive": "Inactive",
+    "createProduct": "Create Product",
+    "editProduct": "Edit Product"
+  },
+  "services": {
+    "tab": "Services",
+    "addService": "Add Service",
+    "noServices": "No services yet. Add your first service to get started!",
+    "addFirst": "Add Your First Service",
+    "serviceDetails": "Service Details",
+    "name": "Service Name",
+    "namePlaceholder": "Enter service name",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your service...",
+    "priceNGN": "Price (NGN)",
+    "priceCrypto": "Price (Crypto)",
+    "duration": "Duration",
+    "durationPlaceholder": "e.g. 1 hour, 3 days, 2 weeks",
+    "createService": "Create Service"
+  },
+  "browse": {
+    "title": "Browse Stores",
+    "subtitle": "Discover merchants and their products on E-Sell",
+    "searchByName": "Search by store name...",
+    "allCategories": "All Categories",
+    "searchByCode": "Search by E-Sell code...",
+    "noStores": "No stores found. Check back later!",
+    "products": "products",
+    "services": "services",
+    "visitStore": "Visit Store"
+  },
+  "trustBadge": {
+    "trusted": "Trusted",
+    "verified": "Verified",
+    "new": "New"
+  },
+  "settings": {
+    "profilePicture": "Profile Picture",
+    "uploadPhoto": "Upload Photo",
+    "removePhoto": "Remove Photo",
+    "profileInformation": "Profile Information",
+    "dangerZone": "Danger Zone",
+    "deleteWarning": "Permanently delete your account and all associated data."
   },
   "deleteAccount": {
     "title": "Delete Account",

@@ -63,6 +63,8 @@ export const ModelName = {
   TrustProfile: 'TrustProfile',
   Media: 'Media',
   Theme: 'Theme',
+  Cart: 'Cart',
+  CartItem: 'CartItem',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -274,6 +276,27 @@ export const ThemeScalarFieldEnum = {
 } as const
 
 export type ThemeScalarFieldEnum = (typeof ThemeScalarFieldEnum)[keyof typeof ThemeScalarFieldEnum]
+
+
+export const CartScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CartScalarFieldEnum = (typeof CartScalarFieldEnum)[keyof typeof CartScalarFieldEnum]
+
+
+export const CartItemScalarFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId',
+  quantity: 'quantity',
+  createdAt: 'createdAt'
+} as const
+
+export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {

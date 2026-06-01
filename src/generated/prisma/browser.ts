@@ -78,6 +78,16 @@ export type Media = Prisma.MediaModel
  */
 export type Theme = Prisma.ThemeModel
 /**
+ * Model Cart
+ * 
+ */
+export type Cart = Prisma.CartModel
+/**
+ * Model CartItem
+ * 
+ */
+export type CartItem = Prisma.CartItemModel
+/**
  * Model Account
  * 
  */
