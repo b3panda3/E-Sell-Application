@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useTranslation } from '@/lib/i18n';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,51 +15,46 @@ export default function MerchantSettingsPage() {
   const { data: session, update: updateSession } = useSession();
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const prevSessionRef = useRef<string | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [name, setName] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  // Sync from session (only when session ID changes)
-  const sessionId = session?.user?.id ?? null;
-  if (sessionId !== prevSessionRef.current) {
-    prevSessionRef.current = sessionId;
+  // Sync from session whenever it updates
+  useEffect(() => {
     if (session?.user) {
       setName(session.user.name || '');
       setProfileImage(session.user.image || null);
     }
-  }
+  }, [session?.user?.id, session?.user?.image, session?.user?.name]);
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Preview the image locally
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setProfileImage(ev.target?.result as string);
-    };
-    reader.readAsDataURL(file);
-
-    // Upload to API
     setIsUploading(true);
     try {
+      // Convert to base64
       const base64 = await new Promise<string>((resolve) => {
         const r = new FileReader();
         r.onload = () => resolve(r.result as string);
         r.readAsDataURL(file);
       });
+
+      // Preview locally immediately
+      setProfileImage(base64);
+
+      // Save to database
       const res = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: base64 }),
       });
+
       if (res.ok) {
-        const data = await res.json();
-        setProfileImage(data.user.image || base64);
-        await updateSession();
+        // Update the session so it persists across refreshes
+        await updateSession({ image: base64 });
       }
     } catch (error) {
       console.error('Image upload error:', error);
@@ -77,7 +72,7 @@ export default function MerchantSettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: '' }),
       });
-      await updateSession();
+      await updateSession({ image: '' });
     } catch (error) {
       console.error('Remove image error:', error);
     }
@@ -97,8 +92,10 @@ export default function MerchantSettingsPage() {
         body: JSON.stringify(body),
       });
       if (res.ok) {
+        const data = await res.json();
         setSaved(true);
-        await updateSession();
+        // Update session with the latest name and image from DB
+        await updateSession({ name: data.user.name, image: data.user.image });
         setTimeout(() => setSaved(false), 3000);
       }
     } catch (error) {

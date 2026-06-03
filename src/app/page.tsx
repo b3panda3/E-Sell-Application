@@ -103,42 +103,36 @@ export default function HomePage() {
       title: t('features.aiAssistant.title'),
       description: t('features.aiAssistant.description'),
       color: 'from-emerald-500 to-green-600',
-      emoji: '🤖',
     },
     {
       icon: Mic,
       title: t('features.voiceCommands.title'),
       description: t('features.voiceCommands.description'),
       color: 'from-green-500 to-teal-600',
-      emoji: '🎙️',
     },
     {
       icon: Store,
       title: t('features.professionalStore.title'),
       description: t('features.professionalStore.description'),
       color: 'from-teal-500 to-emerald-600',
-      emoji: '🏪',
     },
     {
       icon: CreditCard,
       title: t('features.multiplePayments.title'),
       description: t('features.multiplePayments.description'),
       color: 'from-[#006633] to-[#00875A]',
-      emoji: '💳',
     },
     {
       icon: ShieldCheck,
       title: t('features.secureTrusted.title'),
       description: t('features.secureTrusted.description'),
       color: 'from-emerald-600 to-teal-700',
-      emoji: '🔐',
     },
     {
       icon: BookOpen,
       title: t('features.aiLearning.title'),
       description: t('features.aiLearning.description'),
       color: 'from-teal-600 to-green-700',
-      emoji: '📚',
     },
   ];
 
@@ -348,7 +342,6 @@ export default function HomePage() {
               <motion.div key={feature.title} variants={fadeUp}>
                 <Card className="h-full hover:shadow-xl transition-shadow duration-300 border-gray-100 dark:border-gray-800 dark:bg-gray-900 group">
                   <CardContent className="p-6 text-center">
-                    <div className="text-4xl mb-3">{feature.emoji}</div>
                     <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                       <feature.icon className="h-7 w-7 text-white" />
                     </div>

@@ -44,6 +44,7 @@ export default function CustomerAssistantPage() {
             content: m.content,
           })),
           locale: 'en',
+          role: 'CUSTOMER',
         }),
       });
 
@@ -116,12 +117,12 @@ export default function CustomerAssistantPage() {
   };
 
   const suggestedPrompts = [
-    t('chat.prompt1'),
-    t('chat.prompt2'),
-    t('chat.prompt3'),
-    t('chat.prompt4'),
-    t('chat.prompt5'),
-    t('chat.prompt6'),
+    t('chat.customerPrompt1'),
+    t('chat.customerPrompt2'),
+    t('chat.customerPrompt3'),
+    t('chat.customerPrompt4'),
+    t('chat.customerPrompt5'),
+    t('chat.customerPrompt6'),
   ];
 
   return (

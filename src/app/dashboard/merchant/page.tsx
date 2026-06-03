@@ -5,6 +5,7 @@ import { useTranslation } from '@/lib/i18n';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Package, MessageSquare, Coins, Shield, Plus, ArrowRight, Store } from 'lucide-react';
 import Link from 'next/link';
 
@@ -44,13 +45,21 @@ export default function MerchantDashboardPage() {
   return (
     <div className="space-y-6">
       {/* Welcome */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          {t('dashboard.welcome')}, {userName}!
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          {t('dashboard.merchant.title')}
-        </p>
+      <div className="flex items-center gap-4">
+        <Avatar className="h-14 w-14">
+          <AvatarImage src={session?.user?.image || undefined} alt={userName} />
+          <AvatarFallback className="bg-[#006633]/10 text-[#006633] dark:bg-emerald-400/10 dark:text-emerald-400 text-xl font-bold">
+            {userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+          </AvatarFallback>
+        </Avatar>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            {t('dashboard.welcome')}, {userName}!
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            {t('dashboard.merchant.title')}
+          </p>
+        </div>
       </div>
 
       {/* Stats Grid */}

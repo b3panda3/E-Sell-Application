@@ -3,6 +3,7 @@
     "home": "Home",
     "browse": "Browse",
     "education": "Education Hub",
+    "news": "News",
     "login": "Login",
     "register": "Register",
     "dashboard": "Dashboard",
@@ -79,7 +80,13 @@
     "prompt3": "How do I accept crypto payments?",
     "prompt4": "Explain trust badges to me",
     "prompt5": "How do I add products to my store?",
-    "prompt6": "What is Binance Smart Chain?"
+    "prompt6": "What is Binance Smart Chain?",
+    "customerPrompt1": "How do I find stores on E-Sell?",
+    "customerPrompt2": "What payment methods can I use?",
+    "customerPrompt3": "How do I add items to my cart?",
+    "customerPrompt4": "How do trust badges work for buyers?",
+    "customerPrompt5": "How do I contact a merchant?",
+    "customerPrompt6": "What is the Education Hub?"
   },
   "roles": {
     "merchant": "Merchant",

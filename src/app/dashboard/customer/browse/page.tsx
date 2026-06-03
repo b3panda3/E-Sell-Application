@@ -110,7 +110,22 @@ export default function BrowsePage() {
     return filtered;
   }, [searchQuery, categoryFilter, esellCodeSearch, stores]);
 
-  const categories = [...new Set(stores.map((s) => s.businessCategory).filter(Boolean))];
+  const categories = [
+    { value: '', label: t('browse.allCategories') },
+    { value: 'general', label: 'General / Retail' },
+    { value: 'services', label: 'Services' },
+    { value: 'creative', label: 'Creative / Arts' },
+    { value: 'technology', label: 'Technology / Electronics' },
+    { value: 'food', label: 'Food / Restaurants' },
+    { value: 'fashion', label: 'Fashion / Clothing' },
+    { value: 'health', label: 'Health / Wellness' },
+    { value: 'education', label: 'Education / Training' },
+    { value: 'real-estate', label: 'Real Estate' },
+    { value: 'agriculture', label: 'Agriculture' },
+    { value: 'automotive', label: 'Automotive' },
+    { value: 'beauty', label: 'Beauty / Cosmetics' },
+    { value: 'finance', label: 'Finance / Consulting' },
+  ];
 
   if (loading) {
     return (
@@ -152,9 +167,8 @@ export default function BrowsePage() {
                 onChange={(e) => setCategoryFilter(e.target.value)}
                 className="w-full h-8 rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
               >
-                <option value="">{t('browse.allCategories')}</option>
                 {categories.map((cat) => (
-                  <option key={cat} value={cat!}>{cat}</option>
+                  <option key={cat.value} value={cat.value}>{cat.label}</option>
                 ))}
               </select>
             </div>

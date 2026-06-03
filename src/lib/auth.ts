@@ -51,6 +51,12 @@ export const authOptions: NextAuthOptions = {
     GitHubProvider({
       clientId: process.env.GITHUB_ID || "",
       clientSecret: process.env.GITHUB_SECRET || "",
+      authorization: {
+        url: "https://github.com/login/oauth/authorize",
+        params: {
+          scope: "read:user user:email",
+        },
+      },
     }),
   ],
   callbacks: {
@@ -115,10 +121,16 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session: updateData }) {
       if (user) {
         token.role = (user as unknown as Record<string, unknown>).role as string;
         token.esellCode = (user as unknown as Record<string, unknown>).esellCode as string | null;
+        token.image = user.image || (user as unknown as Record<string, unknown>).image as string | null;
+      }
+      // Handle session update (e.g. after profile picture change)
+      if (trigger === 'update' && updateData) {
+        if (updateData.image !== undefined) token.image = updateData.image as string | null;
+        if (updateData.name !== undefined) token.name = updateData.name as string;
       }
       return token;
     },
@@ -127,6 +139,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub!;
         (session.user as Record<string, unknown>).role = token.role;
         (session.user as Record<string, unknown>).esellCode = token.esellCode;
+        if (token.image) session.user.image = token.image as string;
       }
       return session;
     },

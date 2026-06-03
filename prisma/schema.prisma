@@ -215,6 +215,7 @@ model Theme {
   id              String   @id @default(uuid())
   name            String
   category        String?
+  description     String?
   previewImageUrl String?
   layoutConfig    String?
   defaultColors   String?

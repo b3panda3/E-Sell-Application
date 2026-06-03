@@ -44,6 +44,7 @@ export default function MerchantAssistantPage() {
             content: m.content,
           })),
           locale: 'en',
+          role: 'MERCHANT',
         }),
       });
 

@@ -34,6 +34,7 @@ export default function Header() {
     { href: '/', label: t('nav.home') },
     { href: '/browse', label: t('nav.browse') },
     { href: '/education', label: t('nav.education') },
+    { href: '/news', label: t('nav.news') },
   ];
 
   return (

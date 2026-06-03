@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Store, ShoppingBag, ShoppingCart, MessageSquare, Shield, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function CustomerDashboardPage() {
   const { data: session } = useSession();
@@ -37,13 +38,21 @@ export default function CustomerDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          {t('dashboard.welcome')}, {userName}!
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          {t('dashboard.customer.title')}
-        </p>
+      <div className="flex items-center gap-4">
+        <Avatar className="h-14 w-14">
+          <AvatarImage src={session?.user?.image || undefined} alt={userName} />
+          <AvatarFallback className="bg-blue-600/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400 text-xl font-bold">
+            {userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+          </AvatarFallback>
+        </Avatar>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            {t('dashboard.welcome')}, {userName}!
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            {t('dashboard.customer.title')}
+          </p>
+        </div>
       </div>
 
       {/* Stats Grid */}
