@@ -1740,6 +1740,9 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const StorefrontScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  storeName: 'storeName',
+  logoUrl: 'logoUrl',
+  featuredImageUrl: 'featuredImageUrl',
   themeId: 'themeId',
   customColors: 'customColors',
   aboutUs: 'aboutUs',

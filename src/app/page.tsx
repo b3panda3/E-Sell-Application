@@ -41,6 +41,7 @@ const YOUTUBE_VIDEOS = [
 
 interface FeaturedStore {
   merchantName: string;
+  storeName: string | null;
   esellCode: string | null;
   businessCategory: string | null;
   trustBadge: string;
@@ -265,18 +266,18 @@ export default function HomePage() {
                 const gradient = THEME_GRADIENTS[themeName] || 'from-gray-500 to-gray-700';
 
                 return (
-                  <motion.div key={store.esellCode || store.merchantName} variants={fadeUp}>
+                  <motion.div key={store.esellCode || store.storeName || store.merchantName} variants={fadeUp}>
                     <Link href={`/store/${store.esellCode}`}>
                       <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group dark:bg-gray-800 dark:border-gray-700">
                         <div className={`h-24 bg-gradient-to-br ${gradient} relative flex items-center justify-center`}>
-                          <span className="text-3xl font-bold text-white/80">{store.merchantName.charAt(0)}</span>
+                          <span className="text-3xl font-bold text-white/80">{(store.storeName || store.merchantName).charAt(0)}</span>
                           <div className="absolute bottom-2 right-2">
                             <TrustBadge badge={store.trustBadge} size="sm" />
                           </div>
                         </div>
                         <CardContent className="p-4">
                           <h3 className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-[#006633] dark:group-hover:text-emerald-400 transition-colors">
-                            {store.merchantName}
+                            {store.storeName || store.merchantName}
                           </h3>
                           {store.businessCategory && (
                             <Badge variant="secondary" className="text-xs mt-1 capitalize">{store.businessCategory}</Badge>

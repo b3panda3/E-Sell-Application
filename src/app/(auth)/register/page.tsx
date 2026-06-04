@@ -14,11 +14,20 @@ import Image from 'next/image';
 
 const BUSINESS_CATEGORIES = [
   'Electronics',
-  'Fashion',
-  'Food',
-  'Consulting',
-  'Tech',
-  'Artisan',
+  'Fashion / Clothing',
+  'Food / Restaurants',
+  'Consulting / Professional Services',
+  'Tech / Software',
+  'Artisan / Handmade',
+  'Health / Wellness',
+  'Education / Training',
+  'Real Estate',
+  'Agriculture',
+  'Automotive',
+  'Beauty / Cosmetics',
+  'Finance / Consulting',
+  'Creative / Arts',
+  'General / Retail',
   'Other',
 ];
 
@@ -31,6 +40,7 @@ export default function RegisterPage() {
     confirmPassword: '',
     role: 'CUSTOMER' as 'MERCHANT' | 'CUSTOMER',
     businessCategory: '' as string | null,
+    storeName: '' as string | null,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -64,6 +74,7 @@ export default function RegisterPage() {
           password: formData.password,
           role: formData.role,
           businessCategory: formData.businessCategory,
+          storeName: formData.role === 'MERCHANT' ? formData.storeName : undefined,
         }),
       });
 
@@ -200,6 +211,22 @@ export default function RegisterPage() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+            )}
+
+            {formData.role === 'MERCHANT' && (
+              <div className="space-y-2">
+                <Label htmlFor="storeName">Store Name</Label>
+                <div className="relative">
+                  <Store className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="storeName"
+                    placeholder="My Awesome Store"
+                    value={formData.storeName || ''}
+                    onChange={(e) => setFormData({ ...formData, storeName: e.target.value })}
+                    className="pl-9"
+                  />
+                </div>
               </div>
             )}
 

@@ -22,7 +22,7 @@ async function getUniqueEsellCode(): Promise<string> {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, phone, password, role, businessCategory } = body;
+    const { name, email, phone, password, role, businessCategory, storeName } = body;
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -67,6 +67,17 @@ export async function POST(request: NextRequest) {
         userId: user.id,
       },
     });
+
+    // Create storefront for merchants with storeName
+    if (role === "MERCHANT") {
+      await db.storefront.create({
+        data: {
+          userId: user.id,
+          storeName: storeName || null,
+          isActive: true,
+        },
+      });
+    }
 
     return NextResponse.json(
       {

@@ -38,9 +38,12 @@ model User {
 }
 
 model Storefront {
-  id           String   @id @default(uuid())
-  userId       String
-  themeId      String?
+  id              String   @id @default(uuid())
+  userId          String
+  storeName       String?
+  logoUrl         String?
+  featuredImageUrl String?
+  themeId         String?
   customColors String?
   aboutUs      String?
   address      String?

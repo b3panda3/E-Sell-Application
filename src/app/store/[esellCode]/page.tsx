@@ -22,6 +22,7 @@ import Link from 'next/link';
 interface StoreData {
   merchantName: string;
   merchantImage: string | null;
+  storeName: string | null;
   esellCode: string | null;
   businessCategory: string | null;
   trustBadge: string;
@@ -32,6 +33,8 @@ interface StoreData {
   } | null;
   storefront: {
     id: string;
+    logoUrl: string | null;
+    featuredImageUrl: string | null;
     customColors: string | null;
     aboutUs: string | null;
     address: string | null;
@@ -171,11 +174,19 @@ export default function StorefrontPage() {
             </Button>
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-bold">
-              {store.merchantName.charAt(0)}
-            </div>
+            {store.storefront.logoUrl ? (
+              <img
+                src={store.storefront.logoUrl}
+                alt={store.storeName || store.merchantName}
+                className="w-16 h-16 rounded-2xl object-cover border-2 border-white/30"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-bold">
+                {(store.storeName || store.merchantName).charAt(0)}
+              </div>
+            )}
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold">{store.merchantName}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold">{store.storeName || store.merchantName}</h1>
               <div className="flex items-center gap-2 mt-1">
                 {store.businessCategory && (
                   <Badge className="bg-white/20 text-white border-0 capitalize text-xs">
@@ -194,6 +205,17 @@ export default function StorefrontPage() {
           </div>
         </div>
       </header>
+
+      {/* Featured Image Banner */}
+      {store.storefront.featuredImageUrl && (
+        <div className="max-w-5xl mx-auto px-4 -mt-4">
+          <img
+            src={store.storefront.featuredImageUrl}
+            alt="Featured"
+            className="w-full h-48 md:h-64 object-cover rounded-xl shadow-lg"
+          />
+        </div>
+      )}
 
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
         {/* About Section */}
@@ -236,7 +258,7 @@ export default function StorefrontPage() {
                           </div>
                         )}
                         {product.category && (
-                          <Badge className="absolute top-2 left-2 text-xs bg-white/90 dark:bg-gray-900/90">
+                          <Badge className="absolute top-2 left-2 text-xs bg-white/90 dark:bg-gray-900/90 text-gray-800 dark:text-gray-200">
                             {product.category}
                           </Badge>
                         )}

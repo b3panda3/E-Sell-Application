@@ -27,6 +27,9 @@ export type AggregateStorefront = {
 export type StorefrontMinAggregateOutputType = {
   id: string | null
   userId: string | null
+  storeName: string | null
+  logoUrl: string | null
+  featuredImageUrl: string | null
   themeId: string | null
   customColors: string | null
   aboutUs: string | null
@@ -41,6 +44,9 @@ export type StorefrontMinAggregateOutputType = {
 export type StorefrontMaxAggregateOutputType = {
   id: string | null
   userId: string | null
+  storeName: string | null
+  logoUrl: string | null
+  featuredImageUrl: string | null
   themeId: string | null
   customColors: string | null
   aboutUs: string | null
@@ -55,6 +61,9 @@ export type StorefrontMaxAggregateOutputType = {
 export type StorefrontCountAggregateOutputType = {
   id: number
   userId: number
+  storeName: number
+  logoUrl: number
+  featuredImageUrl: number
   themeId: number
   customColors: number
   aboutUs: number
@@ -71,6 +80,9 @@ export type StorefrontCountAggregateOutputType = {
 export type StorefrontMinAggregateInputType = {
   id?: true
   userId?: true
+  storeName?: true
+  logoUrl?: true
+  featuredImageUrl?: true
   themeId?: true
   customColors?: true
   aboutUs?: true
@@ -85,6 +97,9 @@ export type StorefrontMinAggregateInputType = {
 export type StorefrontMaxAggregateInputType = {
   id?: true
   userId?: true
+  storeName?: true
+  logoUrl?: true
+  featuredImageUrl?: true
   themeId?: true
   customColors?: true
   aboutUs?: true
@@ -99,6 +114,9 @@ export type StorefrontMaxAggregateInputType = {
 export type StorefrontCountAggregateInputType = {
   id?: true
   userId?: true
+  storeName?: true
+  logoUrl?: true
+  featuredImageUrl?: true
   themeId?: true
   customColors?: true
   aboutUs?: true
@@ -186,6 +204,9 @@ export type StorefrontGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type StorefrontGroupByOutputType = {
   id: string
   userId: string
+  storeName: string | null
+  logoUrl: string | null
+  featuredImageUrl: string | null
   themeId: string | null
   customColors: string | null
   aboutUs: string | null
@@ -221,6 +242,9 @@ export type StorefrontWhereInput = {
   NOT?: Prisma.StorefrontWhereInput | Prisma.StorefrontWhereInput[]
   id?: Prisma.StringFilter<"Storefront"> | string
   userId?: Prisma.StringFilter<"Storefront"> | string
+  storeName?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  logoUrl?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  featuredImageUrl?: Prisma.StringNullableFilter<"Storefront"> | string | null
   themeId?: Prisma.StringNullableFilter<"Storefront"> | string | null
   customColors?: Prisma.StringNullableFilter<"Storefront"> | string | null
   aboutUs?: Prisma.StringNullableFilter<"Storefront"> | string | null
@@ -240,6 +264,9 @@ export type StorefrontWhereInput = {
 export type StorefrontOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  storeName?: Prisma.SortOrderInput | Prisma.SortOrder
+  logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   themeId?: Prisma.SortOrderInput | Prisma.SortOrder
   customColors?: Prisma.SortOrderInput | Prisma.SortOrder
   aboutUs?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -262,6 +289,9 @@ export type StorefrontWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.StorefrontWhereInput[]
   NOT?: Prisma.StorefrontWhereInput | Prisma.StorefrontWhereInput[]
   userId?: Prisma.StringFilter<"Storefront"> | string
+  storeName?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  logoUrl?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  featuredImageUrl?: Prisma.StringNullableFilter<"Storefront"> | string | null
   themeId?: Prisma.StringNullableFilter<"Storefront"> | string | null
   customColors?: Prisma.StringNullableFilter<"Storefront"> | string | null
   aboutUs?: Prisma.StringNullableFilter<"Storefront"> | string | null
@@ -281,6 +311,9 @@ export type StorefrontWhereUniqueInput = Prisma.AtLeast<{
 export type StorefrontOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  storeName?: Prisma.SortOrderInput | Prisma.SortOrder
+  logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   themeId?: Prisma.SortOrderInput | Prisma.SortOrder
   customColors?: Prisma.SortOrderInput | Prisma.SortOrder
   aboutUs?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -301,6 +334,9 @@ export type StorefrontScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StorefrontScalarWhereWithAggregatesInput | Prisma.StorefrontScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Storefront"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Storefront"> | string
+  storeName?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
+  logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
+  featuredImageUrl?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
   themeId?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
   customColors?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
   aboutUs?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
@@ -314,6 +350,9 @@ export type StorefrontScalarWhereWithAggregatesInput = {
 
 export type StorefrontCreateInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -332,6 +371,9 @@ export type StorefrontCreateInput = {
 export type StorefrontUncheckedCreateInput = {
   id?: string
   userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   themeId?: string | null
   customColors?: string | null
   aboutUs?: string | null
@@ -348,6 +390,9 @@ export type StorefrontUncheckedCreateInput = {
 
 export type StorefrontUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -366,6 +411,9 @@ export type StorefrontUpdateInput = {
 export type StorefrontUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -383,6 +431,9 @@ export type StorefrontUncheckedUpdateInput = {
 export type StorefrontCreateManyInput = {
   id?: string
   userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   themeId?: string | null
   customColors?: string | null
   aboutUs?: string | null
@@ -396,6 +447,9 @@ export type StorefrontCreateManyInput = {
 
 export type StorefrontUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -409,6 +463,9 @@ export type StorefrontUpdateManyMutationInput = {
 export type StorefrontUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -433,6 +490,9 @@ export type StorefrontOrderByRelationAggregateInput = {
 export type StorefrontCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  storeName?: Prisma.SortOrder
+  logoUrl?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrder
   themeId?: Prisma.SortOrder
   customColors?: Prisma.SortOrder
   aboutUs?: Prisma.SortOrder
@@ -447,6 +507,9 @@ export type StorefrontCountOrderByAggregateInput = {
 export type StorefrontMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  storeName?: Prisma.SortOrder
+  logoUrl?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrder
   themeId?: Prisma.SortOrder
   customColors?: Prisma.SortOrder
   aboutUs?: Prisma.SortOrder
@@ -461,6 +524,9 @@ export type StorefrontMaxOrderByAggregateInput = {
 export type StorefrontMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  storeName?: Prisma.SortOrder
+  logoUrl?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrder
   themeId?: Prisma.SortOrder
   customColors?: Prisma.SortOrder
   aboutUs?: Prisma.SortOrder
@@ -605,6 +671,9 @@ export type StorefrontUncheckedUpdateManyWithoutThemeNestedInput = {
 
 export type StorefrontCreateWithoutUserInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -621,6 +690,9 @@ export type StorefrontCreateWithoutUserInput = {
 
 export type StorefrontUncheckedCreateWithoutUserInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   themeId?: string | null
   customColors?: string | null
   aboutUs?: string | null
@@ -667,6 +739,9 @@ export type StorefrontScalarWhereInput = {
   NOT?: Prisma.StorefrontScalarWhereInput | Prisma.StorefrontScalarWhereInput[]
   id?: Prisma.StringFilter<"Storefront"> | string
   userId?: Prisma.StringFilter<"Storefront"> | string
+  storeName?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  logoUrl?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  featuredImageUrl?: Prisma.StringNullableFilter<"Storefront"> | string | null
   themeId?: Prisma.StringNullableFilter<"Storefront"> | string | null
   customColors?: Prisma.StringNullableFilter<"Storefront"> | string | null
   aboutUs?: Prisma.StringNullableFilter<"Storefront"> | string | null
@@ -680,6 +755,9 @@ export type StorefrontScalarWhereInput = {
 
 export type StorefrontCreateWithoutProductsInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -697,6 +775,9 @@ export type StorefrontCreateWithoutProductsInput = {
 export type StorefrontUncheckedCreateWithoutProductsInput = {
   id?: string
   userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   themeId?: string | null
   customColors?: string | null
   aboutUs?: string | null
@@ -728,6 +809,9 @@ export type StorefrontUpdateToOneWithWhereWithoutProductsInput = {
 
 export type StorefrontUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -745,6 +829,9 @@ export type StorefrontUpdateWithoutProductsInput = {
 export type StorefrontUncheckedUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -760,6 +847,9 @@ export type StorefrontUncheckedUpdateWithoutProductsInput = {
 
 export type StorefrontCreateWithoutServicesInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -777,6 +867,9 @@ export type StorefrontCreateWithoutServicesInput = {
 export type StorefrontUncheckedCreateWithoutServicesInput = {
   id?: string
   userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   themeId?: string | null
   customColors?: string | null
   aboutUs?: string | null
@@ -808,6 +901,9 @@ export type StorefrontUpdateToOneWithWhereWithoutServicesInput = {
 
 export type StorefrontUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -825,6 +921,9 @@ export type StorefrontUpdateWithoutServicesInput = {
 export type StorefrontUncheckedUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -840,6 +939,9 @@ export type StorefrontUncheckedUpdateWithoutServicesInput = {
 
 export type StorefrontCreateWithoutStaffInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -857,6 +959,9 @@ export type StorefrontCreateWithoutStaffInput = {
 export type StorefrontUncheckedCreateWithoutStaffInput = {
   id?: string
   userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   themeId?: string | null
   customColors?: string | null
   aboutUs?: string | null
@@ -888,6 +993,9 @@ export type StorefrontUpdateToOneWithWhereWithoutStaffInput = {
 
 export type StorefrontUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -905,6 +1013,9 @@ export type StorefrontUpdateWithoutStaffInput = {
 export type StorefrontUncheckedUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -920,6 +1031,9 @@ export type StorefrontUncheckedUpdateWithoutStaffInput = {
 
 export type StorefrontCreateWithoutThemeInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -937,6 +1051,9 @@ export type StorefrontCreateWithoutThemeInput = {
 export type StorefrontUncheckedCreateWithoutThemeInput = {
   id?: string
   userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -978,6 +1095,9 @@ export type StorefrontUpdateManyWithWhereWithoutThemeInput = {
 
 export type StorefrontCreateManyUserInput = {
   id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   themeId?: string | null
   customColors?: string | null
   aboutUs?: string | null
@@ -991,6 +1111,9 @@ export type StorefrontCreateManyUserInput = {
 
 export type StorefrontUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1007,6 +1130,9 @@ export type StorefrontUpdateWithoutUserInput = {
 
 export type StorefrontUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1023,6 +1149,9 @@ export type StorefrontUncheckedUpdateWithoutUserInput = {
 
 export type StorefrontUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1037,6 +1166,9 @@ export type StorefrontUncheckedUpdateManyWithoutUserInput = {
 export type StorefrontCreateManyThemeInput = {
   id?: string
   userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
   customColors?: string | null
   aboutUs?: string | null
   address?: string | null
@@ -1049,6 +1181,9 @@ export type StorefrontCreateManyThemeInput = {
 
 export type StorefrontUpdateWithoutThemeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1066,6 +1201,9 @@ export type StorefrontUpdateWithoutThemeInput = {
 export type StorefrontUncheckedUpdateWithoutThemeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1082,6 +1220,9 @@ export type StorefrontUncheckedUpdateWithoutThemeInput = {
 export type StorefrontUncheckedUpdateManyWithoutThemeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1144,6 +1285,9 @@ export type StorefrontCountOutputTypeCountStaffArgs<ExtArgs extends runtime.Type
 export type StorefrontSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  storeName?: boolean
+  logoUrl?: boolean
+  featuredImageUrl?: boolean
   themeId?: boolean
   customColors?: boolean
   aboutUs?: boolean
@@ -1164,6 +1308,9 @@ export type StorefrontSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type StorefrontSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  storeName?: boolean
+  logoUrl?: boolean
+  featuredImageUrl?: boolean
   themeId?: boolean
   customColors?: boolean
   aboutUs?: boolean
@@ -1180,6 +1327,9 @@ export type StorefrontSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type StorefrontSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  storeName?: boolean
+  logoUrl?: boolean
+  featuredImageUrl?: boolean
   themeId?: boolean
   customColors?: boolean
   aboutUs?: boolean
@@ -1196,6 +1346,9 @@ export type StorefrontSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type StorefrontSelectScalar = {
   id?: boolean
   userId?: boolean
+  storeName?: boolean
+  logoUrl?: boolean
+  featuredImageUrl?: boolean
   themeId?: boolean
   customColors?: boolean
   aboutUs?: boolean
@@ -1207,7 +1360,7 @@ export type StorefrontSelectScalar = {
   updatedAt?: boolean
 }
 
-export type StorefrontOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "themeId" | "customColors" | "aboutUs" | "address" | "socialLinks" | "bankDetails" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["storefront"]>
+export type StorefrontOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "storeName" | "logoUrl" | "featuredImageUrl" | "themeId" | "customColors" | "aboutUs" | "address" | "socialLinks" | "bankDetails" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["storefront"]>
 export type StorefrontInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   theme?: boolean | Prisma.Storefront$themeArgs<ExtArgs>
@@ -1237,6 +1390,9 @@ export type $StorefrontPayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
+    storeName: string | null
+    logoUrl: string | null
+    featuredImageUrl: string | null
     themeId: string | null
     customColors: string | null
     aboutUs: string | null
@@ -1676,6 +1832,9 @@ export interface Prisma__StorefrontClient<T, Null = never, ExtArgs extends runti
 export interface StorefrontFieldRefs {
   readonly id: Prisma.FieldRef<"Storefront", 'String'>
   readonly userId: Prisma.FieldRef<"Storefront", 'String'>
+  readonly storeName: Prisma.FieldRef<"Storefront", 'String'>
+  readonly logoUrl: Prisma.FieldRef<"Storefront", 'String'>
+  readonly featuredImageUrl: Prisma.FieldRef<"Storefront", 'String'>
   readonly themeId: Prisma.FieldRef<"Storefront", 'String'>
   readonly customColors: Prisma.FieldRef<"Storefront", 'String'>
   readonly aboutUs: Prisma.FieldRef<"Storefront", 'String'>
