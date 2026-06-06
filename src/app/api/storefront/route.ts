@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { storeName, logoUrl, featuredImageUrl, themeId, customColors, aboutUs, address, socialLinks, bankDetails, isActive } = body;
+    const { themeId, customColors, aboutUs, address, socialLinks, bankDetails, isActive } = body;
 
     // Check if storefront already exists
     const existing = await db.storefront.findFirst({
@@ -47,9 +47,6 @@ export async function POST(request: NextRequest) {
       const updated = await db.storefront.update({
         where: { id: existing.id },
         data: {
-          ...(storeName !== undefined && { storeName }),
-          ...(logoUrl !== undefined && { logoUrl }),
-          ...(featuredImageUrl !== undefined && { featuredImageUrl }),
           ...(themeId !== undefined && { themeId }),
           ...(customColors !== undefined && { customColors }),
           ...(aboutUs !== undefined && { aboutUs }),
@@ -67,9 +64,6 @@ export async function POST(request: NextRequest) {
     const storefront = await db.storefront.create({
       data: {
         userId: session.user.id,
-        storeName: storeName || null,
-        logoUrl: logoUrl || null,
-        featuredImageUrl: featuredImageUrl || null,
         themeId: themeId || null,
         customColors: customColors || null,
         aboutUs: aboutUs || null,

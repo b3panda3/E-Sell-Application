@@ -6,7 +6,7 @@ import { useTranslation } from '@/lib/i18n';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Palette, ArrowRight, Settings, Eye, Copy } from 'lucide-react';
+import { Check, Palette, ArrowRight, Settings, Eye } from 'lucide-react';
 import Link from 'next/link';
 
 interface Theme {
@@ -54,16 +54,6 @@ export default function StorefrontPage() {
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const esellCode = String((session?.user as Record<string, unknown> | undefined)?.esellCode ?? '');
-
-  const handleCopy = async () => {
-    if (!esellCode) return;
-    await navigator.clipboard.writeText(esellCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -144,34 +134,15 @@ export default function StorefrontPage() {
       </div>
 
       {/* E-Sell Code */}
-      {esellCode && (
+      {String((session?.user as Record<string, unknown>)?.esellCode) && (
         <Card className="bg-gradient-to-r from-[#006633] to-[#00875A] text-white dark:from-emerald-700 dark:to-emerald-600">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <p className="text-white/80 text-sm font-medium">{t('storefront.yourEsellCode')}</p>
-                <div className="flex items-center gap-3 mt-1">
-                  <p className="text-3xl font-bold tracking-wider">
-                    {esellCode}
-                  </p>
-                  <button
-                    onClick={handleCopy}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-sm font-medium"
-                    title="Copy E-Sell Code"
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="h-4 w-4" />
-                        Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-4 w-4" />
-                        Copy
-                      </>
-                    )}
-                  </button>
-                </div>
+                <p className="text-3xl font-bold tracking-wider mt-1">
+                  {String((session?.user as Record<string, unknown> | undefined)?.esellCode ?? '')}
+                </p>
                 <p className="text-white/60 text-sm mt-1">{t('storefront.shareCode')}</p>
               </div>
               <Badge className="bg-white/20 text-white border-0">{t('storefront.active')}</Badge>

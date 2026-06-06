@@ -65,6 +65,12 @@ export const ModelName = {
   Theme: 'Theme',
   Cart: 'Cart',
   CartItem: 'CartItem',
+  Order: 'Order',
+  Payment: 'Payment',
+  EducationVideo: 'EducationVideo',
+  AdminUser: 'AdminUser',
+  AethexConfig: 'AethexConfig',
+  AethexInteraction: 'AethexInteraction',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -301,6 +307,96 @@ export const CartItemScalarFieldEnum = {
 } as const
 
 export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  merchantId: 'merchantId',
+  storefrontId: 'storefrontId',
+  items: 'items',
+  totalNGN: 'totalNGN',
+  totalCrypto: 'totalCrypto',
+  paymentMethod: 'paymentMethod',
+  paymentStatus: 'paymentStatus',
+  orderStatus: 'orderStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  method: 'method',
+  amount: 'amount',
+  reference: 'reference',
+  status: 'status',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const EducationVideoScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  youtubeUrl: 'youtubeUrl',
+  description: 'description',
+  category: 'category',
+  featured: 'featured',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EducationVideoScalarFieldEnum = (typeof EducationVideoScalarFieldEnum)[keyof typeof EducationVideoScalarFieldEnum]
+
+
+export const AdminUserScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  role: 'role',
+  createdAt: 'createdAt'
+} as const
+
+export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
+
+
+export const AethexConfigScalarFieldEnum = {
+  id: 'id',
+  storefrontId: 'storefrontId',
+  isEnabled: 'isEnabled',
+  greeting: 'greeting',
+  faqs: 'faqs',
+  customInstructions: 'customInstructions',
+  language: 'language',
+  escalationMessage: 'escalationMessage',
+  autoResponseDelay: 'autoResponseDelay',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AethexConfigScalarFieldEnum = (typeof AethexConfigScalarFieldEnum)[keyof typeof AethexConfigScalarFieldEnum]
+
+
+export const AethexInteractionScalarFieldEnum = {
+  id: 'id',
+  storefrontId: 'storefrontId',
+  question: 'question',
+  answer: 'answer',
+  language: 'language',
+  escalated: 'escalated',
+  rating: 'rating',
+  createdAt: 'createdAt'
+} as const
+
+export type AethexInteractionScalarFieldEnum = (typeof AethexInteractionScalarFieldEnum)[keyof typeof AethexInteractionScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {

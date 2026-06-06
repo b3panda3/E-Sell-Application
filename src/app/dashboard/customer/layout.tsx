@@ -22,11 +22,14 @@ import {
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
+import NotificationBell from '@/components/NotificationBell';
+import VoiceCommandBar from '@/components/VoiceCommandBar';
 
 const NAV_ITEMS = [
   { href: '/dashboard/customer', icon: LayoutDashboard, labelKey: 'dashboard.customer.title', exact: true },
   { href: '/dashboard/customer/browse', icon: Store, labelKey: 'dashboard.customer.browseStores' },
   { href: '/dashboard/customer/cart', icon: ShoppingCart, labelKey: 'dashboard.customer.cart' },
+  { href: '/dashboard/customer/checkout', icon: ShoppingBag, labelKey: 'dashboard.customer.checkout' },
   { href: '/dashboard/customer/purchases', icon: ShoppingBag, labelKey: 'dashboard.customer.myPurchases' },
   { href: '/dashboard/customer/messages', icon: MessageSquare, labelKey: 'dashboard.customer.messages' },
   { href: '/dashboard/customer/notifications', icon: Bell, labelKey: 'dashboard.customer.notifications' },
@@ -127,13 +130,15 @@ export default function CustomerDashboardLayout({
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)}>
             <Menu className="h-5 w-5" />
           </Button>
-          <h2 className="font-semibold text-blue-600 dark:text-blue-400">Customer Dashboard</h2>
+          <h2 className="font-semibold text-blue-600 dark:text-blue-400 flex-1">Customer Dashboard</h2>
+          <NotificationBell />
         </div>
 
         <div className="p-4 md:p-6 lg:p-8">
           {children}
         </div>
       </div>
+      <VoiceCommandBar />
     </div>
   );
 }

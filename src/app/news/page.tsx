@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Newspaper, ArrowLeft, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import NewsChatbox from '@/components/news/NewsChatbox';
 
 interface NewsArticle {
   title: string;
@@ -130,6 +131,9 @@ export default function NewsPage() {
           </div>
         )}
       </div>
+
+      {/* News AI Chatbox */}
+      <NewsChatbox />
     </div>
   );
 }

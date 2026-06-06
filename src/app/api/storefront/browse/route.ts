@@ -26,7 +26,6 @@ export async function GET() {
       return {
         merchantName: merchant.name,
         merchantImage: merchant.image,
-        storeName: storefront?.storeName || null,
         esellCode: merchant.esellCode,
         businessCategory: merchant.businessCategory,
         trustBadge: merchant.trustBadge,

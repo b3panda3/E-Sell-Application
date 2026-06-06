@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#006633] text-white mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2.5 mb-3">
@@ -30,6 +30,24 @@ export default function Footer() {
               <li><a href="#" className="hover:text-white transition-colors">{t('footer.terms')}</a></li>
               <li><a href="#" className="hover:text-white transition-colors">{t('footer.privacy')}</a></li>
             </ul>
+          </div>
+
+          {/* Voice Commands */}
+          <div>
+            <h4 className="font-semibold mb-3 text-white/90 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+              Voice Commands
+            </h4>
+            <ul className="space-y-1.5 text-xs text-white/60">
+              <li><code className="bg-white/10 px-1 rounded">"Dashboard"</code> — Go to dashboard</li>
+              <li><code className="bg-white/10 px-1 rounded">"Browse" / "Shop"</code> — Browse stores</li>
+              <li><code className="bg-white/10 px-1 rounded">"Cart"</code> — View cart</li>
+              <li><code className="bg-white/10 px-1 rounded">"Messages"</code> — Open messages</li>
+              <li><code className="bg-white/10 px-1 rounded">"My store"</code> — Storefront (Merchants)</li>
+              <li><code className="bg-white/10 px-1 rounded">"Help"</code> — Show all commands</li>
+              <li><code className="bg-white/10 px-1 rounded">"Logout"</code> — Sign out</li>
+            </ul>
+            <p className="mt-2 text-[10px] text-white/40">8 languages supported on Education &amp; News pages</p>
           </div>
 
           {/* Social */}

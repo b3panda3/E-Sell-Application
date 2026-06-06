@@ -23,41 +23,46 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
-  storefronts     Storefront[]
-  walletAddresses WalletAddress[]
-  deployedTokens  DeployedToken[]
-  sentMessages    Message[]       @relation("SentMessages")
+  storefronts      Storefront[]
+  walletAddresses  WalletAddress[]
+  deployedTokens   DeployedToken[]
+  sentMessages     Message[]       @relation("SentMessages")
   receivedMessages Message[]     @relation("ReceivedMessages")
-  notifications   Notification[]
-  trustProfile    TrustProfile?
-  media           Media[]
-  cart            Cart?
+  notifications    Notification[]
+  trustProfile     TrustProfile?
+  media            Media[]
+  cart             Cart?
+  customerOrders   Order[] @relation("CustomerOrders")
+  merchantOrders   Order[] @relation("MerchantOrders")
 
   accounts Account[]
   sessions Session[]
 }
 
 model Storefront {
-  id              String   @id @default(uuid())
-  userId          String
-  storeName       String?
-  logoUrl         String?
+  id               String   @id @default(uuid())
+  userId           String
+  storeName        String?
+  logoUrl          String?
   featuredImageUrl String?
-  themeId         String?
-  customColors String?
-  aboutUs      String?
-  address      String?
-  socialLinks  String?
-  bankDetails  String?
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  themeId          String?
+  customColors     String?
+  aboutUs          String?
+  address          String?
+  socialLinks      String?
+  bankDetails      String?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   theme    Theme?   @relation(fields: [themeId], references: [id])
   products Product[]
   services Service[]
   staff    Staff[]
+  orders   Order[]
+  aethexConfig AethexConfig?
+  aethexInteractions AethexInteraction[]
 
   @@index([userId])
 }
@@ -153,7 +158,7 @@ model Message {
 model Notification {
   id          String    @id @default(uuid())
   userId      String
-  type        String    // PAYMENT, MESSAGE, CONTRACT, SYSTEM
+  type        String    // PAYMENT, MESSAGE, ORDER, SYSTEM
   title       String
   body        String?
   referenceId String?
@@ -248,8 +253,107 @@ model CartItem {
   cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  @@unique([cartId, productId])
   @@index([cartId])
   @@index([productId])
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  customerId    String
+  merchantId    String
+  storefrontId  String
+  items         String   // JSON array of { productId, name, price, quantity }
+  totalNGN      Float
+  totalCrypto   String?  // JSON { BNB: "0.5", USDT: "100" }
+  paymentMethod String   // paystack | bnb | usdt | custom
+  paymentStatus String   @default("pending") // pending | confirmed | failed | refunded
+  orderStatus   String   @default("placed") // placed | processing | shipped | delivered | cancelled
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  customer   User       @relation("CustomerOrders", fields: [customerId], references: [id], onDelete: Cascade)
+  merchant   User       @relation("MerchantOrders", fields: [merchantId], references: [id], onDelete: Cascade)
+  storefront Storefront @relation(fields: [storefrontId], references: [id], onDelete: Cascade)
+  payments   Payment[]
+
+  @@index([customerId])
+  @@index([merchantId])
+  @@index([storefrontId])
+}
+
+model Payment {
+  id         String    @id @default(uuid())
+  orderId    String
+  method     String    // paystack | bnb | usdt | custom
+  amount     Float
+  reference  String    // Paystack reference or tx hash
+  status     String    @default("pending") // pending | confirmed | failed
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model EducationVideo {
+  id          String   @id @default(uuid())
+  title       String
+  youtubeUrl  String
+  description String?
+  category    String?   // "getting-started", "payments", "crypto", "ai", "storefront", "advanced"
+  featured    Boolean   @default(false)
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  createdBy   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([category])
+}
+
+model AdminUser {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  role      String   @default("ADMIN") // ADMIN, SUPER_ADMIN
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model AethexConfig {
+  id                String   @id @default(uuid())
+  storefrontId      String   @unique
+  isEnabled         Boolean  @default(true)
+  greeting          String   @default("Hi! How can I help you today?")
+  faqs              String?  // JSON array of { question, answer }
+  customInstructions String? // Additional instructions for the AI
+  language          String   @default("en")
+  escalationMessage String   @default("Let me connect you with the store owner for more help.")
+  autoResponseDelay Int      @default(1000)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  storefront Storefront @relation(fields: [storefrontId], references: [id], onDelete: Cascade)
+
+  @@index([storefrontId])
+}
+
+model AethexInteraction {
+  id           String   @id @default(uuid())
+  storefrontId String
+  question     String
+  answer       String
+  language     String   @default("en")
+  escalated    Boolean  @default(false)
+  rating       Int?     // 1 (thumbs down) or 2 (thumbs up)
+  createdAt    DateTime @default(now())
+
+  storefront Storefront @relation(fields: [storefrontId], references: [id], onDelete: Cascade)
+
+  @@index([storefrontId])
+  @@index([createdAt])
 }
 
 // NextAuth models

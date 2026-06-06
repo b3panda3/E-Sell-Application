@@ -127,14 +127,10 @@ export const authOptions: NextAuthOptions = {
         token.esellCode = (user as unknown as Record<string, unknown>).esellCode as string | null;
         token.image = user.image || (user as unknown as Record<string, unknown>).image as string | null;
       }
-      // Handle session update - DON'T store large base64 image in JWT
-      // as it can exceed JWT size limits and cause CLIENT_FETCH_ERROR.
-      // Only update the name; the image will be fetched from DB on
-      // the next session callback invocation.
+      // Handle session update (e.g. after profile picture change)
       if (trigger === 'update' && updateData) {
+        if (updateData.image !== undefined) token.image = updateData.image as string | null;
         if (updateData.name !== undefined) token.name = updateData.name as string;
-        // Mark that image was updated so session callback knows to refetch
-        if (updateData.imageUpdated) token.imageUpdated = true;
       }
       return token;
     },
@@ -143,24 +139,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub!;
         (session.user as Record<string, unknown>).role = token.role;
         (session.user as Record<string, unknown>).esellCode = token.esellCode;
-        // If image was updated (profile save), or we have a stored image,
-        // fetch fresh from DB to avoid storing large base64 in JWT
-        if (token.imageUpdated || !token.image) {
-          try {
-            const dbUser = await db.user.findUnique({
-              where: { id: token.sub! },
-              select: { image: true },
-            });
-            if (dbUser?.image) session.user.image = dbUser.image;
-            // Clear the flag so we don't re-fetch every time
-            token.imageUpdated = false;
-          } catch {
-            // Fall back to token image if DB fetch fails
-            if (token.image) session.user.image = token.image as string;
-          }
-        } else if (token.image) {
-          session.user.image = token.image as string;
-        }
+        if (token.image) session.user.image = token.image as string;
       }
       return session;
     },

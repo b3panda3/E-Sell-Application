@@ -263,6 +263,8 @@ export type UserWhereInput = {
   trustProfile?: Prisma.XOR<Prisma.TrustProfileNullableScalarRelationFilter, Prisma.TrustProfileWhereInput> | null
   media?: Prisma.MediaListRelationFilter
   cart?: Prisma.XOR<Prisma.CartNullableScalarRelationFilter, Prisma.CartWhereInput> | null
+  customerOrders?: Prisma.OrderListRelationFilter
+  merchantOrders?: Prisma.OrderListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
 }
@@ -291,6 +293,8 @@ export type UserOrderByWithRelationInput = {
   trustProfile?: Prisma.TrustProfileOrderByWithRelationInput
   media?: Prisma.MediaOrderByRelationAggregateInput
   cart?: Prisma.CartOrderByWithRelationInput
+  customerOrders?: Prisma.OrderOrderByRelationAggregateInput
+  merchantOrders?: Prisma.OrderOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
 }
@@ -322,6 +326,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   trustProfile?: Prisma.XOR<Prisma.TrustProfileNullableScalarRelationFilter, Prisma.TrustProfileWhereInput> | null
   media?: Prisma.MediaListRelationFilter
   cart?: Prisma.XOR<Prisma.CartNullableScalarRelationFilter, Prisma.CartWhereInput> | null
+  customerOrders?: Prisma.OrderListRelationFilter
+  merchantOrders?: Prisma.OrderListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
 }, "id" | "email" | "esellCode">
@@ -390,6 +396,8 @@ export type UserCreateInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -418,6 +426,8 @@ export type UserUncheckedCreateInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -446,6 +456,8 @@ export type UserUpdateInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -474,6 +486,8 @@ export type UserUncheckedUpdateInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -727,6 +741,34 @@ export type UserUpdateOneRequiredWithoutCartNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCartInput, Prisma.UserUpdateWithoutCartInput>, Prisma.UserUncheckedUpdateWithoutCartInput>
 }
 
+export type UserCreateNestedOneWithoutCustomerOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomerOrdersInput, Prisma.UserUncheckedCreateWithoutCustomerOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomerOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutMerchantOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMerchantOrdersInput, Prisma.UserUncheckedCreateWithoutMerchantOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMerchantOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCustomerOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomerOrdersInput, Prisma.UserUncheckedCreateWithoutCustomerOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomerOrdersInput
+  upsert?: Prisma.UserUpsertWithoutCustomerOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCustomerOrdersInput, Prisma.UserUpdateWithoutCustomerOrdersInput>, Prisma.UserUncheckedUpdateWithoutCustomerOrdersInput>
+}
+
+export type UserUpdateOneRequiredWithoutMerchantOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMerchantOrdersInput, Prisma.UserUncheckedCreateWithoutMerchantOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMerchantOrdersInput
+  upsert?: Prisma.UserUpsertWithoutMerchantOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMerchantOrdersInput, Prisma.UserUpdateWithoutMerchantOrdersInput>, Prisma.UserUncheckedUpdateWithoutMerchantOrdersInput>
+}
+
 export type UserCreateNestedOneWithoutAccountsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
@@ -778,6 +820,8 @@ export type UserCreateWithoutStorefrontsInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -805,6 +849,8 @@ export type UserUncheckedCreateWithoutStorefrontsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -848,6 +894,8 @@ export type UserUpdateWithoutStorefrontsInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -875,6 +923,8 @@ export type UserUncheckedUpdateWithoutStorefrontsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -902,6 +952,8 @@ export type UserCreateWithoutWalletAddressesInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -929,6 +981,8 @@ export type UserUncheckedCreateWithoutWalletAddressesInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -972,6 +1026,8 @@ export type UserUpdateWithoutWalletAddressesInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -999,6 +1055,8 @@ export type UserUncheckedUpdateWithoutWalletAddressesInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1026,6 +1084,8 @@ export type UserCreateWithoutDeployedTokensInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -1053,6 +1113,8 @@ export type UserUncheckedCreateWithoutDeployedTokensInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1096,6 +1158,8 @@ export type UserUpdateWithoutDeployedTokensInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -1123,6 +1187,8 @@ export type UserUncheckedUpdateWithoutDeployedTokensInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1150,6 +1216,8 @@ export type UserCreateWithoutSentMessagesInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -1177,6 +1245,8 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1209,6 +1279,8 @@ export type UserCreateWithoutReceivedMessagesInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -1236,6 +1308,8 @@ export type UserUncheckedCreateWithoutReceivedMessagesInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1279,6 +1353,8 @@ export type UserUpdateWithoutSentMessagesInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -1306,6 +1382,8 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1344,6 +1422,8 @@ export type UserUpdateWithoutReceivedMessagesInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -1371,6 +1451,8 @@ export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1398,6 +1480,8 @@ export type UserCreateWithoutNotificationsInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -1425,6 +1509,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1468,6 +1554,8 @@ export type UserUpdateWithoutNotificationsInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -1495,6 +1583,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1522,6 +1612,8 @@ export type UserCreateWithoutTrustProfileInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -1549,6 +1641,8 @@ export type UserUncheckedCreateWithoutTrustProfileInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1592,6 +1686,8 @@ export type UserUpdateWithoutTrustProfileInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -1619,6 +1715,8 @@ export type UserUncheckedUpdateWithoutTrustProfileInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1646,6 +1744,8 @@ export type UserCreateWithoutMediaInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -1673,6 +1773,8 @@ export type UserUncheckedCreateWithoutMediaInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1716,6 +1818,8 @@ export type UserUpdateWithoutMediaInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -1743,6 +1847,8 @@ export type UserUncheckedUpdateWithoutMediaInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1770,6 +1876,8 @@ export type UserCreateWithoutCartInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
@@ -1797,6 +1905,8 @@ export type UserUncheckedCreateWithoutCartInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1840,6 +1950,8 @@ export type UserUpdateWithoutCartInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
@@ -1867,6 +1979,272 @@ export type UserUncheckedUpdateWithoutCartInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCustomerOrdersInput = {
+  id?: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  name: string
+  role?: string
+  esellCode?: string | null
+  businessCategory?: string | null
+  logoUrl?: string | null
+  trustBadge?: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  storefronts?: Prisma.StorefrontCreateNestedManyWithoutUserInput
+  walletAddresses?: Prisma.WalletAddressCreateNestedManyWithoutUserInput
+  deployedTokens?: Prisma.DeployedTokenCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
+  media?: Prisma.MediaCreateNestedManyWithoutUserInput
+  cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCustomerOrdersInput = {
+  id?: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  name: string
+  role?: string
+  esellCode?: string | null
+  businessCategory?: string | null
+  logoUrl?: string | null
+  trustBadge?: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  storefronts?: Prisma.StorefrontUncheckedCreateNestedManyWithoutUserInput
+  walletAddresses?: Prisma.WalletAddressUncheckedCreateNestedManyWithoutUserInput
+  deployedTokens?: Prisma.DeployedTokenUncheckedCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
+  media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
+  cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCustomerOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCustomerOrdersInput, Prisma.UserUncheckedCreateWithoutCustomerOrdersInput>
+}
+
+export type UserCreateWithoutMerchantOrdersInput = {
+  id?: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  name: string
+  role?: string
+  esellCode?: string | null
+  businessCategory?: string | null
+  logoUrl?: string | null
+  trustBadge?: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  storefronts?: Prisma.StorefrontCreateNestedManyWithoutUserInput
+  walletAddresses?: Prisma.WalletAddressCreateNestedManyWithoutUserInput
+  deployedTokens?: Prisma.DeployedTokenCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
+  media?: Prisma.MediaCreateNestedManyWithoutUserInput
+  cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMerchantOrdersInput = {
+  id?: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  name: string
+  role?: string
+  esellCode?: string | null
+  businessCategory?: string | null
+  logoUrl?: string | null
+  trustBadge?: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  storefronts?: Prisma.StorefrontUncheckedCreateNestedManyWithoutUserInput
+  walletAddresses?: Prisma.WalletAddressUncheckedCreateNestedManyWithoutUserInput
+  deployedTokens?: Prisma.DeployedTokenUncheckedCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
+  media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
+  cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMerchantOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMerchantOrdersInput, Prisma.UserUncheckedCreateWithoutMerchantOrdersInput>
+}
+
+export type UserUpsertWithoutCustomerOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCustomerOrdersInput, Prisma.UserUncheckedUpdateWithoutCustomerOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCustomerOrdersInput, Prisma.UserUncheckedCreateWithoutCustomerOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCustomerOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCustomerOrdersInput, Prisma.UserUncheckedUpdateWithoutCustomerOrdersInput>
+}
+
+export type UserUpdateWithoutCustomerOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  esellCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trustBadge?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storefronts?: Prisma.StorefrontUpdateManyWithoutUserNestedInput
+  walletAddresses?: Prisma.WalletAddressUpdateManyWithoutUserNestedInput
+  deployedTokens?: Prisma.DeployedTokenUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
+  media?: Prisma.MediaUpdateManyWithoutUserNestedInput
+  cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCustomerOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  esellCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trustBadge?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storefronts?: Prisma.StorefrontUncheckedUpdateManyWithoutUserNestedInput
+  walletAddresses?: Prisma.WalletAddressUncheckedUpdateManyWithoutUserNestedInput
+  deployedTokens?: Prisma.DeployedTokenUncheckedUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
+  media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
+  cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutMerchantOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMerchantOrdersInput, Prisma.UserUncheckedUpdateWithoutMerchantOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMerchantOrdersInput, Prisma.UserUncheckedCreateWithoutMerchantOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMerchantOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMerchantOrdersInput, Prisma.UserUncheckedUpdateWithoutMerchantOrdersInput>
+}
+
+export type UserUpdateWithoutMerchantOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  esellCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trustBadge?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storefronts?: Prisma.StorefrontUpdateManyWithoutUserNestedInput
+  walletAddresses?: Prisma.WalletAddressUpdateManyWithoutUserNestedInput
+  deployedTokens?: Prisma.DeployedTokenUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
+  media?: Prisma.MediaUpdateManyWithoutUserNestedInput
+  cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMerchantOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  esellCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trustBadge?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storefronts?: Prisma.StorefrontUncheckedUpdateManyWithoutUserNestedInput
+  walletAddresses?: Prisma.WalletAddressUncheckedUpdateManyWithoutUserNestedInput
+  deployedTokens?: Prisma.DeployedTokenUncheckedUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
+  media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
+  cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1895,6 +2273,8 @@ export type UserCreateWithoutAccountsInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
@@ -1922,6 +2302,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1965,6 +2347,8 @@ export type UserUpdateWithoutAccountsInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
@@ -1992,6 +2376,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2019,6 +2405,8 @@ export type UserCreateWithoutSessionsInput = {
   trustProfile?: Prisma.TrustProfileCreateNestedOneWithoutUserInput
   media?: Prisma.MediaCreateNestedManyWithoutUserInput
   cart?: Prisma.CartCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
 
@@ -2046,6 +2434,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedCreateNestedOneWithoutUserInput
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutUserInput
   cart?: Prisma.CartUncheckedCreateNestedOneWithoutUserInput
+  customerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  merchantOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutMerchantInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2089,6 +2479,8 @@ export type UserUpdateWithoutSessionsInput = {
   trustProfile?: Prisma.TrustProfileUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
 
@@ -2116,6 +2508,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   trustProfile?: Prisma.TrustProfileUncheckedUpdateOneWithoutUserNestedInput
   media?: Prisma.MediaUncheckedUpdateManyWithoutUserNestedInput
   cart?: Prisma.CartUncheckedUpdateOneWithoutUserNestedInput
+  customerOrders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  merchantOrders?: Prisma.OrderUncheckedUpdateManyWithoutMerchantNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2132,6 +2526,8 @@ export type UserCountOutputType = {
   receivedMessages: number
   notifications: number
   media: number
+  customerOrders: number
+  merchantOrders: number
   accounts: number
   sessions: number
 }
@@ -2144,6 +2540,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   media?: boolean | UserCountOutputTypeCountMediaArgs
+  customerOrders?: boolean | UserCountOutputTypeCountCustomerOrdersArgs
+  merchantOrders?: boolean | UserCountOutputTypeCountMerchantOrdersArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
 }
@@ -2210,6 +2608,20 @@ export type UserCountOutputTypeCountMediaArgs<ExtArgs extends runtime.Types.Exte
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountCustomerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMerchantOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AccountWhereInput
 }
@@ -2246,6 +2658,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   trustProfile?: boolean | Prisma.User$trustProfileArgs<ExtArgs>
   media?: boolean | Prisma.User$mediaArgs<ExtArgs>
   cart?: boolean | Prisma.User$cartArgs<ExtArgs>
+  customerOrders?: boolean | Prisma.User$customerOrdersArgs<ExtArgs>
+  merchantOrders?: boolean | Prisma.User$merchantOrdersArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2313,6 +2727,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   trustProfile?: boolean | Prisma.User$trustProfileArgs<ExtArgs>
   media?: boolean | Prisma.User$mediaArgs<ExtArgs>
   cart?: boolean | Prisma.User$cartArgs<ExtArgs>
+  customerOrders?: boolean | Prisma.User$customerOrdersArgs<ExtArgs>
+  merchantOrders?: boolean | Prisma.User$merchantOrdersArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2332,6 +2748,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     trustProfile: Prisma.$TrustProfilePayload<ExtArgs> | null
     media: Prisma.$MediaPayload<ExtArgs>[]
     cart: Prisma.$CartPayload<ExtArgs> | null
+    customerOrders: Prisma.$OrderPayload<ExtArgs>[]
+    merchantOrders: Prisma.$OrderPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
   }
@@ -2753,6 +3171,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   trustProfile<T extends Prisma.User$trustProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$trustProfileArgs<ExtArgs>>): Prisma.Prisma__TrustProfileClient<runtime.Types.Result.GetResult<Prisma.$TrustProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   media<T extends Prisma.User$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cart<T extends Prisma.User$cartArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cartArgs<ExtArgs>>): Prisma.Prisma__CartClient<runtime.Types.Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  customerOrders<T extends Prisma.User$customerOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customerOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  merchantOrders<T extends Prisma.User$merchantOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$merchantOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -3394,6 +3814,54 @@ export type User$cartArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    */
   include?: Prisma.CartInclude<ExtArgs> | null
   where?: Prisma.CartWhereInput
+}
+
+/**
+ * User.customerOrders
+ */
+export type User$customerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * User.merchantOrders
+ */
+export type User$merchantOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**

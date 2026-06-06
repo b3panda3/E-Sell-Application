@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useCallback, useSyncExternalStore } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -12,57 +12,37 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
-// Module-level theme state for useSyncExternalStore
-let currentTheme: Theme | null = null;
-const listeners = new Set<() => void>();
-
-function getTheme(): Theme {
-  if (currentTheme === null) {
-    if (typeof window === 'undefined') return 'light';
-    try {
-      const saved = localStorage.getItem('esell-theme') as Theme | null;
-      if (saved === 'dark' || saved === 'light') {
-        currentTheme = saved;
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        currentTheme = 'dark';
-      } else {
-        currentTheme = 'light';
-      }
-    } catch {
-      currentTheme = 'light';
-    }
-  }
-  return currentTheme;
-}
-
-function setThemeInternal(newTheme: Theme) {
-  currentTheme = newTheme;
-  localStorage.setItem('esell-theme', newTheme);
-  document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  listeners.forEach((listener) => listener());
-}
-
-function subscribe(listener: () => void) {
-  listeners.add(listener);
-  return () => listeners.delete(listener);
-}
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const theme = useSyncExternalStore(subscribe, getTheme, () => 'light' as Theme);
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [mounted, setMounted] = useState(false);
 
-  // Ensure the DOM class matches on first render
-  if (typeof window !== 'undefined') {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }
+  // Read persisted theme on mount and apply it
+  useEffect(() => {
+    const saved = localStorage.getItem('esell-theme') as Theme | null;
+    const initial: Theme = saved === 'dark' || saved === 'light'
+      ? saved
+      : window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    setThemeState(initial);
+    document.documentElement.classList.toggle('dark', initial === 'dark');
+    setMounted(true);
+  }, []);
 
   const setTheme = useCallback((newTheme: Theme) => {
-    setThemeInternal(newTheme);
+    setThemeState(newTheme);
+    localStorage.setItem('esell-theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeInternal(theme === 'light' ? 'dark' : 'light');
-  }, [theme]);
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+  }, [theme, setTheme]);
 
+  // Always render children inside the provider once mounted
+  // Before mount, render children anyway (no flash prevention needed
+  // since we set the class synchronously in the script below)
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
       {children}
@@ -75,7 +55,7 @@ export function useTheme() {
   if (!context) {
     return {
       theme: 'light' as Theme,
-      setTheme: () => {},
+      setTheme: (_t: Theme) => {},
       toggleTheme: () => {},
     };
   }

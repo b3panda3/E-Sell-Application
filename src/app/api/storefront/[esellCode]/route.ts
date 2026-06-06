@@ -41,8 +41,6 @@ export async function GET(
         trustBadge: user.trustBadge,
         trustProfile: user.trustProfile,
         storefront,
-        // storeName from storefront if set, otherwise fall back to user name
-        storeName: storefront.storeName || user.name,
       },
     });
   } catch (error) {

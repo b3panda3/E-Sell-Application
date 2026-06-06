@@ -185,10 +185,10 @@ export default function PublicBrowsePage() {
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="w-full h-9 rounded-lg border border-input bg-transparent px-3 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:text-gray-300"
+                  className="w-full h-9 rounded-lg border border-input bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-white outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
                   {categories.map((cat) => (
-                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                    <option key={cat.value} value={cat.value} className="dark:bg-gray-800 dark:text-white">{cat.label}</option>
                   ))}
                 </select>
               </div>

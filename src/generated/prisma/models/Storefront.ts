@@ -259,6 +259,9 @@ export type StorefrontWhereInput = {
   products?: Prisma.ProductListRelationFilter
   services?: Prisma.ServiceListRelationFilter
   staff?: Prisma.StaffListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
+  aethexConfig?: Prisma.XOR<Prisma.AethexConfigNullableScalarRelationFilter, Prisma.AethexConfigWhereInput> | null
+  aethexInteractions?: Prisma.AethexInteractionListRelationFilter
 }
 
 export type StorefrontOrderByWithRelationInput = {
@@ -281,6 +284,9 @@ export type StorefrontOrderByWithRelationInput = {
   products?: Prisma.ProductOrderByRelationAggregateInput
   services?: Prisma.ServiceOrderByRelationAggregateInput
   staff?: Prisma.StaffOrderByRelationAggregateInput
+  orders?: Prisma.OrderOrderByRelationAggregateInput
+  aethexConfig?: Prisma.AethexConfigOrderByWithRelationInput
+  aethexInteractions?: Prisma.AethexInteractionOrderByRelationAggregateInput
 }
 
 export type StorefrontWhereUniqueInput = Prisma.AtLeast<{
@@ -306,6 +312,9 @@ export type StorefrontWhereUniqueInput = Prisma.AtLeast<{
   products?: Prisma.ProductListRelationFilter
   services?: Prisma.ServiceListRelationFilter
   staff?: Prisma.StaffListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
+  aethexConfig?: Prisma.XOR<Prisma.AethexConfigNullableScalarRelationFilter, Prisma.AethexConfigWhereInput> | null
+  aethexInteractions?: Prisma.AethexInteractionListRelationFilter
 }, "id">
 
 export type StorefrontOrderByWithAggregationInput = {
@@ -366,6 +375,9 @@ export type StorefrontCreateInput = {
   products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontUncheckedCreateInput = {
@@ -386,6 +398,9 @@ export type StorefrontUncheckedCreateInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontUpdateInput = {
@@ -406,6 +421,9 @@ export type StorefrontUpdateInput = {
   products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateInput = {
@@ -426,6 +444,9 @@ export type StorefrontUncheckedUpdateInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontCreateManyInput = {
@@ -669,6 +690,48 @@ export type StorefrontUncheckedUpdateManyWithoutThemeNestedInput = {
   deleteMany?: Prisma.StorefrontScalarWhereInput | Prisma.StorefrontScalarWhereInput[]
 }
 
+export type StorefrontCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.StorefrontCreateWithoutOrdersInput, Prisma.StorefrontUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.StorefrontCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.StorefrontWhereUniqueInput
+}
+
+export type StorefrontUpdateOneRequiredWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.StorefrontCreateWithoutOrdersInput, Prisma.StorefrontUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.StorefrontCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.StorefrontUpsertWithoutOrdersInput
+  connect?: Prisma.StorefrontWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StorefrontUpdateToOneWithWhereWithoutOrdersInput, Prisma.StorefrontUpdateWithoutOrdersInput>, Prisma.StorefrontUncheckedUpdateWithoutOrdersInput>
+}
+
+export type StorefrontCreateNestedOneWithoutAethexConfigInput = {
+  create?: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexConfigInput, Prisma.StorefrontUncheckedCreateWithoutAethexConfigInput>
+  connectOrCreate?: Prisma.StorefrontCreateOrConnectWithoutAethexConfigInput
+  connect?: Prisma.StorefrontWhereUniqueInput
+}
+
+export type StorefrontUpdateOneRequiredWithoutAethexConfigNestedInput = {
+  create?: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexConfigInput, Prisma.StorefrontUncheckedCreateWithoutAethexConfigInput>
+  connectOrCreate?: Prisma.StorefrontCreateOrConnectWithoutAethexConfigInput
+  upsert?: Prisma.StorefrontUpsertWithoutAethexConfigInput
+  connect?: Prisma.StorefrontWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StorefrontUpdateToOneWithWhereWithoutAethexConfigInput, Prisma.StorefrontUpdateWithoutAethexConfigInput>, Prisma.StorefrontUncheckedUpdateWithoutAethexConfigInput>
+}
+
+export type StorefrontCreateNestedOneWithoutAethexInteractionsInput = {
+  create?: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexInteractionsInput, Prisma.StorefrontUncheckedCreateWithoutAethexInteractionsInput>
+  connectOrCreate?: Prisma.StorefrontCreateOrConnectWithoutAethexInteractionsInput
+  connect?: Prisma.StorefrontWhereUniqueInput
+}
+
+export type StorefrontUpdateOneRequiredWithoutAethexInteractionsNestedInput = {
+  create?: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexInteractionsInput, Prisma.StorefrontUncheckedCreateWithoutAethexInteractionsInput>
+  connectOrCreate?: Prisma.StorefrontCreateOrConnectWithoutAethexInteractionsInput
+  upsert?: Prisma.StorefrontUpsertWithoutAethexInteractionsInput
+  connect?: Prisma.StorefrontWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StorefrontUpdateToOneWithWhereWithoutAethexInteractionsInput, Prisma.StorefrontUpdateWithoutAethexInteractionsInput>, Prisma.StorefrontUncheckedUpdateWithoutAethexInteractionsInput>
+}
+
 export type StorefrontCreateWithoutUserInput = {
   id?: string
   storeName?: string | null
@@ -686,6 +749,9 @@ export type StorefrontCreateWithoutUserInput = {
   products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontUncheckedCreateWithoutUserInput = {
@@ -705,6 +771,9 @@ export type StorefrontUncheckedCreateWithoutUserInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontCreateOrConnectWithoutUserInput = {
@@ -770,6 +839,9 @@ export type StorefrontCreateWithoutProductsInput = {
   theme?: Prisma.ThemeCreateNestedOneWithoutStorefrontsInput
   services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontUncheckedCreateWithoutProductsInput = {
@@ -789,6 +861,9 @@ export type StorefrontUncheckedCreateWithoutProductsInput = {
   updatedAt?: Date | string
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontCreateOrConnectWithoutProductsInput = {
@@ -824,6 +899,9 @@ export type StorefrontUpdateWithoutProductsInput = {
   theme?: Prisma.ThemeUpdateOneWithoutStorefrontsNestedInput
   services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateWithoutProductsInput = {
@@ -843,6 +921,9 @@ export type StorefrontUncheckedUpdateWithoutProductsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontCreateWithoutServicesInput = {
@@ -862,6 +943,9 @@ export type StorefrontCreateWithoutServicesInput = {
   theme?: Prisma.ThemeCreateNestedOneWithoutStorefrontsInput
   products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontUncheckedCreateWithoutServicesInput = {
@@ -881,6 +965,9 @@ export type StorefrontUncheckedCreateWithoutServicesInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontCreateOrConnectWithoutServicesInput = {
@@ -916,6 +1003,9 @@ export type StorefrontUpdateWithoutServicesInput = {
   theme?: Prisma.ThemeUpdateOneWithoutStorefrontsNestedInput
   products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateWithoutServicesInput = {
@@ -935,6 +1025,9 @@ export type StorefrontUncheckedUpdateWithoutServicesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontCreateWithoutStaffInput = {
@@ -954,6 +1047,9 @@ export type StorefrontCreateWithoutStaffInput = {
   theme?: Prisma.ThemeCreateNestedOneWithoutStorefrontsInput
   products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontUncheckedCreateWithoutStaffInput = {
@@ -973,6 +1069,9 @@ export type StorefrontUncheckedCreateWithoutStaffInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontCreateOrConnectWithoutStaffInput = {
@@ -1008,6 +1107,9 @@ export type StorefrontUpdateWithoutStaffInput = {
   theme?: Prisma.ThemeUpdateOneWithoutStorefrontsNestedInput
   products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateWithoutStaffInput = {
@@ -1027,6 +1129,9 @@ export type StorefrontUncheckedUpdateWithoutStaffInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontCreateWithoutThemeInput = {
@@ -1046,6 +1151,9 @@ export type StorefrontCreateWithoutThemeInput = {
   products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontUncheckedCreateWithoutThemeInput = {
@@ -1065,6 +1173,9 @@ export type StorefrontUncheckedCreateWithoutThemeInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
   staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
 }
 
 export type StorefrontCreateOrConnectWithoutThemeInput = {
@@ -1091,6 +1202,318 @@ export type StorefrontUpdateWithWhereUniqueWithoutThemeInput = {
 export type StorefrontUpdateManyWithWhereWithoutThemeInput = {
   where: Prisma.StorefrontScalarWhereInput
   data: Prisma.XOR<Prisma.StorefrontUpdateManyMutationInput, Prisma.StorefrontUncheckedUpdateManyWithoutThemeInput>
+}
+
+export type StorefrontCreateWithoutOrdersInput = {
+  id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
+  customColors?: string | null
+  aboutUs?: string | null
+  address?: string | null
+  socialLinks?: string | null
+  bankDetails?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutStorefrontsInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutStorefrontsInput
+  products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
+  services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
+  staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
+}
+
+export type StorefrontUncheckedCreateWithoutOrdersInput = {
+  id?: string
+  userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
+  themeId?: string | null
+  customColors?: string | null
+  aboutUs?: string | null
+  address?: string | null
+  socialLinks?: string | null
+  bankDetails?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
+  staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
+}
+
+export type StorefrontCreateOrConnectWithoutOrdersInput = {
+  where: Prisma.StorefrontWhereUniqueInput
+  create: Prisma.XOR<Prisma.StorefrontCreateWithoutOrdersInput, Prisma.StorefrontUncheckedCreateWithoutOrdersInput>
+}
+
+export type StorefrontUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.StorefrontUpdateWithoutOrdersInput, Prisma.StorefrontUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.StorefrontCreateWithoutOrdersInput, Prisma.StorefrontUncheckedCreateWithoutOrdersInput>
+  where?: Prisma.StorefrontWhereInput
+}
+
+export type StorefrontUpdateToOneWithWhereWithoutOrdersInput = {
+  where?: Prisma.StorefrontWhereInput
+  data: Prisma.XOR<Prisma.StorefrontUpdateWithoutOrdersInput, Prisma.StorefrontUncheckedUpdateWithoutOrdersInput>
+}
+
+export type StorefrontUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutStorefrontsNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutStorefrontsNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
+  staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
+}
+
+export type StorefrontUncheckedUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
+  staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
+}
+
+export type StorefrontCreateWithoutAethexConfigInput = {
+  id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
+  customColors?: string | null
+  aboutUs?: string | null
+  address?: string | null
+  socialLinks?: string | null
+  bankDetails?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutStorefrontsInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutStorefrontsInput
+  products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
+  services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
+  staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionCreateNestedManyWithoutStorefrontInput
+}
+
+export type StorefrontUncheckedCreateWithoutAethexConfigInput = {
+  id?: string
+  userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
+  themeId?: string | null
+  customColors?: string | null
+  aboutUs?: string | null
+  address?: string | null
+  socialLinks?: string | null
+  bankDetails?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
+  staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedCreateNestedManyWithoutStorefrontInput
+}
+
+export type StorefrontCreateOrConnectWithoutAethexConfigInput = {
+  where: Prisma.StorefrontWhereUniqueInput
+  create: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexConfigInput, Prisma.StorefrontUncheckedCreateWithoutAethexConfigInput>
+}
+
+export type StorefrontUpsertWithoutAethexConfigInput = {
+  update: Prisma.XOR<Prisma.StorefrontUpdateWithoutAethexConfigInput, Prisma.StorefrontUncheckedUpdateWithoutAethexConfigInput>
+  create: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexConfigInput, Prisma.StorefrontUncheckedCreateWithoutAethexConfigInput>
+  where?: Prisma.StorefrontWhereInput
+}
+
+export type StorefrontUpdateToOneWithWhereWithoutAethexConfigInput = {
+  where?: Prisma.StorefrontWhereInput
+  data: Prisma.XOR<Prisma.StorefrontUpdateWithoutAethexConfigInput, Prisma.StorefrontUncheckedUpdateWithoutAethexConfigInput>
+}
+
+export type StorefrontUpdateWithoutAethexConfigInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutStorefrontsNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutStorefrontsNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
+  staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
+}
+
+export type StorefrontUncheckedUpdateWithoutAethexConfigInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
+  staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
+}
+
+export type StorefrontCreateWithoutAethexInteractionsInput = {
+  id?: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
+  customColors?: string | null
+  aboutUs?: string | null
+  address?: string | null
+  socialLinks?: string | null
+  bankDetails?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutStorefrontsInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutStorefrontsInput
+  products?: Prisma.ProductCreateNestedManyWithoutStorefrontInput
+  services?: Prisma.ServiceCreateNestedManyWithoutStorefrontInput
+  staff?: Prisma.StaffCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigCreateNestedOneWithoutStorefrontInput
+}
+
+export type StorefrontUncheckedCreateWithoutAethexInteractionsInput = {
+  id?: string
+  userId: string
+  storeName?: string | null
+  logoUrl?: string | null
+  featuredImageUrl?: string | null
+  themeId?: string | null
+  customColors?: string | null
+  aboutUs?: string | null
+  address?: string | null
+  socialLinks?: string | null
+  bankDetails?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStorefrontInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutStorefrontInput
+  staff?: Prisma.StaffUncheckedCreateNestedManyWithoutStorefrontInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStorefrontInput
+  aethexConfig?: Prisma.AethexConfigUncheckedCreateNestedOneWithoutStorefrontInput
+}
+
+export type StorefrontCreateOrConnectWithoutAethexInteractionsInput = {
+  where: Prisma.StorefrontWhereUniqueInput
+  create: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexInteractionsInput, Prisma.StorefrontUncheckedCreateWithoutAethexInteractionsInput>
+}
+
+export type StorefrontUpsertWithoutAethexInteractionsInput = {
+  update: Prisma.XOR<Prisma.StorefrontUpdateWithoutAethexInteractionsInput, Prisma.StorefrontUncheckedUpdateWithoutAethexInteractionsInput>
+  create: Prisma.XOR<Prisma.StorefrontCreateWithoutAethexInteractionsInput, Prisma.StorefrontUncheckedCreateWithoutAethexInteractionsInput>
+  where?: Prisma.StorefrontWhereInput
+}
+
+export type StorefrontUpdateToOneWithWhereWithoutAethexInteractionsInput = {
+  where?: Prisma.StorefrontWhereInput
+  data: Prisma.XOR<Prisma.StorefrontUpdateWithoutAethexInteractionsInput, Prisma.StorefrontUncheckedUpdateWithoutAethexInteractionsInput>
+}
+
+export type StorefrontUpdateWithoutAethexInteractionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutStorefrontsNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutStorefrontsNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
+  staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+}
+
+export type StorefrontUncheckedUpdateWithoutAethexInteractionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  storeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  themeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customColors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
+  staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
 }
 
 export type StorefrontCreateManyUserInput = {
@@ -1126,6 +1549,9 @@ export type StorefrontUpdateWithoutUserInput = {
   products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateWithoutUserInput = {
@@ -1145,6 +1571,9 @@ export type StorefrontUncheckedUpdateWithoutUserInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateManyWithoutUserInput = {
@@ -1196,6 +1625,9 @@ export type StorefrontUpdateWithoutThemeInput = {
   products?: Prisma.ProductUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateWithoutThemeInput = {
@@ -1215,6 +1647,9 @@ export type StorefrontUncheckedUpdateWithoutThemeInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutStorefrontNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutStorefrontNestedInput
   staff?: Prisma.StaffUncheckedUpdateManyWithoutStorefrontNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStorefrontNestedInput
+  aethexConfig?: Prisma.AethexConfigUncheckedUpdateOneWithoutStorefrontNestedInput
+  aethexInteractions?: Prisma.AethexInteractionUncheckedUpdateManyWithoutStorefrontNestedInput
 }
 
 export type StorefrontUncheckedUpdateManyWithoutThemeInput = {
@@ -1242,12 +1677,16 @@ export type StorefrontCountOutputType = {
   products: number
   services: number
   staff: number
+  orders: number
+  aethexInteractions: number
 }
 
 export type StorefrontCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | StorefrontCountOutputTypeCountProductsArgs
   services?: boolean | StorefrontCountOutputTypeCountServicesArgs
   staff?: boolean | StorefrontCountOutputTypeCountStaffArgs
+  orders?: boolean | StorefrontCountOutputTypeCountOrdersArgs
+  aethexInteractions?: boolean | StorefrontCountOutputTypeCountAethexInteractionsArgs
 }
 
 /**
@@ -1281,6 +1720,20 @@ export type StorefrontCountOutputTypeCountStaffArgs<ExtArgs extends runtime.Type
   where?: Prisma.StaffWhereInput
 }
 
+/**
+ * StorefrontCountOutputType without action
+ */
+export type StorefrontCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * StorefrontCountOutputType without action
+ */
+export type StorefrontCountOutputTypeCountAethexInteractionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AethexInteractionWhereInput
+}
+
 
 export type StorefrontSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1302,6 +1755,9 @@ export type StorefrontSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   products?: boolean | Prisma.Storefront$productsArgs<ExtArgs>
   services?: boolean | Prisma.Storefront$servicesArgs<ExtArgs>
   staff?: boolean | Prisma.Storefront$staffArgs<ExtArgs>
+  orders?: boolean | Prisma.Storefront$ordersArgs<ExtArgs>
+  aethexConfig?: boolean | Prisma.Storefront$aethexConfigArgs<ExtArgs>
+  aethexInteractions?: boolean | Prisma.Storefront$aethexInteractionsArgs<ExtArgs>
   _count?: boolean | Prisma.StorefrontCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["storefront"]>
 
@@ -1367,6 +1823,9 @@ export type StorefrontInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   products?: boolean | Prisma.Storefront$productsArgs<ExtArgs>
   services?: boolean | Prisma.Storefront$servicesArgs<ExtArgs>
   staff?: boolean | Prisma.Storefront$staffArgs<ExtArgs>
+  orders?: boolean | Prisma.Storefront$ordersArgs<ExtArgs>
+  aethexConfig?: boolean | Prisma.Storefront$aethexConfigArgs<ExtArgs>
+  aethexInteractions?: boolean | Prisma.Storefront$aethexInteractionsArgs<ExtArgs>
   _count?: boolean | Prisma.StorefrontCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StorefrontIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1386,6 +1845,9 @@ export type $StorefrontPayload<ExtArgs extends runtime.Types.Extensions.Internal
     products: Prisma.$ProductPayload<ExtArgs>[]
     services: Prisma.$ServicePayload<ExtArgs>[]
     staff: Prisma.$StaffPayload<ExtArgs>[]
+    orders: Prisma.$OrderPayload<ExtArgs>[]
+    aethexConfig: Prisma.$AethexConfigPayload<ExtArgs> | null
+    aethexInteractions: Prisma.$AethexInteractionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1801,6 +2263,9 @@ export interface Prisma__StorefrontClient<T, Null = never, ExtArgs extends runti
   products<T extends Prisma.Storefront$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Storefront$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   services<T extends Prisma.Storefront$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Storefront$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   staff<T extends Prisma.Storefront$staffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Storefront$staffArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orders<T extends Prisma.Storefront$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Storefront$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aethexConfig<T extends Prisma.Storefront$aethexConfigArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Storefront$aethexConfigArgs<ExtArgs>>): Prisma.Prisma__AethexConfigClient<runtime.Types.Result.GetResult<Prisma.$AethexConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  aethexInteractions<T extends Prisma.Storefront$aethexInteractionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Storefront$aethexInteractionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AethexInteractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2333,6 +2798,73 @@ export type Storefront$staffArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.StaffScalarFieldEnum | Prisma.StaffScalarFieldEnum[]
+}
+
+/**
+ * Storefront.orders
+ */
+export type Storefront$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * Storefront.aethexConfig
+ */
+export type Storefront$aethexConfigArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AethexConfig
+   */
+  select?: Prisma.AethexConfigSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AethexConfig
+   */
+  omit?: Prisma.AethexConfigOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AethexConfigInclude<ExtArgs> | null
+  where?: Prisma.AethexConfigWhereInput
+}
+
+/**
+ * Storefront.aethexInteractions
+ */
+export type Storefront$aethexInteractionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AethexInteraction
+   */
+  select?: Prisma.AethexInteractionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AethexInteraction
+   */
+  omit?: Prisma.AethexInteractionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AethexInteractionInclude<ExtArgs> | null
+  where?: Prisma.AethexInteractionWhereInput
+  orderBy?: Prisma.AethexInteractionOrderByWithRelationInput | Prisma.AethexInteractionOrderByWithRelationInput[]
+  cursor?: Prisma.AethexInteractionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AethexInteractionScalarFieldEnum | Prisma.AethexInteractionScalarFieldEnum[]
 }
 
 /**

@@ -12,9 +12,6 @@ import Link from 'next/link';
 
 interface Storefront {
   id: string;
-  storeName: string | null;
-  logoUrl: string | null;
-  featuredImageUrl: string | null;
   themeId: string | null;
   customColors: string | null;
   aboutUs: string | null;
@@ -49,9 +46,6 @@ export default function CustomizeStorefrontPage() {
   const [saved, setSaved] = useState(false);
 
   // Form fields
-  const [storeName, setStoreName] = useState('');
-  const [logoUrl, setLogoUrl] = useState('');
-  const [featuredImageUrl, setFeaturedImageUrl] = useState('');
   const [aboutUs, setAboutUs] = useState('');
   const [address, setAddress] = useState('');
   const [primaryColor, setPrimaryColor] = useState('#006633');
@@ -77,9 +71,6 @@ export default function CustomizeStorefrontPage() {
           const sf = data.storefronts?.[0] || null;
           setStorefront(sf);
           if (sf) {
-            setStoreName(sf.storeName || '');
-            setLogoUrl(sf.logoUrl || '');
-            setFeaturedImageUrl(sf.featuredImageUrl || '');
             setAboutUs(sf.aboutUs || '');
             setAddress(sf.address || '');
             if (sf.socialLinks) {
@@ -129,9 +120,6 @@ export default function CustomizeStorefrontPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          storeName,
-          logoUrl,
-          featuredImageUrl,
           customColors,
           aboutUs,
           address: addressWithContact,
@@ -242,63 +230,23 @@ export default function CustomizeStorefrontPage() {
         </Button>
       </div>
 
-      {/* Store Name & Images */}
-      <Card className="dark:bg-gray-900 dark:border-gray-800">
-        <CardHeader>
-          <CardTitle className="text-base">Store Identity</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label className="text-sm mb-1 block">Store Name</Label>
-            <Input
-              value={storeName}
-              onChange={(e) => setStoreName(e.target.value)}
-              placeholder="My Awesome Store"
-              className="dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-            />
-            <p className="text-xs text-gray-400 mt-1">This name will appear on your public storefront page.</p>
-          </div>
-          <div>
-            <Label className="text-sm mb-1 block">Logo URL</Label>
-            <Input
-              value={logoUrl}
-              onChange={(e) => setLogoUrl(e.target.value)}
-              placeholder="https://example.com/logo.png"
-              className="dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-            />
-          </div>
-          <div>
-            <Label className="text-sm mb-1 block">Featured Image URL</Label>
-            <Input
-              value={featuredImageUrl}
-              onChange={(e) => setFeaturedImageUrl(e.target.value)}
-              placeholder="https://example.com/banner.jpg"
-              className="dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Logo Preview */}
+        {/* Logo Upload */}
         <Card className="dark:bg-gray-900 dark:border-gray-800">
           <CardHeader>
             <CardTitle className="text-base">{t('storefront.logo')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden">
-                {logoUrl ? (
-                  <img src={logoUrl} alt="Store logo" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-3xl">🏪</span>
-                )}
+              <div className="w-20 h-20 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+                <span className="text-3xl">🏪</span>
               </div>
               <div className="flex-1">
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                   {t('storefront.logoHint')}
                 </p>
-                <p className="text-xs text-gray-400">Enter a logo URL in the Store Identity section above.</p>
+                <Input type="file" accept="image/*" className="text-sm" disabled />
+                <p className="text-xs text-gray-400 mt-1">{t('storefront.logoComingSoon')}</p>
               </div>
             </div>
           </CardContent>

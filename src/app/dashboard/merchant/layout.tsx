@@ -24,17 +24,20 @@ import {
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
+import NotificationBell from '@/components/NotificationBell';
+import VoiceCommandBar from '@/components/VoiceCommandBar';
 
 const NAV_ITEMS = [
   { href: '/dashboard/merchant', icon: LayoutDashboard, labelKey: 'dashboard.merchant.title', exact: true },
   { href: '/dashboard/merchant/storefront', icon: Store, labelKey: 'dashboard.merchant.myStorefront' },
   { href: '/dashboard/merchant/products', icon: Package, labelKey: 'dashboard.merchant.productsServices' },
-  { href: '/dashboard/merchant/contracts', icon: Coins, labelKey: 'dashboard.merchant.contractDeployment' },
+  { href: '/dashboard/merchant/orders', icon: Package, labelKey: 'dashboard.merchant.orders' },
+  { href: '/dashboard/merchant/staff', icon: Users, labelKey: 'dashboard.merchant.staff' },
   { href: '/dashboard/merchant/wallets', icon: Wallet, labelKey: 'dashboard.merchant.walletAddresses' },
+  { href: '/dashboard/merchant/contracts', icon: Coins, labelKey: 'dashboard.merchant.contractDeployment' },
   { href: '/dashboard/merchant/messages', icon: MessageSquare, labelKey: 'dashboard.merchant.messages' },
   { href: '/dashboard/merchant/notifications', icon: Bell, labelKey: 'dashboard.merchant.notifications' },
-  { href: '/dashboard/merchant/staff', icon: Users, labelKey: 'dashboard.merchant.staff' },
-  { href: '/dashboard/merchant/assistant', icon: Bot, labelKey: 'dashboard.merchant.assistant' },
+  { href: '/dashboard/merchant/assistant', icon: Bot, labelKey: 'dashboard.merchant.aethexAI' },
   { href: '/dashboard/merchant/settings', icon: Settings, labelKey: 'dashboard.merchant.settings' },
   { href: '/dashboard/merchant/delete', icon: Trash2, labelKey: 'dashboard.merchant.deleteAccount' },
 ];
@@ -134,13 +137,15 @@ export default function MerchantDashboardLayout({
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)}>
             <Menu className="h-5 w-5" />
           </Button>
-          <h2 className="font-semibold text-[#006633] dark:text-emerald-400">Merchant Dashboard</h2>
+          <h2 className="font-semibold text-[#006633] dark:text-emerald-400 flex-1">Merchant Dashboard</h2>
+          <NotificationBell />
         </div>
 
         <div className="p-4 md:p-6 lg:p-8">
           {children}
         </div>
       </div>
+      <VoiceCommandBar />
     </div>
   );
 }

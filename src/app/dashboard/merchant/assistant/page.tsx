@@ -6,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Bot, Send, Mic, MicOff, User } from 'lucide-react';
-import { renderChatContent } from '@/lib/chat-utils';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -181,7 +180,7 @@ export default function MerchantAssistantPage() {
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
                 }`}
               >
-                <p className="whitespace-pre-wrap">{renderChatContent(msg.content)}</p>
+                <p className="whitespace-pre-wrap">{msg.content}</p>
               </div>
               {msg.role === 'user' && (
                 <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">

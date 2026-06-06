@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useTranslation } from '@/lib/i18n';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,16 +15,19 @@ export default function CustomerSettingsPage() {
   const { data: session, update: updateSession } = useSession();
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // Track local edits separately from session-derived defaults.
-  // If the user hasn't edited, we show the session value directly.
-  const [localEdits, setLocalEdits] = useState<{ name?: string; image?: string | null }>({});
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [name, setName] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  // Derive display values: prefer local edits, fall back to session
-  const name = localEdits.name !== undefined ? localEdits.name : (session?.user?.name || '');
-  const profileImage = localEdits.image !== undefined ? localEdits.image : (session?.user?.image || null);
+  // Sync from session whenever it updates
+  useEffect(() => {
+    if (session?.user) {
+      setName(session.user.name || '');
+      setProfileImage(session.user.image || null);
+    }
+  }, [session?.user?.id, session?.user?.image, session?.user?.name]);
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -40,7 +43,7 @@ export default function CustomerSettingsPage() {
       });
 
       // Preview locally immediately
-      setLocalEdits((prev) => ({ ...prev, image: base64 }));
+      setProfileImage(base64);
 
       // Save to database
       const res = await fetch('/api/user/profile', {
@@ -50,15 +53,8 @@ export default function CustomerSettingsPage() {
       });
 
       if (res.ok) {
-        // Don't pass large base64 through JWT — just flag that image was updated.
-        // The session callback will fetch the fresh image from DB.
-        // Clear local image edit so session value takes over after refresh.
-        setLocalEdits((prev) => {
-          const next = { ...prev };
-          delete next.image;
-          return next;
-        });
-        await updateSession({ imageUpdated: true });
+        // Update the session so it persists across refreshes
+        await updateSession({ image: base64 });
       }
     } catch (error) {
       console.error('Image upload error:', error);
@@ -68,7 +64,7 @@ export default function CustomerSettingsPage() {
   };
 
   const handleRemoveImage = async () => {
-    setLocalEdits((prev) => ({ ...prev, image: null }));
+    setProfileImage(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     try {
       await fetch('/api/user/profile', {
@@ -76,7 +72,7 @@ export default function CustomerSettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: '' }),
       });
-      await updateSession({ imageUpdated: true });
+      await updateSession({ image: '' });
     } catch (error) {
       console.error('Remove image error:', error);
     }
@@ -87,7 +83,8 @@ export default function CustomerSettingsPage() {
     setSaving(true);
     setSaved(false);
     try {
-      const body: { name: string } = { name: name.trim() };
+      const body: { name: string; image?: string } = { name: name.trim() };
+      if (profileImage) body.image = profileImage;
 
       const res = await fetch('/api/user/profile', {
         method: 'PUT',
@@ -95,15 +92,10 @@ export default function CustomerSettingsPage() {
         body: JSON.stringify(body),
       });
       if (res.ok) {
+        const data = await res.json();
         setSaved(true);
-        // Clear local name edit so session value takes over
-        setLocalEdits((prev) => {
-          const next = { ...prev };
-          delete next.name;
-          return next;
-        });
-        // Update session with name; image is handled via imageUpdated flag
-        await updateSession({ name: name.trim(), imageUpdated: true });
+        // Update session with the latest name and image from DB
+        await updateSession({ name: data.user.name, image: data.user.image });
         setTimeout(() => setSaved(false), 3000);
       }
     } catch (error) {
@@ -188,7 +180,7 @@ export default function CustomerSettingsPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label className="text-gray-700 dark:text-gray-300">{t('auth.name')}</Label>
-            <Input value={name} onChange={(e) => setLocalEdits((prev) => ({ ...prev, name: e.target.value }))} className="dark:bg-gray-800 dark:border-gray-700 dark:text-white" />
+            <Input value={name} onChange={(e) => setName(e.target.value)} className="dark:bg-gray-800 dark:border-gray-700 dark:text-white" />
           </div>
           <div className="space-y-2">
             <Label className="text-gray-700 dark:text-gray-300">{t('auth.email')}</Label>

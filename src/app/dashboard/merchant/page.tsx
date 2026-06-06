@@ -1,54 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useTranslation } from '@/lib/i18n';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Package, MessageSquare, Coins, Shield, Plus, ArrowRight, Store, Copy, Check } from 'lucide-react';
+import { Package, MessageSquare, Coins, Shield, Plus, ArrowRight, Store, Mic, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export default function MerchantDashboardPage() {
   const { data: session } = useSession();
   const { t } = useTranslation();
-  const [copied, setCopied] = useState(false);
-  const [storeName, setStoreName] = useState<string | null>(null);
-  const [productCount, setProductCount] = useState(0);
-  const [tokenCount, setTokenCount] = useState(0);
 
   const userName = session?.user?.name || 'Merchant';
-  const esellCode = String((session?.user as Record<string, unknown> | undefined)?.esellCode ?? '');
-
-  useEffect(() => {
-    async function fetchStorefrontData() {
-      try {
-        const res = await fetch('/api/storefront');
-        if (res.ok) {
-          const data = await res.json();
-          const sf = data.storefronts?.[0];
-          if (sf) {
-            setStoreName(sf.storeName);
-            setProductCount(sf.products?.length || 0);
-          }
-        }
-      } catch { /* ignore */ }
-    }
-    if (session?.user) fetchStorefrontData();
-  }, [session]);
-
-  const handleCopy = async () => {
-    if (!esellCode) return;
-    await navigator.clipboard.writeText(esellCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const stats = [
     {
       title: t('dashboard.merchant.totalProducts'),
-      value: String(productCount),
+      value: '0',
       icon: Package,
       color: 'from-emerald-500 to-green-600',
     },
@@ -60,13 +30,13 @@ export default function MerchantDashboardPage() {
     },
     {
       title: t('dashboard.merchant.tokenDeployments'),
-      value: String(tokenCount),
+      value: '0',
       icon: Coins,
       color: 'from-teal-500 to-emerald-600',
     },
     {
       title: t('dashboard.merchant.trustBadge'),
-      value: session?.user ? (String((session.user as Record<string, unknown>)?.trustBadge || 'RED')) : 'RED',
+      value: 'RED',
       icon: Shield,
       color: 'from-red-500 to-orange-600',
     },
@@ -84,7 +54,7 @@ export default function MerchantDashboardPage() {
         </Avatar>
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {t('dashboard.welcome')}, {storeName || userName}!
+            {t('dashboard.welcome')}, {userName}!
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
             {t('dashboard.merchant.title')}
@@ -112,34 +82,15 @@ export default function MerchantDashboardPage() {
       </div>
 
       {/* E-Sell Code */}
-      {esellCode && (
+      {String((session?.user as Record<string, unknown>)?.esellCode) && (
         <Card className="bg-gradient-to-r from-[#006633] to-[#00875A] text-white dark:from-emerald-700 dark:to-emerald-600">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <p className="text-white/80 text-sm font-medium">Your E-Sell Code</p>
-                <div className="flex items-center gap-3 mt-1">
-                  <p className="text-3xl font-bold tracking-wider">
-                    {esellCode}
-                  </p>
-                  <button
-                    onClick={handleCopy}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-sm font-medium"
-                    title="Copy E-Sell Code"
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="h-4 w-4" />
-                        Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-4 w-4" />
-                        Copy
-                      </>
-                    )}
-                  </button>
-                </div>
+                <p className="text-3xl font-bold tracking-wider mt-1">
+                  {String((session?.user as Record<string, unknown> | undefined)?.esellCode ?? '')}
+                </p>
                 <p className="text-white/60 text-sm mt-1">Share this code with customers to find your store</p>
               </div>
               <Badge className="bg-white/20 text-white border-0">Merchant</Badge>
@@ -148,13 +99,45 @@ export default function MerchantDashboardPage() {
         </Card>
       )}
 
+      {/* Voice Store Builder CTA */}
+      <Card className="border-2 border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/40 dark:to-green-950/40 overflow-hidden relative">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">
+              <Mic className="w-7 h-7 text-white" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Voice Store Builder</h3>
+                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border-0 text-xs">
+                  <Sparkles className="w-3 h-3 mr-1" />
+                  AI-Powered
+                </Badge>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                Set up your entire store by voice or text. Just describe your business and our AI will create everything for you.
+              </p>
+            </div>
+            <Button
+              className="bg-emerald-600 hover:bg-emerald-700 text-white shrink-0"
+              render={<Link href="/dashboard/merchant/store-builder" />}
+              nativeButton={false}
+            >
+              <Mic className="w-4 h-4 mr-2" />
+              Get Started
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Quick Actions */}
       <div>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Button
             className="h-auto py-4 px-6 bg-[#006633] hover:bg-[#1B6B3A] text-white flex items-center gap-3 justify-start"
-            render={<Link href="/dashboard/merchant/products/new" />}
+            render={<Link href="/dashboard/merchant/products" />}
             nativeButton={false}
           >
             <Plus className="h-5 w-5" />

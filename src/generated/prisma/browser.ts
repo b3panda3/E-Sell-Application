@@ -88,6 +88,36 @@ export type Cart = Prisma.CartModel
  */
 export type CartItem = Prisma.CartItemModel
 /**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model EducationVideo
+ * 
+ */
+export type EducationVideo = Prisma.EducationVideoModel
+/**
+ * Model AdminUser
+ * 
+ */
+export type AdminUser = Prisma.AdminUserModel
+/**
+ * Model AethexConfig
+ * 
+ */
+export type AethexConfig = Prisma.AethexConfigModel
+/**
+ * Model AethexInteraction
+ * 
+ */
+export type AethexInteraction = Prisma.AethexInteractionModel
+/**
  * Model Account
  * 
  */
