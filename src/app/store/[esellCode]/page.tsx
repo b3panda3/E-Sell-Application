@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -17,8 +19,72 @@ import {
   Wrench,
   Users,
   ArrowLeft,
+  Wallet,
+  Copy,
+  Check,
+  ExternalLink,
+  ShoppingCart,
+  Loader2,
 } from 'lucide-react';
 import Link from 'next/link';
+
+// ── Currency helpers ─────────────────────────────────────────────────────────
+
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  NGN: '₦',
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+  GHS: '₵',
+  KES: 'KSh',
+  ZAR: 'R',
+  BNB: '◆',
+  USDT: '₮',
+  BTC: '₿',
+  ETH: 'Ξ',
+};
+
+interface CryptoPriceData {
+  amount: number;
+  currency: string;
+  originalCurrency: string;
+  originalAmount: number;
+}
+
+function parseCryptoPrice(priceCrypto: string | null): CryptoPriceData | null {
+  if (!priceCrypto) return null;
+  try {
+    const parsed = JSON.parse(priceCrypto);
+    if (parsed && typeof parsed.amount === 'number' && parsed.currency) {
+      return parsed as CryptoPriceData;
+    }
+  } catch {
+    // Not JSON - it's a legacy string like "0.01 BNB"
+  }
+  return null;
+}
+
+function formatLegacyCrypto(priceCrypto: string): string {
+  // Legacy format: just a plain string like "0.01 BNB"
+  return priceCrypto;
+}
+
+function formatPriceWithCurrency(amount: number, currency: string): string {
+  const symbol = CURRENCY_SYMBOLS[currency] || currency;
+
+  if (['BNB', 'USDT', 'BTC', 'ETH'].includes(currency)) {
+    // Crypto: show with appropriate decimal places
+    if (amount < 0.01) return `${amount.toExponential(2)} ${currency}`;
+    if (amount < 1) return `${amount.toFixed(6)} ${currency}`;
+    if (amount < 1000) return `${amount.toFixed(4)} ${currency}`;
+    return `${amount.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${currency}`;
+  }
+
+  // Fiat: use symbol prefix
+  return `${symbol}${amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+}
+
+// ── Store Data Types ─────────────────────────────────────────────────────────
 
 interface StoreData {
   merchantName: string;
@@ -31,8 +97,19 @@ interface StoreData {
     totalTrades: number;
     satisfactionScore: number;
   } | null;
+  walletAddresses: {
+    id: string;
+    network: string;
+    address: string;
+    label: string | null;
+    isVerified: boolean;
+    createdAt: string;
+  }[];
   storefront: {
     id: string;
+    storeName: string | null;
+    logoUrl: string | null;
+    currency: string;
     customColors: string | null;
     aboutUs: string | null;
     address: string | null;
@@ -80,10 +157,83 @@ const stagger = {
 
 export default function StorefrontPage() {
   const params = useParams();
+  const router = useRouter();
+  const { data: session } = useSession();
   const esellCode = params.esellCode as string;
   const [store, setStore] = useState<StoreData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState<string | null>(null);
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
+
+  const handleAddToCart = async (productId: string) => {
+    if (!session?.user?.id) {
+      router.push('/login');
+      return;
+    }
+
+    setAddingToCart(productId);
+    try {
+      const res = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId, quantity: 1 }),
+      });
+
+      if (res.ok) {
+        toast.success('Added to cart!', {
+          description: 'Item has been added to your cart.',
+          action: {
+            label: 'View Cart',
+            onClick: () => router.push('/dashboard/customer/cart'),
+          },
+        });
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Failed to add to cart');
+      }
+    } catch {
+      toast.error('Network error. Please try again.');
+    } finally {
+      setAddingToCart(null);
+    }
+  };
+
+  const copyAddress = async (address: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopied(id);
+      setTimeout(() => setCopied(null), 2000);
+    } catch {
+      // fallback
+    }
+  };
+
+  const getExplorerUrl = (network: string, address: string) => {
+    switch (network) {
+      case 'BSC': return `https://bscscan.com/address/${address}`;
+      case 'Ethereum': return `https://etherscan.io/address/${address}`;
+      case 'Polygon': return `https://polygonscan.com/address/${address}`;
+      case 'Arbitrum': return `https://arbiscan.io/address/${address}`;
+      case 'Optimism': return `https://optimistic.etherscan.io/address/${address}`;
+      default: return `https://bscscan.com/address/${address}`;
+    }
+  };
+
+  const getNetworkBadgeColor = (network: string) => {
+    switch (network) {
+      case 'BSC': return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
+      case 'Ethereum': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+      case 'Polygon': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
+      case 'Arbitrum': return 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400';
+      case 'Optimism': return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
+      default: return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
+    }
+  };
+
+  const truncateAddress = (address: string) => {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
 
   useEffect(() => {
     async function fetchStore() {
@@ -141,6 +291,9 @@ export default function StorefrontPage() {
     ? JSON.parse(store.storefront.theme.layoutConfig)
     : {};
 
+  // Storefront currency (for display)
+  const storeCurrency = store.storefront.currency || 'NGN';
+
   let socialLinks: Record<string, string> = {};
   if (store.storefront.socialLinks) {
     try { socialLinks = JSON.parse(store.storefront.socialLinks); } catch { /* ignore */ }
@@ -150,6 +303,46 @@ export default function StorefrontPage() {
   if (store.storefront.address) {
     try { contactInfo = JSON.parse(store.storefront.address); } catch { contactInfo = { address: store.storefront.address }; }
   }
+
+  /**
+   * Render a product's price, supporting both:
+   * - New format: priceCrypto as JSON with { amount, currency, originalCurrency, originalAmount }
+   * - Legacy format: priceCrypto as a plain string
+   */
+  const renderProductPrice = (priceNGN: number, priceCrypto: string | null, primaryColor: string) => {
+    const cryptoData = parseCryptoPrice(priceCrypto);
+
+    if (cryptoData) {
+      // New format: we have the original currency and amount
+      const originalPrice = formatPriceWithCurrency(cryptoData.originalAmount, cryptoData.originalCurrency);
+      const cryptoPrice = formatPriceWithCurrency(cryptoData.amount, cryptoData.currency);
+
+      return (
+        <div>
+          <p className="text-lg font-bold" style={{ color: primaryColor }}>
+            {originalPrice}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            ≈ {cryptoPrice}
+          </p>
+        </div>
+      );
+    }
+
+    // Fallback: Show price in the store's configured currency
+    return (
+      <div>
+        <p className="text-lg font-bold" style={{ color: primaryColor }}>
+          {formatPriceWithCurrency(priceNGN, storeCurrency)}
+        </p>
+        {priceCrypto && (
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {formatLegacyCrypto(priceCrypto)}
+          </p>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
@@ -172,11 +365,19 @@ export default function StorefrontPage() {
             </Button>
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-bold">
-              {store.merchantName.charAt(0)}
-            </div>
+            {store.storefront.logoUrl ? (
+              <img
+                src={store.storefront.logoUrl}
+                alt={store.storefront.storeName || store.merchantName}
+                className="w-16 h-16 rounded-2xl object-cover bg-white/20"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-bold">
+                {store.merchantName.charAt(0)}
+              </div>
+            )}
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold">{store.merchantName}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold">{store.storefront.storeName || store.merchantName}</h1>
               <div className="flex items-center gap-2 mt-1">
                 {store.businessCategory && (
                   <Badge className="bg-white/20 text-white border-0 capitalize text-xs">
@@ -247,12 +448,26 @@ export default function StorefrontPage() {
                         {product.description && (
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{product.description}</p>
                         )}
-                        <p className="text-lg font-bold mt-2" style={{ color: colors.primary }}>
-                          ₦{product.priceNGN.toLocaleString()}
-                        </p>
-                        {product.priceCrypto && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{product.priceCrypto}</p>
-                        )}
+                        {renderProductPrice(product.priceNGN, product.priceCrypto, colors.primary)}
+                        <Button
+                          onClick={() => handleAddToCart(product.id)}
+                          disabled={addingToCart === product.id}
+                          size="sm"
+                          className="w-full mt-3 text-white"
+                          style={{ backgroundColor: colors.primary }}
+                        >
+                          {addingToCart === product.id ? (
+                            <>
+                              <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                              Adding...
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+                              Add to Cart
+                            </>
+                          )}
+                        </Button>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -286,12 +501,7 @@ export default function StorefrontPage() {
                       {service.description && (
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 line-clamp-2">{service.description}</p>
                       )}
-                      <p className="text-lg font-bold mt-2" style={{ color: colors.primary }}>
-                        ₦{service.priceNGN.toLocaleString()}
-                      </p>
-                      {service.priceCrypto && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{service.priceCrypto}</p>
-                      )}
+                      {renderProductPrice(service.priceNGN, service.priceCrypto, colors.primary)}
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -312,12 +522,20 @@ export default function StorefrontPage() {
                 <motion.div key={member.id} variants={fadeUp}>
                   <Card className="dark:bg-gray-900 dark:border-gray-800">
                     <CardContent className="p-4 flex items-start gap-3">
-                      <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
-                        style={{ backgroundColor: colors.primary }}
-                      >
-                        {member.name.charAt(0)}
-                      </div>
+                      {member.profileImageUrl ? (
+                        <img
+                          src={member.profileImageUrl}
+                          alt={member.name}
+                          className="w-12 h-12 rounded-full object-cover shrink-0"
+                        />
+                      ) : (
+                        <div
+                          className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
+                          style={{ backgroundColor: colors.primary }}
+                        >
+                          {member.name.charAt(0)}
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
                         <h3 className="font-medium text-sm text-gray-900 dark:text-white">{member.name}</h3>
                         <p className="text-xs" style={{ color: colors.primary }}>{member.role}</p>
@@ -395,6 +613,69 @@ export default function StorefrontPage() {
             )}
           </div>
         </motion.div>
+
+        {/* Payment Wallets Section */}
+        {store.walletAddresses && store.walletAddresses.length > 0 && (
+          <motion.div initial="hidden" animate="visible" variants={fadeUp}>
+            <Card className="dark:bg-gray-900 dark:border-gray-800">
+              <CardContent className="p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <Wallet className="h-5 w-5" style={{ color: colors.primary }} />
+                  Payment Wallets
+                  <Badge variant="secondary" className="text-xs">{store.walletAddresses.length}</Badge>
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  Send crypto payments to the following wallet addresses
+                </p>
+                <div className="space-y-3">
+                  {store.walletAddresses.map((wallet) => (
+                    <div
+                      key={wallet.id}
+                      className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                    >
+                      <Badge
+                        variant="secondary"
+                        className={`text-[10px] h-5 shrink-0 ${getNetworkBadgeColor(wallet.network)}`}
+                      >
+                        {wallet.network}
+                      </Badge>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <code className="text-sm font-mono text-gray-900 dark:text-gray-100">
+                            {truncateAddress(wallet.address)}
+                          </code>
+                          <button
+                            onClick={() => copyAddress(wallet.address, wallet.id)}
+                            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            title="Copy full address"
+                          >
+                            {copied === wallet.id ? (
+                              <Check className="h-3.5 w-3.5 text-green-500" />
+                            ) : (
+                              <Copy className="h-3.5 w-3.5" />
+                            )}
+                          </button>
+                        </div>
+                        {wallet.label && (
+                          <p className="text-xs text-gray-400 mt-0.5">{wallet.label}</p>
+                        )}
+                      </div>
+                      <a
+                        href={getExplorerUrl(wallet.network, wallet.address)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-gray-400 hover:text-blue-500 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                        title={`View on ${wallet.network} explorer`}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {/* Trust Profile */}
         {store.trustProfile && (

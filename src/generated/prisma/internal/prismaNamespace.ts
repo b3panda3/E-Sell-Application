@@ -2199,6 +2199,7 @@ export const StorefrontScalarFieldEnum = {
   address: 'address',
   socialLinks: 'socialLinks',
   bankDetails: 'bankDetails',
+  currency: 'currency',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

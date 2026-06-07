@@ -48,7 +48,8 @@ export default function LoginPage() {
   };
 
   const handleOAuthSignIn = (provider: string) => {
-    signIn(provider, { callbackUrl: '/dashboard/customer' });
+    // Redirect to a callback page that determines role after OAuth
+    signIn(provider, { callbackUrl: '/api/auth/role-redirect' });
   };
 
   return (

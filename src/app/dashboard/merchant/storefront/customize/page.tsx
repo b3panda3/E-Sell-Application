@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Save, ArrowLeft, Plus, Trash2, UserCircle } from 'lucide-react';
+import { Save, ArrowLeft, Plus, Trash2, UserCircle, Upload, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 interface Storefront {
   id: string;
+  storeName: string | null;
   themeId: string | null;
   customColors: string | null;
   aboutUs: string | null;
@@ -19,6 +20,8 @@ interface Storefront {
   socialLinks: string | null;
   bankDetails: string | null;
   isActive: boolean;
+  logoUrl: string | null;
+  currency: string;
 }
 
 interface StaffMember {
@@ -61,6 +64,8 @@ export default function CustomizeStorefrontPage() {
   const [email, setEmail] = useState('');
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [newStaff, setNewStaff] = useState({ name: '', role: '', email: '', phone: '', bio: '' });
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -73,6 +78,7 @@ export default function CustomizeStorefrontPage() {
           if (sf) {
             setAboutUs(sf.aboutUs || '');
             setAddress(sf.address || '');
+            setLogoUrl(sf.logoUrl || null);
             if (sf.socialLinks) {
               try {
                 setSocialLinks(JSON.parse(sf.socialLinks));
@@ -120,10 +126,12 @@ export default function CustomizeStorefrontPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          storeName: storefront?.storeName || undefined,
           customColors,
           aboutUs,
           address: addressWithContact,
           socialLinks: socialLinksJson,
+          logoUrl: logoUrl || undefined,
         }),
       });
 
@@ -137,6 +145,32 @@ export default function CustomizeStorefrontPage() {
       console.error('Save error:', error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingLogo(true);
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('folder', 'logos');
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setLogoUrl(data.url);
+      }
+    } catch (error) {
+      console.error('Logo upload error:', error);
+    } finally {
+      setUploadingLogo(false);
     }
   };
 
@@ -238,15 +272,34 @@ export default function CustomizeStorefrontPage() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-                <span className="text-3xl">🏪</span>
+              <div className="w-20 h-20 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden">
+                {logoUrl ? (
+                  <img src={logoUrl} alt="Store logo" className="w-full h-full object-cover rounded-xl" />
+                ) : (
+                  <span className="text-3xl">🏪</span>
+                )}
               </div>
               <div className="flex-1">
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                   {t('storefront.logoHint')}
                 </p>
-                <Input type="file" accept="image/*" className="text-sm" disabled />
-                <p className="text-xs text-gray-400 mt-1">{t('storefront.logoComingSoon')}</p>
+                <label className="cursor-pointer">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    {uploadingLogo ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="h-3.5 w-3.5" />
+                    )}
+                    {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoUpload}
+                    disabled={uploadingLogo}
+                    className="hidden"
+                  />
+                </label>
               </div>
             </div>
           </CardContent>

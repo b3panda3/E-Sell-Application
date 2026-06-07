@@ -38,6 +38,9 @@ export async function GET() {
           : null,
         storefront: {
           id: storefront.id,
+          storeName: storefront.storeName,
+          logoUrl: storefront.logoUrl,
+          currency: storefront.currency,
           themeId: storefront.themeId,
           customColors: storefront.customColors,
           aboutUs: storefront.aboutUs,

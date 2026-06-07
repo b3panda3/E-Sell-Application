@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Package, MessageSquare, Coins, Shield, Plus, ArrowRight, Store, Mic, Sparkles } from 'lucide-react';
+import { Package, MessageSquare, Coins, Shield, Plus, ArrowRight, Store, Mic, Sparkles, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 export default function MerchantDashboardPage() {
@@ -93,7 +93,17 @@ export default function MerchantDashboardPage() {
                 </p>
                 <p className="text-white/60 text-sm mt-1">Share this code with customers to find your store</p>
               </div>
-              <Badge className="bg-white/20 text-white border-0">Merchant</Badge>
+              <div className="flex items-center gap-3">
+                <Button
+                  className="bg-white/20 hover:bg-white/30 text-white border-0 shrink-0"
+                  render={<Link href={`/store/${String((session?.user as Record<string, unknown> | undefined)?.esellCode ?? '')}`} target="_blank" />}
+                  nativeButton={false}
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Preview Store
+                </Button>
+                <Badge className="bg-white/20 text-white border-0">Merchant</Badge>
+              </div>
             </div>
           </CardContent>
         </Card>

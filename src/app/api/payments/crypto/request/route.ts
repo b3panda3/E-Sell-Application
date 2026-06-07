@@ -46,9 +46,9 @@ export async function POST(req: NextRequest) {
 
     // Get merchant's wallet address for BSC
     const wallet = order.merchant.walletAddresses.find(
-      (w: any) => w.network === 'BSC' && w.isVerified
+      (w) => w.network === 'BSC' && w.isVerified
     ) || order.merchant.walletAddresses.find(
-      (w: any) => w.network === 'BSC'
+      (w) => w.network === 'BSC'
     );
 
     if (!wallet) {

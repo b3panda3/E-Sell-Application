@@ -36,6 +36,7 @@ export type StorefrontMinAggregateOutputType = {
   address: string | null
   socialLinks: string | null
   bankDetails: string | null
+  currency: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -53,6 +54,7 @@ export type StorefrontMaxAggregateOutputType = {
   address: string | null
   socialLinks: string | null
   bankDetails: string | null
+  currency: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -70,6 +72,7 @@ export type StorefrontCountAggregateOutputType = {
   address: number
   socialLinks: number
   bankDetails: number
+  currency: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -89,6 +92,7 @@ export type StorefrontMinAggregateInputType = {
   address?: true
   socialLinks?: true
   bankDetails?: true
+  currency?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -106,6 +110,7 @@ export type StorefrontMaxAggregateInputType = {
   address?: true
   socialLinks?: true
   bankDetails?: true
+  currency?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -123,6 +128,7 @@ export type StorefrontCountAggregateInputType = {
   address?: true
   socialLinks?: true
   bankDetails?: true
+  currency?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -213,6 +219,7 @@ export type StorefrontGroupByOutputType = {
   address: string | null
   socialLinks: string | null
   bankDetails: string | null
+  currency: string
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -251,6 +258,7 @@ export type StorefrontWhereInput = {
   address?: Prisma.StringNullableFilter<"Storefront"> | string | null
   socialLinks?: Prisma.StringNullableFilter<"Storefront"> | string | null
   bankDetails?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  currency?: Prisma.StringFilter<"Storefront"> | string
   isActive?: Prisma.BoolFilter<"Storefront"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Storefront"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Storefront"> | Date | string
@@ -276,6 +284,7 @@ export type StorefrontOrderByWithRelationInput = {
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   socialLinks?: Prisma.SortOrderInput | Prisma.SortOrder
   bankDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  currency?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -304,6 +313,7 @@ export type StorefrontWhereUniqueInput = Prisma.AtLeast<{
   address?: Prisma.StringNullableFilter<"Storefront"> | string | null
   socialLinks?: Prisma.StringNullableFilter<"Storefront"> | string | null
   bankDetails?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  currency?: Prisma.StringFilter<"Storefront"> | string
   isActive?: Prisma.BoolFilter<"Storefront"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Storefront"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Storefront"> | Date | string
@@ -329,6 +339,7 @@ export type StorefrontOrderByWithAggregationInput = {
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   socialLinks?: Prisma.SortOrderInput | Prisma.SortOrder
   bankDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  currency?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -352,6 +363,7 @@ export type StorefrontScalarWhereWithAggregatesInput = {
   address?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
   socialLinks?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
   bankDetails?: Prisma.StringNullableWithAggregatesFilter<"Storefront"> | string | null
+  currency?: Prisma.StringWithAggregatesFilter<"Storefront"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Storefront"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Storefront"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Storefront"> | Date | string
@@ -367,6 +379,7 @@ export type StorefrontCreateInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -392,6 +405,7 @@ export type StorefrontUncheckedCreateInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -413,6 +427,7 @@ export type StorefrontUpdateInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -438,6 +453,7 @@ export type StorefrontUncheckedUpdateInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -461,6 +477,7 @@ export type StorefrontCreateManyInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -476,6 +493,7 @@ export type StorefrontUpdateManyMutationInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -493,6 +511,7 @@ export type StorefrontUncheckedUpdateManyInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -520,6 +539,7 @@ export type StorefrontCountOrderByAggregateInput = {
   address?: Prisma.SortOrder
   socialLinks?: Prisma.SortOrder
   bankDetails?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -537,6 +557,7 @@ export type StorefrontMaxOrderByAggregateInput = {
   address?: Prisma.SortOrder
   socialLinks?: Prisma.SortOrder
   bankDetails?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -554,6 +575,7 @@ export type StorefrontMinOrderByAggregateInput = {
   address?: Prisma.SortOrder
   socialLinks?: Prisma.SortOrder
   bankDetails?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -742,6 +764,7 @@ export type StorefrontCreateWithoutUserInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -765,6 +788,7 @@ export type StorefrontUncheckedCreateWithoutUserInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -817,6 +841,7 @@ export type StorefrontScalarWhereInput = {
   address?: Prisma.StringNullableFilter<"Storefront"> | string | null
   socialLinks?: Prisma.StringNullableFilter<"Storefront"> | string | null
   bankDetails?: Prisma.StringNullableFilter<"Storefront"> | string | null
+  currency?: Prisma.StringFilter<"Storefront"> | string
   isActive?: Prisma.BoolFilter<"Storefront"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Storefront"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Storefront"> | Date | string
@@ -832,6 +857,7 @@ export type StorefrontCreateWithoutProductsInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -856,6 +882,7 @@ export type StorefrontUncheckedCreateWithoutProductsInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -892,6 +919,7 @@ export type StorefrontUpdateWithoutProductsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -916,6 +944,7 @@ export type StorefrontUncheckedUpdateWithoutProductsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -936,6 +965,7 @@ export type StorefrontCreateWithoutServicesInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -960,6 +990,7 @@ export type StorefrontUncheckedCreateWithoutServicesInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -996,6 +1027,7 @@ export type StorefrontUpdateWithoutServicesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1020,6 +1052,7 @@ export type StorefrontUncheckedUpdateWithoutServicesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1040,6 +1073,7 @@ export type StorefrontCreateWithoutStaffInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1064,6 +1098,7 @@ export type StorefrontUncheckedCreateWithoutStaffInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1100,6 +1135,7 @@ export type StorefrontUpdateWithoutStaffInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1124,6 +1160,7 @@ export type StorefrontUncheckedUpdateWithoutStaffInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1144,6 +1181,7 @@ export type StorefrontCreateWithoutThemeInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1167,6 +1205,7 @@ export type StorefrontUncheckedCreateWithoutThemeInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1214,6 +1253,7 @@ export type StorefrontCreateWithoutOrdersInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1238,6 +1278,7 @@ export type StorefrontUncheckedCreateWithoutOrdersInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1274,6 +1315,7 @@ export type StorefrontUpdateWithoutOrdersInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1298,6 +1340,7 @@ export type StorefrontUncheckedUpdateWithoutOrdersInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1318,6 +1361,7 @@ export type StorefrontCreateWithoutAethexConfigInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1342,6 +1386,7 @@ export type StorefrontUncheckedCreateWithoutAethexConfigInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1378,6 +1423,7 @@ export type StorefrontUpdateWithoutAethexConfigInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1402,6 +1448,7 @@ export type StorefrontUncheckedUpdateWithoutAethexConfigInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1422,6 +1469,7 @@ export type StorefrontCreateWithoutAethexInteractionsInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1446,6 +1494,7 @@ export type StorefrontUncheckedCreateWithoutAethexInteractionsInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1482,6 +1531,7 @@ export type StorefrontUpdateWithoutAethexInteractionsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1506,6 +1556,7 @@ export type StorefrontUncheckedUpdateWithoutAethexInteractionsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1527,6 +1578,7 @@ export type StorefrontCreateManyUserInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1542,6 +1594,7 @@ export type StorefrontUpdateWithoutUserInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1565,6 +1618,7 @@ export type StorefrontUncheckedUpdateWithoutUserInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1587,6 +1641,7 @@ export type StorefrontUncheckedUpdateManyWithoutUserInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1603,6 +1658,7 @@ export type StorefrontCreateManyThemeInput = {
   address?: string | null
   socialLinks?: string | null
   bankDetails?: string | null
+  currency?: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1618,6 +1674,7 @@ export type StorefrontUpdateWithoutThemeInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1641,6 +1698,7 @@ export type StorefrontUncheckedUpdateWithoutThemeInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1663,6 +1721,7 @@ export type StorefrontUncheckedUpdateManyWithoutThemeInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1747,6 +1806,7 @@ export type StorefrontSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   address?: boolean
   socialLinks?: boolean
   bankDetails?: boolean
+  currency?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1773,6 +1833,7 @@ export type StorefrontSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   address?: boolean
   socialLinks?: boolean
   bankDetails?: boolean
+  currency?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1792,6 +1853,7 @@ export type StorefrontSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   address?: boolean
   socialLinks?: boolean
   bankDetails?: boolean
+  currency?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1811,12 +1873,13 @@ export type StorefrontSelectScalar = {
   address?: boolean
   socialLinks?: boolean
   bankDetails?: boolean
+  currency?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StorefrontOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "storeName" | "logoUrl" | "featuredImageUrl" | "themeId" | "customColors" | "aboutUs" | "address" | "socialLinks" | "bankDetails" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["storefront"]>
+export type StorefrontOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "storeName" | "logoUrl" | "featuredImageUrl" | "themeId" | "customColors" | "aboutUs" | "address" | "socialLinks" | "bankDetails" | "currency" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["storefront"]>
 export type StorefrontInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   theme?: boolean | Prisma.Storefront$themeArgs<ExtArgs>
@@ -1861,6 +1924,7 @@ export type $StorefrontPayload<ExtArgs extends runtime.Types.Extensions.Internal
     address: string | null
     socialLinks: string | null
     bankDetails: string | null
+    currency: string
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -2306,6 +2370,7 @@ export interface StorefrontFieldRefs {
   readonly address: Prisma.FieldRef<"Storefront", 'String'>
   readonly socialLinks: Prisma.FieldRef<"Storefront", 'String'>
   readonly bankDetails: Prisma.FieldRef<"Storefront", 'String'>
+  readonly currency: Prisma.FieldRef<"Storefront", 'String'>
   readonly isActive: Prisma.FieldRef<"Storefront", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Storefront", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Storefront", 'DateTime'>

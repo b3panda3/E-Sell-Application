@@ -21,8 +21,9 @@ import {
   LogOut,
   X,
   Bot,
+  ExternalLink,
 } from 'lucide-react';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import NotificationBell from '@/components/NotificationBell';
 import VoiceCommandBar from '@/components/VoiceCommandBar';
@@ -106,7 +107,10 @@ export default function MerchantDashboardLayout({
 }) {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const esellCode = (session?.user as Record<string, unknown>)?.esellCode as string | undefined;
 
   return (
     <div className="flex h-[calc(100vh-4rem)]">
@@ -132,7 +136,7 @@ export default function MerchantDashboardLayout({
       </Sheet>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-950">
+      <div className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-950 relative">
         <div className="lg:hidden flex items-center gap-3 p-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)}>
             <Menu className="h-5 w-5" />
@@ -144,6 +148,20 @@ export default function MerchantDashboardLayout({
         <div className="p-4 md:p-6 lg:p-8">
           {children}
         </div>
+
+        {/* Floating Preview Store Button */}
+        {esellCode && (
+          <Link
+            href={`/store/${esellCode}`}
+            target="_blank"
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#006633] hover:bg-[#1B6B3A] dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group"
+          >
+            <ExternalLink className="w-4 h-4" />
+            <span className="text-sm font-medium max-w-0 overflow-hidden group-hover:max-w-32 transition-all duration-300 whitespace-nowrap">
+              Preview Store
+            </span>
+          </Link>
+        )}
       </div>
       <VoiceCommandBar />
     </div>

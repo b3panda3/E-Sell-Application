@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, Save, X, ImagePlus } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { ArrowLeft, Save, X, ImagePlus, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
 const CATEGORIES = [
@@ -24,6 +31,21 @@ const CATEGORIES = [
   'Other',
 ];
 
+const FIAT_CURRENCIES = [
+  { code: 'NGN', symbol: '₦', name: 'Nigerian Naira' },
+  { code: 'USD', symbol: '$', name: 'US Dollar' },
+  { code: 'EUR', symbol: '€', name: 'Euro' },
+  { code: 'GBP', symbol: '£', name: 'British Pound' },
+  { code: 'GHS', symbol: '₵', name: 'Ghanaian Cedi' },
+  { code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
+  { code: 'ZAR', symbol: 'R', name: 'South African Rand' },
+] as const;
+
+const CRYPTO_CURRENCIES = [
+  { code: 'BNB', symbol: '◆', name: 'BNB' },
+  { code: 'USDT', symbol: '₮', name: 'USDT' },
+] as const;
+
 export default function NewProductPage() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -34,10 +56,16 @@ export default function NewProductPage() {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [priceNGN, setPriceNGN] = useState('');
-  const [priceCrypto, setPriceCrypto] = useState('');
+  const [price, setPrice] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState('NGN');
+  const [selectedCrypto, setSelectedCrypto] = useState('BNB');
   const [category, setCategory] = useState('');
   const [isActive, setIsActive] = useState(true);
+
+  // Crypto equivalent state
+  const [cryptoEquivalent, setCryptoEquivalent] = useState<number | null>(null);
+  const [converting, setConverting] = useState(false);
+  const [conversionError, setConversionError] = useState('');
 
   useEffect(() => {
     async function fetchStorefront() {
@@ -57,30 +85,120 @@ export default function NewProductPage() {
     fetchStorefront();
   }, []);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Auto-calculate crypto equivalent when price or currency changes
+  const fetchCryptoEquivalent = useCallback(async () => {
+    const priceNum = parseFloat(price);
+    if (!priceNum || priceNum <= 0) {
+      setCryptoEquivalent(null);
+      setConversionError('');
+      return;
+    }
+
+    setConverting(true);
+    setConversionError('');
+
+    try {
+      const res = await fetch(
+        `/api/currency?from=${selectedCurrency}&to=${selectedCrypto}&amount=${priceNum}`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setCryptoEquivalent(data.result);
+      } else {
+        setCryptoEquivalent(null);
+        setConversionError('Could not fetch rate');
+      }
+    } catch {
+      setCryptoEquivalent(null);
+      setConversionError('Conversion failed');
+    } finally {
+      setConverting(false);
+    }
+  }, [price, selectedCurrency, selectedCrypto]);
+
+  // Debounce the conversion
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchCryptoEquivalent();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [fetchCryptoEquivalent]);
+
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result as string;
-        setImages((prev) => [...prev, base64]);
-      };
-      reader.readAsDataURL(file);
-    });
+    setUploading(true);
+    try {
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', 'products');
+
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setImages((prev) => [...prev, data.url]);
+        }
+      }
+    } catch (error) {
+      console.error('Image upload error:', error);
+    } finally {
+      setUploading(false);
+      // Reset the file input so the same file can be re-selected
+      if (e.target) e.target.value = '';
+    }
   };
 
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Get the selected fiat currency details
+  const selectedFiat = FIAT_CURRENCIES.find((c) => c.code === selectedCurrency) || FIAT_CURRENCIES[0];
+  const selectedCryptoInfo = CRYPTO_CURRENCIES.find((c) => c.code === selectedCrypto) || CRYPTO_CURRENCIES[0];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!storefrontId || !name || !priceNGN) return;
+    if (!storefrontId || !name || !price) return;
 
     setSaving(true);
     try {
+      const priceNum = parseFloat(price);
+
+      // Convert to NGN for the priceNGN field
+      let priceNGN = priceNum;
+      if (selectedCurrency !== 'NGN') {
+        try {
+          const res = await fetch(
+            `/api/currency?from=${selectedCurrency}&to=NGN&amount=${priceNum}`
+          );
+          if (res.ok) {
+            const data = await res.json();
+            priceNGN = data.result;
+          }
+        } catch {
+          // If conversion fails, still save with the raw number
+        }
+      }
+
+      // Store crypto price as JSON with full context
+      const priceCryptoData = cryptoEquivalent !== null
+        ? JSON.stringify({
+            amount: cryptoEquivalent,
+            currency: selectedCrypto,
+            originalCurrency: selectedCurrency,
+            originalAmount: priceNum,
+          })
+        : null;
+
       const res = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -88,8 +206,8 @@ export default function NewProductPage() {
           storefrontId,
           name,
           description,
-          priceNGN: parseFloat(priceNGN),
-          priceCrypto: priceCrypto || null,
+          priceNGN,
+          priceCrypto: priceCryptoData,
           category: category || null,
           images: images.length > 0 ? JSON.stringify(images) : null,
           isActive,
@@ -173,27 +291,101 @@ export default function NewProductPage() {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-sm mb-1 block">{t('products.priceNGN')} *</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={priceNGN}
-                  onChange={(e) => setPriceNGN(e.target.value)}
-                  placeholder="0.00"
-                  required
-                />
+            {/* Price with Currency Selector */}
+            <div>
+              <Label className="text-sm mb-1 block">{t('products.price')} *</Label>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="0.00"
+                    required
+                  />
+                </div>
+                <Select value={selectedCurrency} onValueChange={(value) => { if (value) setSelectedCurrency(value); }}>
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FIAT_CURRENCIES.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        {currency.symbol} {currency.code}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <div>
-                <Label className="text-sm mb-1 block">{t('products.priceCrypto')}</Label>
-                <Input
-                  value={priceCrypto}
-                  onChange={(e) => setPriceCrypto(e.target.value)}
-                  placeholder="0.01 BNB"
-                />
+            </div>
+
+            {/* Crypto Equivalent Section */}
+            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {t('products.cryptoEquivalent')}
+                </Label>
+                <button
+                  type="button"
+                  onClick={fetchCryptoEquivalent}
+                  disabled={converting || !price}
+                  className="text-xs text-[#006633] dark:text-emerald-400 hover:underline disabled:opacity-50 flex items-center gap-1"
+                >
+                  <RefreshCw className={`h-3 w-3 ${converting ? 'animate-spin' : ''}`} />
+                  {t('products.refreshRate')}
+                </button>
               </div>
+
+              <div className="flex items-center gap-2">
+                <Select value={selectedCrypto} onValueChange={(value) => { if (value) setSelectedCrypto(value); }}>
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CRYPTO_CURRENCIES.map((crypto) => (
+                      <SelectItem key={crypto.code} value={crypto.code}>
+                        {crypto.symbol} {crypto.code}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div className="flex-1 h-8 rounded-lg border border-input bg-white dark:bg-gray-900 px-2.5 py-1 text-sm flex items-center">
+                  {converting ? (
+                    <span className="text-gray-400 flex items-center gap-2">
+                      <RefreshCw className="h-3 w-3 animate-spin" />
+                      {t('products.converting')}
+                    </span>
+                  ) : cryptoEquivalent !== null ? (
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {cryptoEquivalent < 0.01
+                        ? cryptoEquivalent.toExponential(4)
+                        : cryptoEquivalent < 1
+                          ? cryptoEquivalent.toFixed(6)
+                          : cryptoEquivalent < 1000
+                            ? cryptoEquivalent.toFixed(4)
+                            : cryptoEquivalent.toLocaleString(undefined, { maximumFractionDigits: 2 })
+                      }{' '}
+                      <span className="text-gray-500">{selectedCrypto}</span>
+                    </span>
+                  ) : price ? (
+                    <span className="text-gray-400">{t('products.enterPriceFirst')}</span>
+                  ) : (
+                    <span className="text-gray-400">{t('products.enterPriceFirst')}</span>
+                  )}
+                </div>
+              </div>
+
+              {conversionError && (
+                <p className="text-xs text-red-500">{conversionError}</p>
+              )}
+
+              {cryptoEquivalent !== null && price && (
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {selectedFiat.symbol}{parseFloat(price).toLocaleString()} {selectedCurrency} ≈ {selectedCryptoInfo.symbol}{cryptoEquivalent < 0.01 ? cryptoEquivalent.toExponential(2) : cryptoEquivalent.toFixed(cryptoEquivalent < 1 ? 4 : 2)} {selectedCrypto}
+                </p>
+              )}
             </div>
 
             <div>
@@ -269,7 +461,7 @@ export default function NewProductPage() {
           </Button>
           <Button
             type="submit"
-            disabled={saving || !name || !priceNGN}
+            disabled={saving || !name || !price}
             className="bg-[#006633] hover:bg-[#1B6B3A] text-white"
           >
             <Save className="h-4 w-4" />

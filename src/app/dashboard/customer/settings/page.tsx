@@ -35,31 +35,40 @@ export default function CustomerSettingsPage() {
 
     setIsUploading(true);
     try {
-      // Convert to base64
-      const base64 = await new Promise<string>((resolve) => {
-        const r = new FileReader();
-        r.onload = () => resolve(r.result as string);
-        r.readAsDataURL(file);
+      // Upload to Cloudinary
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'profiles');
+
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
       });
 
-      // Preview locally immediately
-      setProfileImage(base64);
+      if (uploadRes.ok) {
+        const uploadData = await uploadRes.json();
+        const imageUrl = uploadData.url;
 
-      // Save to database
-      const res = await fetch('/api/user/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: base64 }),
-      });
+        // Preview locally immediately
+        setProfileImage(imageUrl);
 
-      if (res.ok) {
-        // Update the session so it persists across refreshes
-        await updateSession({ image: base64 });
+        // Save URL to database
+        const res = await fetch('/api/user/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: imageUrl }),
+        });
+
+        if (res.ok) {
+          // Update the session so it persists across refreshes
+          await updateSession({ image: imageUrl });
+        }
       }
     } catch (error) {
       console.error('Image upload error:', error);
     } finally {
       setIsUploading(false);
+      if (e.target) e.target.value = '';
     }
   };
 
@@ -84,7 +93,7 @@ export default function CustomerSettingsPage() {
     setSaved(false);
     try {
       const body: { name: string; image?: string } = { name: name.trim() };
-      if (profileImage) body.image = profileImage;
+      if (profileImage && profileImage.startsWith('https://')) body.image = profileImage;
 
       const res = await fetch('/api/user/profile', {
         method: 'PUT',

@@ -3,6 +3,11 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 
+/**
+ * POST /api/admin/setup
+ * Create an admin user. Security: First admin can be created only if no admins exist.
+ * After that, only existing admins can create new admins.
+ */
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -34,6 +39,23 @@ export async function POST(request: NextRequest) {
 
     if (existing) {
       return NextResponse.json({ admin: existing, message: 'User is already an admin' });
+    }
+
+    // Security check: Count existing admins
+    const adminCount = await db.adminUser.count();
+
+    if (adminCount > 0) {
+      // Admins already exist - only existing admins can create new admins
+      const requestingAdmin = await db.adminUser.findUnique({
+        where: { userId: session.user.id },
+      });
+
+      if (!requestingAdmin) {
+        return NextResponse.json(
+          { error: 'Forbidden: Only existing admins can create new admins' },
+          { status: 403 }
+        );
+      }
     }
 
     const admin = await db.adminUser.create({

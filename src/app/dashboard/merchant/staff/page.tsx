@@ -48,12 +48,12 @@ export default function StaffPage() {
     profileImageUrl: '',
   });
 
-  const fetchStaff = useCallback(async () => {
+  const fetchStaff = useCallback(async (storefrontId: string) => {
     try {
-      const res = await fetch('/api/staff');
+      const res = await fetch(`/api/staff?storefrontId=${storefrontId}`);
       if (res.ok) {
         const data = await res.json();
-        setStaff(data);
+        setStaff(data.staff || data);
       }
     } catch {
       // silently fail
@@ -79,9 +79,14 @@ export default function StaffPage() {
   }, []);
 
   useEffect(() => {
-    fetchStaff();
     fetchStorefront();
-  }, [fetchStaff, fetchStorefront]);
+  }, [fetchStorefront]);
+
+  useEffect(() => {
+    if (storefront?.id) {
+      fetchStaff(storefront.id);
+    }
+  }, [storefront, fetchStaff]);
 
   const resetForm = () => {
     setFormData({ name: '', role: '', email: '', phone: '', bio: '', profileImageUrl: '' });
@@ -108,7 +113,7 @@ export default function StaffPage() {
 
       if (res.ok) {
         resetForm();
-        fetchStaff();
+        if (storefront?.id) fetchStaff(storefront.id);
       }
     } catch {
       // silently fail
@@ -122,7 +127,7 @@ export default function StaffPage() {
     try {
       const res = await fetch(`/api/staff/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        fetchStaff();
+        if (storefront?.id) fetchStaff(storefront.id);
       }
     } catch {
       // silently fail
@@ -146,17 +151,18 @@ export default function StaffPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const formDataToSend = new FormData();
-    formDataToSend.append('file', file);
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', file);
+    uploadFormData.append('folder', 'staff');
 
     try {
-      const res = await fetch('/api/user/profile', {
-        method: 'PATCH',
-        body: formDataToSend,
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
       });
       if (res.ok) {
         const data = await res.json();
-        setFormData((prev) => ({ ...prev, profileImageUrl: data.image || '' }));
+        setFormData((prev) => ({ ...prev, profileImageUrl: data.url || '' }));
       }
     } catch {
       // silently fail

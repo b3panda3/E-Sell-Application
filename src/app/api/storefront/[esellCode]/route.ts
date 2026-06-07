@@ -20,6 +20,7 @@ export async function GET(
           },
         },
         trustProfile: true,
+        walletAddresses: { orderBy: { createdAt: "desc" } },
       },
     });
 
@@ -40,6 +41,7 @@ export async function GET(
         businessCategory: user.businessCategory,
         trustBadge: user.trustBadge,
         trustProfile: user.trustProfile,
+        walletAddresses: user.walletAddresses,
         storefront,
       },
     });

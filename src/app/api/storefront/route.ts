@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { themeId, customColors, aboutUs, address, socialLinks, bankDetails, isActive } = body;
+    const { themeId, customColors, aboutUs, address, socialLinks, bankDetails, isActive, logoUrl, storeName, currency } = body;
 
     // Check if storefront already exists
     const existing = await db.storefront.findFirst({
@@ -48,12 +48,15 @@ export async function POST(request: NextRequest) {
         where: { id: existing.id },
         data: {
           ...(themeId !== undefined && { themeId }),
+          ...(storeName !== undefined && { storeName }),
           ...(customColors !== undefined && { customColors }),
           ...(aboutUs !== undefined && { aboutUs }),
           ...(address !== undefined && { address }),
           ...(socialLinks !== undefined && { socialLinks }),
           ...(bankDetails !== undefined && { bankDetails }),
           ...(isActive !== undefined && { isActive }),
+          ...(logoUrl !== undefined && { logoUrl }),
+          ...(currency !== undefined && { currency }),
         },
         include: { theme: true },
       });
@@ -64,6 +67,7 @@ export async function POST(request: NextRequest) {
     const storefront = await db.storefront.create({
       data: {
         userId: session.user.id,
+        storeName: storeName || null,
         themeId: themeId || null,
         customColors: customColors || null,
         aboutUs: aboutUs || null,
@@ -71,6 +75,8 @@ export async function POST(request: NextRequest) {
         socialLinks: socialLinks || null,
         bankDetails: bankDetails || null,
         isActive: isActive !== undefined ? isActive : true,
+        logoUrl: logoUrl || null,
+        currency: currency || 'NGN',
       },
       include: { theme: true },
     });

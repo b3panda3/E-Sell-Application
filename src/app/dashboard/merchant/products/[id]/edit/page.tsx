@@ -39,6 +39,7 @@ export default function EditProductPage() {
   const [category, setCategory] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [isActive, setIsActive] = useState(true);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -68,16 +69,31 @@ export default function EditProductPage() {
     fetchProduct();
   }, [productId]);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImages((prev) => [...prev, reader.result as string]);
-      };
-      reader.readAsDataURL(file);
-    });
+    setUploading(true);
+    try {
+      await Promise.all(
+        Array.from(files).map(async (file) => {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('folder', 'products');
+          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            console.error('Upload failed:', err.error || 'Unknown error');
+            return;
+          }
+          const data = await res.json();
+          setImages((prev) => [...prev, data.url]);
+        })
+      );
+    } catch (error) {
+      console.error('Image upload error:', error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const removeImage = (index: number) => {
@@ -219,15 +235,22 @@ export default function EditProductPage() {
                     </button>
                   </div>
                 ))}
-                <label className="aspect-square rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center cursor-pointer hover:border-[#006633] dark:hover:border-emerald-400 transition-colors">
-                  <ImagePlus className="h-6 w-6 text-gray-400 mb-1" />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{t('products.addImage')}</span>
+                <label className={`aspect-square rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center cursor-pointer hover:border-[#006633] dark:hover:border-emerald-400 transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  {uploading ? (
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#006633] dark:border-emerald-400 mb-1" />
+                  ) : (
+                    <ImagePlus className="h-6 w-6 text-gray-400 mb-1" />
+                  )}
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {uploading ? 'Uploading...' : t('products.addImage')}
+                  </span>
                   <input
                     type="file"
                     accept="image/*"
                     multiple
                     onChange={handleImageUpload}
                     className="hidden"
+                    disabled={uploading}
                   />
                 </label>
               </div>
@@ -262,7 +285,7 @@ export default function EditProductPage() {
           </Button>
           <Button
             type="submit"
-            disabled={saving || !name || !priceNGN}
+            disabled={saving || uploading || !name || !priceNGN}
             className="bg-[#006633] hover:bg-[#1B6B3A] text-white"
           >
             <Save className="h-4 w-4" />

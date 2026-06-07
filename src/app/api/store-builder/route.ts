@@ -37,6 +37,7 @@ interface ParsedStoreData {
   socialLinks: ParsedSocialLinks;
   themePreference: string;
   greeting: string;
+  currency?: string;
 }
 
 const SYSTEM_PROMPT = `You are a store setup assistant. The user will describe their store in natural language. Extract ALL relevant information into a structured JSON format. Be generous in interpreting what the user means.
@@ -58,11 +59,12 @@ Return a JSON object with this exact structure:
   "address": "string or null",
   "socialLinks": { "twitter": "string or null", "instagram": "string or null", "telegram": "string or null", "whatsapp": "string or null" },
   "themePreference": "MarketHub|ProServe|CreativeStudio|TechStore|FoodMarket",
-  "greeting": "string - a friendly AI greeting for the store's chatbot"
+  "greeting": "string - a friendly AI greeting for the store's chatbot",
+  "currency": "string - the currency code used for prices (e.g. NGN, USD, EUR, GBP, GHS, KES, ZAR)"
 }
 
 If the user doesn't mention something, set it to null (for strings) or empty array (for products/services).
-For prices, estimate reasonable NGN values based on the user's description.
+For prices, use the exact numeric value in the currency the user mentioned. The priceNGN field should contain the numeric price value regardless of currency (e.g. if user says $50 USD, set priceNGN to 50 and currency to "USD").
 For the theme, pick the most appropriate one based on the store type.
 IMPORTANT: Return ONLY the JSON, no other text.`;
 
@@ -74,7 +76,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { transcript } = body;
+    const { transcript, currency: requestCurrency, products: requestProducts, services: requestServices } = body;
 
     if (!transcript || typeof transcript !== 'string' || transcript.trim().length === 0) {
       return NextResponse.json(
@@ -155,6 +157,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Resolve currency: prefer explicit request, then AI-parsed, then default NGN
+    const resolvedCurrency = requestCurrency || parsedData.currency || 'NGN';
+
     // Step 3: Create or update the Storefront
     const socialLinksJson = parsedData.socialLinks
       ? JSON.stringify(parsedData.socialLinks)
@@ -179,6 +184,7 @@ export async function POST(request: NextRequest) {
           aboutUs: parsedData.aboutUs || existingStorefront.aboutUs,
           address: addressStr || existingStorefront.address,
           socialLinks: socialLinksJson || existingStorefront.socialLinks,
+          currency: resolvedCurrency,
           isActive: true,
         },
         include: { theme: true },
@@ -201,23 +207,45 @@ export async function POST(request: NextRequest) {
           aboutUs: parsedData.aboutUs || null,
           address: addressStr || null,
           socialLinks: socialLinksJson,
+          currency: resolvedCurrency,
           isActive: true,
         },
         include: { theme: true },
       });
     }
 
+    // Use request products/services if available (from final submission),
+    // otherwise fall back to AI-parsed data
+    const finalProducts = Array.isArray(requestProducts) && requestProducts.length > 0
+      ? requestProducts
+      : parsedData.products;
+    const finalServices = Array.isArray(requestServices) && requestServices.length > 0
+      ? requestServices
+      : parsedData.services;
+
+    // Build priceCrypto JSON for non-NGN currencies so the storefront renders correctly
+    const buildPriceCrypto = (price: number, currency: string): string | null => {
+      if (currency === 'NGN') return null; // NGN is stored natively in priceNGN
+      return JSON.stringify({
+        amount: price,
+        currency: 'BNB', // placeholder crypto for storefront compatibility
+        originalCurrency: currency,
+        originalAmount: price,
+      });
+    };
+
     // Step 4: Create Products
     const createdProducts = [];
-    if (parsedData.products && Array.isArray(parsedData.products)) {
-      for (const product of parsedData.products) {
+    if (finalProducts && Array.isArray(finalProducts)) {
+      for (const product of finalProducts) {
         if (product.name && product.priceNGN) {
           const created = await db.product.create({
             data: {
               storefrontId: storefront.id,
               name: product.name,
               description: product.description || null,
-              priceNGN: Number(product.priceNGN) || 0,
+              priceNGN: resolvedCurrency === 'NGN' ? Number(product.priceNGN) || 0 : 0,
+              priceCrypto: buildPriceCrypto(Number(product.priceNGN) || 0, resolvedCurrency),
               category: product.category || null,
               isActive: true,
             },
@@ -229,15 +257,16 @@ export async function POST(request: NextRequest) {
 
     // Step 5: Create Services
     const createdServices = [];
-    if (parsedData.services && Array.isArray(parsedData.services)) {
-      for (const service of parsedData.services) {
+    if (finalServices && Array.isArray(finalServices)) {
+      for (const service of finalServices) {
         if (service.name && service.priceNGN) {
           const created = await db.service.create({
             data: {
               storefrontId: storefront.id,
               name: service.name,
               description: service.description || null,
-              priceNGN: Number(service.priceNGN) || 0,
+              priceNGN: resolvedCurrency === 'NGN' ? Number(service.priceNGN) || 0 : 0,
+              priceCrypto: buildPriceCrypto(Number(service.priceNGN) || 0, resolvedCurrency),
               duration: service.duration || null,
               isActive: true,
             },

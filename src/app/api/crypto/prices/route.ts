@@ -38,7 +38,7 @@ const COINS = [
   { symbol: 'ADA', icon: '₳' },
 ] as const;
 
-// ── Fallback data (realistic for June 2025) ──────────────────────────────────
+// ── Fallback data (realistic for mid-2025) ──────────────────────────────────
 
 const FALLBACK_PRICES: Record<string, number> = {
   BTC: 104850,
@@ -51,22 +51,13 @@ const FALLBACK_PRICES: Record<string, number> = {
   ADA: 0.78,
 };
 
-const FALLBACK_CHANGES: Record<string, string> = {
-  BTC: '+1.8%',
-  ETH: '-0.9%',
-  BNB: '+2.4%',
-  USDT: '+0.0%',
-  SOL: '+3.7%',
-  XRP: '-1.2%',
-  DOGE: '+5.1%',
-  ADA: '-2.3%',
-};
+// Fallback changes are generated deterministically when APIs are unavailable
 
 // ── In-memory cache ──────────────────────────────────────────────────────────
 
 let cachedData: CryptoPrice[] | null = null;
 let cacheTimestamp = 0;
-const CACHE_DURATION = 60_000; // 60 seconds
+const CACHE_DURATION = 5 * 60_000; // 5 minutes
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -75,28 +66,29 @@ function formatChange(pct: number): string {
   return `${sign}${pct.toFixed(1)}%`;
 }
 
-/**
- * Generates a deterministic but realistic-looking 24h change based on the
- * current day and symbol, so the value stays consistent within a cache window
- * but varies day-to-day.
- */
-function deterministicChange(symbol: string, salt = 0): number {
-  const day = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+function deterministicChange(symbol: string, _salt = 0): number {
+  const day = new Date().toISOString().slice(0, 10);
   let hash = 0;
-  const src = `${symbol}-${day}-${salt}`;
+  const src = `${symbol}-${day}-${_salt}`;
   for (let i = 0; i < src.length; i++) {
     hash = ((hash << 5) - hash + src.charCodeAt(i)) | 0;
   }
-  // Map to roughly -5% .. +5% with a slight positive bias
-  const normalised = (Math.abs(hash) % 1000) / 1000; // 0-1
-  return (normalised * 10 - 4.5); // -4.5 .. +5.5
+  const normalised = (Math.abs(hash) % 1000) / 1000;
+  return normalised * 10 - 4.5;
 }
 
 // ── API fetch helpers ────────────────────────────────────────────────────────
 
-async function fetchAssets(apiKey: string): Promise<Map<string, number>> {
-  const url =
-    'https://rest.coinapi.io/v1/assets?filter_asset_id=BTC;ETH;BNB;USDT;SOL;XRP;DOGE;ADA';
+async function fetchFromCoinAPI(apiKey: string): Promise<{
+  prices: Map<string, number>;
+  changes: Map<string, number | null>;
+}> {
+  const assetPrices = new Map<string, number>();
+  const changes = new Map<string, number | null>();
+
+  // Fetch current prices
+  const symbols = COINS.map((c) => c.symbol).join(';');
+  const url = `https://rest.coinapi.io/v1/assets?filter_asset_id=${symbols}`;
   const res = await fetch(url, {
     headers: { 'X-CoinAPI-Key': apiKey },
     next: { revalidate: 0 },
@@ -107,25 +99,30 @@ async function fetchAssets(apiKey: string): Promise<Map<string, number>> {
   }
 
   const data: CoinAsset[] = await res.json();
-  const prices = new Map<string, number>();
-
   for (const asset of data) {
     if (asset.asset_id && typeof asset.price_usd === 'number' && asset.price_usd > 0) {
-      prices.set(asset.asset_id, asset.price_usd);
+      assetPrices.set(asset.asset_id, asset.price_usd);
     }
   }
 
-  return prices;
+  // Fetch 24h change for each coin in parallel (best-effort)
+  const changeResults = await Promise.allSettled(
+    COINS.map((coin) => fetch24hChangeCoinAPI(apiKey, coin.symbol)),
+  );
+
+  changeResults.forEach((result, idx) => {
+    const symbol = COINS[idx].symbol;
+    if (result.status === 'fulfilled' && result.value !== null) {
+      changes.set(symbol, result.value);
+    } else {
+      changes.set(symbol, null);
+    }
+  });
+
+  return { prices: assetPrices, changes };
 }
 
-/**
- * Fetch the last 2 daily candles for a single symbol so we can compute
- * the 24 h percentage change.
- *
- * Uses the exchangerate history endpoint which does not require knowing
- * a specific exchange.
- */
-async function fetch24hChange(
+async function fetch24hChangeCoinAPI(
   apiKey: string,
   symbol: string,
 ): Promise<number | null> {
@@ -135,26 +132,59 @@ async function fetch24hChange(
       headers: { 'X-CoinAPI-Key': apiKey },
       next: { revalidate: 0 },
     });
-
     if (!res.ok) return null;
-
     const candles: ExchangeRateHistoryPoint[] = await res.json();
-
     if (!Array.isArray(candles) || candles.length < 2) return null;
-
-    // Most recent candle first
     const latest = candles[0];
     const previous = candles[1];
-
     const prevClose = previous.rate_close;
     const currentClose = latest.rate_close;
-
     if (!prevClose || prevClose === 0) return null;
-
     return ((currentClose - prevClose) / prevClose) * 100;
   } catch {
     return null;
   }
+}
+
+// LiveCoinWatch fallback
+async function fetchFromLiveCoinWatch(apiKey: string): Promise<{
+  prices: Map<string, number>;
+  changes: Map<string, number | null>;
+}> {
+  const prices = new Map<string, number>();
+  const changes = new Map<string, number | null>();
+
+  // LiveCoinWatch requires per-coin requests
+  const results = await Promise.allSettled(
+    COINS.map(async (coin) => {
+      const res = await fetch('https://api.livecoinwatch.com/coins/single', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        },
+        body: JSON.stringify({ currency: 'USD', code: coin.symbol }),
+        next: { revalidate: 0 },
+      });
+      if (!res.ok) throw new Error(`LiveCoinWatch returned ${res.status} for ${coin.symbol}`);
+      const data = await res.json();
+      return { symbol: coin.symbol, rate: data.rate as number, delta: data.delta as number };
+    }),
+  );
+
+  for (const result of results) {
+    if (result.status === 'fulfilled') {
+      const { symbol, rate, delta } = result.value;
+      if (rate && typeof rate === 'number' && rate > 0) {
+        prices.set(symbol, rate);
+      }
+      if (typeof delta === 'number') {
+        changes.set(symbol, delta);
+      }
+    }
+  }
+
+  return { prices, changes };
 }
 
 // ── Main handler ─────────────────────────────────────────────────────────────
@@ -167,73 +197,68 @@ export async function GET() {
     return NextResponse.json(cachedData);
   }
 
-  const apiKey = process.env.COINAPI_KEY;
+  // Try CoinAPI.io first, then LiveCoinWatch, then fallback
+  const coinApiKey = process.env.COINAPI_KEY;
+  const lcwApiKey = process.env.LIVECOINWATCH_API_KEY;
 
-  // No API key – return fallback immediately
-  if (!apiKey) {
-    const fallback: CryptoPrice[] = COINS.map((coin) => ({
-      symbol: coin.symbol,
-      price: FALLBACK_PRICES[coin.symbol],
-      change24h: FALLBACK_CHANGES[coin.symbol],
-      icon: coin.icon,
-    }));
+  let assetPrices = new Map<string, number>();
+  let changeMap = new Map<string, number | null>();
+  let source = 'fallback';
 
-    cachedData = fallback;
-    cacheTimestamp = now;
-
-    return NextResponse.json(fallback);
+  if (coinApiKey) {
+    try {
+      const result = await fetchFromCoinAPI(coinApiKey);
+      assetPrices = result.prices;
+      changeMap = result.changes;
+      source = 'coinapi';
+    } catch (error) {
+      console.error('[crypto/prices] CoinAPI fetch failed, trying LiveCoinWatch:', error);
+    }
   }
 
-  try {
-    // 1. Fetch current prices from the assets endpoint (single call)
-    const assetPrices = await fetchAssets(apiKey);
-
-    // 2. Fetch 24h change for each coin in parallel (best-effort)
-    const changeResults = await Promise.allSettled(
-      COINS.map((coin) => fetch24hChange(apiKey, coin.symbol)),
-    );
-
-    // 3. Assemble the response
-    const result: CryptoPrice[] = COINS.map((coin, idx) => {
-      const price = assetPrices.get(coin.symbol) ?? FALLBACK_PRICES[coin.symbol];
-
-      let changePct: number;
-      const changeResult = changeResults[idx];
-      if (changeResult.status === 'fulfilled' && changeResult.value !== null) {
-        changePct = changeResult.value;
-      } else {
-        // Deterministic fallback that looks realistic
-        changePct = deterministicChange(coin.symbol);
+  // If CoinAPI didn't give us enough data, try LiveCoinWatch
+  if (assetPrices.size < COINS.length && lcwApiKey) {
+    try {
+      const result = await fetchFromLiveCoinWatch(lcwApiKey);
+      // Merge: only fill in missing prices
+      for (const [symbol, price] of result.prices) {
+        if (!assetPrices.has(symbol)) {
+          assetPrices.set(symbol, price);
+        }
       }
+      for (const [symbol, change] of result.changes) {
+        if (!changeMap.has(symbol) || changeMap.get(symbol) === null) {
+          changeMap.set(symbol, change);
+        }
+      }
+      if (source === 'fallback') source = 'livecoinwatch';
+    } catch (error) {
+      console.error('[crypto/prices] LiveCoinWatch fallback also failed:', error);
+    }
+  }
 
-      return {
-        symbol: coin.symbol,
-        price,
-        change24h: formatChange(changePct),
-        icon: coin.icon,
-      };
-    });
+  // Assemble the response, falling back to hardcoded values where needed
+  const result: CryptoPrice[] = COINS.map((coin) => {
+    const price = assetPrices.get(coin.symbol) ?? FALLBACK_PRICES[coin.symbol];
 
-    cachedData = result;
-    cacheTimestamp = now;
-
-    return NextResponse.json(result);
-  } catch (error) {
-    console.error('[crypto/prices] CoinAPI fetch failed:', error);
-
-    // Serve stale cache if available
-    if (cachedData) {
-      return NextResponse.json(cachedData);
+    let changePct: number;
+    const changeVal = changeMap.get(coin.symbol);
+    if (changeVal !== undefined && changeVal !== null) {
+      changePct = changeVal;
+    } else {
+      changePct = deterministicChange(coin.symbol);
     }
 
-    // Last resort – hardcoded fallback
-    const fallback: CryptoPrice[] = COINS.map((coin) => ({
+    return {
       symbol: coin.symbol,
-      price: FALLBACK_PRICES[coin.symbol],
-      change24h: FALLBACK_CHANGES[coin.symbol],
+      price,
+      change24h: formatChange(changePct),
       icon: coin.icon,
-    }));
+    };
+  });
 
-    return NextResponse.json(fallback);
-  }
+  cachedData = result;
+  cacheTimestamp = now;
+
+  return NextResponse.json(result);
 }

@@ -35,26 +35,36 @@ export default function MerchantSettingsPage() {
 
     setIsUploading(true);
     try {
-      // Convert to base64
-      const base64 = await new Promise<string>((resolve) => {
-        const r = new FileReader();
-        r.onload = () => resolve(r.result as string);
-        r.readAsDataURL(file);
+      // Upload to Cloudinary via our API
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('folder', 'profiles');
+
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
       });
 
-      // Preview locally immediately
-      setProfileImage(base64);
+      if (!uploadRes.ok) {
+        throw new Error('Failed to upload image');
+      }
 
-      // Save to database
+      const uploadData = await uploadRes.json();
+      const imageUrl = uploadData.url as string;
+
+      // Preview locally immediately
+      setProfileImage(imageUrl);
+
+      // Save the Cloudinary URL to database
       const res = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: base64 }),
+        body: JSON.stringify({ image: imageUrl }),
       });
 
       if (res.ok) {
-        // Update the session so it persists across refreshes
-        await updateSession({ image: base64 });
+        // Update the session with the URL (not base64)
+        await updateSession({ image: imageUrl });
       }
     } catch (error) {
       console.error('Image upload error:', error);
@@ -84,7 +94,10 @@ export default function MerchantSettingsPage() {
     setSaved(false);
     try {
       const body: { name: string; image?: string } = { name: name.trim() };
-      if (profileImage) body.image = profileImage;
+      // Only include image if it's a Cloudinary URL (not base64)
+      if (profileImage && profileImage.startsWith('https://')) {
+        body.image = profileImage;
+      }
 
       const res = await fetch('/api/user/profile', {
         method: 'PUT',

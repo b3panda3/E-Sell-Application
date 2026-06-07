@@ -66,7 +66,19 @@ interface ParsedStoreData {
   socialLinks: ParsedSocialLinks;
   themePreference: string;
   greeting: string;
+  currency?: string;
 }
+
+// Currency options
+const CURRENCY_OPTIONS = [
+  { value: 'NGN', label: 'NGN', symbol: '₦', name: 'Nigerian Naira' },
+  { value: 'USD', label: 'USD', symbol: '$', name: 'US Dollar' },
+  { value: 'EUR', label: 'EUR', symbol: '€', name: 'Euro' },
+  { value: 'GBP', label: 'GBP', symbol: '£', name: 'British Pound' },
+  { value: 'GHS', label: 'GHS', symbol: '₵', name: 'Ghanaian Cedi' },
+  { value: 'KES', label: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
+  { value: 'ZAR', label: 'ZAR', symbol: 'R', name: 'South African Rand' },
+] as const;
 
 type Step = 'welcome' | 'record' | 'processing' | 'preview' | 'creating' | 'success';
 
@@ -82,17 +94,31 @@ const CATEGORY_OPTIONS = [
   'Electronics', 'Fashion', 'Food', 'Consulting', 'Tech', 'Artisan', 'Other',
 ];
 
+// Currency symbol mapping for transcript building
+const CURRENCY_SYMBOL_MAP: Record<string, string> = {
+  NGN: '₦',
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+  GHS: '₵',
+  KES: 'KSh',
+  ZAR: 'R',
+};
+
 // Build a synthetic transcript from edited data for re-processing
 function buildTranscriptFromData(data: ParsedStoreData): string {
+  const currency = data.currency || 'NGN';
+  const currSymbol = CURRENCY_SYMBOL_MAP[currency] || currency;
   let text = `My store name is ${data.storeName}. `;
   if (data.description) text += `${data.description}. `;
   text += `It's in the ${data.category} category. `;
+  text += `All prices are in ${currency}. `;
   if (data.aboutUs) text += `About us: ${data.aboutUs}. `;
   if (data.products.length > 0) {
-    text += `Products: ${data.products.map(p => `${p.name} for ${p.priceNGN} NGN${p.category ? ` in ${p.category}` : ''}`).join(', ')}. `;
+    text += `Products: ${data.products.map(p => `${p.name} for ${currSymbol}${p.priceNGN} ${currency}${p.category ? ` in ${p.category}` : ''}`).join(', ')}. `;
   }
   if (data.services.length > 0) {
-    text += `Services: ${data.services.map(s => `${s.name} for ${s.priceNGN} NGN${s.duration ? ` (${s.duration})` : ''}`).join(', ')}. `;
+    text += `Services: ${data.services.map(s => `${s.name} for ${currSymbol}${s.priceNGN} ${currency}${s.duration ? ` (${s.duration})` : ''}`).join(', ')}. `;
   }
   if (data.contactEmail) text += `Email: ${data.contactEmail}. `;
   if (data.contactPhone) text += `Phone: ${data.contactPhone}. `;
@@ -142,6 +168,7 @@ export default function VoiceStoreBuilderPage() {
   });
   const [editTheme, setEditTheme] = useState('MarketHub');
   const [editGreeting, setEditGreeting] = useState('');
+  const [editCurrency, setEditCurrency] = useState('NGN');
 
   // Speech Recognition
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -225,7 +252,7 @@ export default function VoiceStoreBuilderPage() {
       const response = await fetch('/api/store-builder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript: text, userId: session?.user?.id }),
+        body: JSON.stringify({ transcript: text, userId: session?.user?.id, currency: editCurrency }),
       });
 
       const data = await response.json();
@@ -250,6 +277,7 @@ export default function VoiceStoreBuilderPage() {
       setEditSocialLinks(parsed.socialLinks || { twitter: null, instagram: null, telegram: null, whatsapp: null });
       setEditTheme(parsed.themePreference || 'MarketHub');
       setEditGreeting(parsed.greeting || '');
+      setEditCurrency(parsed.currency || 'NGN');
 
       setStep('preview');
     } catch (err) {
@@ -278,6 +306,7 @@ export default function VoiceStoreBuilderPage() {
         socialLinks: editSocialLinks,
         themePreference: editTheme,
         greeting: editGreeting,
+        currency: editCurrency,
       };
 
       const response = await fetch('/api/store-builder', {
@@ -286,6 +315,9 @@ export default function VoiceStoreBuilderPage() {
         body: JSON.stringify({
           transcript: buildTranscriptFromData(finalData),
           userId: session?.user?.id,
+          currency: editCurrency,
+          products: finalData.products,
+          services: finalData.services,
         }),
       });
 
@@ -542,7 +574,7 @@ export default function VoiceStoreBuilderPage() {
               <Textarea
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
-                placeholder="Example: My store is called TechHub Lagos. I sell laptops, phones, and accessories. We have a MacBook Pro for 850,000 NGN, iPhone 15 for 550,000 NGN, and wireless earbuds for 25,000 NGN. We also offer phone repair service for 15,000 NGN and laptop setup for 20,000 NGN. You can reach us at info@techhublagos.com or call 08012345678. We're located at 15 Computer Village, Ikeja, Lagos. Follow us on Instagram @techhublagos. We want the TechStore theme."
+                placeholder="Example: My store is called TechHub. I sell laptops, phones, and accessories. We have a MacBook Pro for 1,200 USD, iPhone 15 for 800 USD, and wireless earbuds for 30 USD. We also offer phone repair service for 25 USD and laptop setup for 35 USD. You can reach us at info@techhub.com or call +1234567890. We're located at 123 Main Street. Follow us on Instagram @techhub. We want the TechStore theme. All prices in USD."
                 className="min-h-48 text-base"
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
@@ -679,6 +711,19 @@ export default function VoiceStoreBuilderPage() {
                 </div>
               </div>
               <div className="space-y-2">
+                <Label htmlFor="currency">Currency</Label>
+                <select
+                  id="currency"
+                  value={editCurrency}
+                  onChange={(e) => setEditCurrency(e.target.value)}
+                  className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
+                >
+                  {CURRENCY_OPTIONS.map(curr => (
+                    <option key={curr.value} value={curr.value}>{curr.symbol} {curr.value} — {curr.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
@@ -782,7 +827,7 @@ export default function VoiceStoreBuilderPage() {
                         />
                       </div>
                       <div className="w-40 space-y-1">
-                        <Label className="text-xs">Price (NGN)</Label>
+                        <Label className="text-xs">Price ({editCurrency})</Label>
                         <Input
                           type="number"
                           value={product.priceNGN || ''}
@@ -859,7 +904,7 @@ export default function VoiceStoreBuilderPage() {
                         />
                       </div>
                       <div className="w-40 space-y-1">
-                        <Label className="text-xs">Price (NGN)</Label>
+                        <Label className="text-xs">Price ({editCurrency})</Label>
                         <Input
                           type="number"
                           value={service.priceNGN || ''}
