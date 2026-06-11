@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { themeId, customColors, aboutUs, address, socialLinks, bankDetails, isActive, logoUrl, storeName, currency } = body;
+    const { themeId, customColors, aboutUs, address, socialLinks, bankDetails, isActive, logoUrl, featuredImageUrl, storeName, currency } = body;
 
     // Check if storefront already exists
     const existing = await db.storefront.findFirst({
@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
           ...(bankDetails !== undefined && { bankDetails }),
           ...(isActive !== undefined && { isActive }),
           ...(logoUrl !== undefined && { logoUrl }),
+          ...(featuredImageUrl !== undefined && { featuredImageUrl }),
           ...(currency !== undefined && { currency }),
         },
         include: { theme: true },
@@ -76,6 +77,7 @@ export async function POST(request: NextRequest) {
         bankDetails: bankDetails || null,
         isActive: isActive !== undefined ? isActive : true,
         logoUrl: logoUrl || null,
+        featuredImageUrl: featuredImageUrl || null,
         currency: currency || 'NGN',
       },
       include: { theme: true },

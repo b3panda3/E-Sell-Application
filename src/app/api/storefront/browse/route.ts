@@ -40,6 +40,7 @@ export async function GET() {
           id: storefront.id,
           storeName: storefront.storeName,
           logoUrl: storefront.logoUrl,
+          featuredImageUrl: storefront.featuredImageUrl,
           currency: storefront.currency,
           themeId: storefront.themeId,
           customColors: storefront.customColors,

@@ -22,6 +22,10 @@ interface StorefrontInfo {
     themeId: string | null;
     customColors: string | null;
     aboutUs: string | null;
+    logoUrl: string | null;
+    featuredImageUrl: string | null;
+    currency: string;
+    storeName: string | null;
     theme: { name: string; defaultColors: string | null } | null;
     products: { id: string }[];
     services: { id: string }[];
@@ -241,13 +245,37 @@ export default function PublicBrowsePage() {
                 <motion.div key={store.esellCode || store.merchantName} variants={fadeUp}>
                   <Link href={`/store/${store.esellCode}`}>
                     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group dark:bg-gray-900 dark:border-gray-800">
-                      {/* Store Header */}
-                      <div className={`h-32 bg-gradient-to-br ${gradient} relative flex items-center justify-center`}>
-                        <span className="text-5xl">{icon}</span>
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-12" />
+                      {/* Store Header - Featured Image or Gradient */}
+                      <div className={`h-32 relative flex items-center justify-center overflow-hidden`}>
+                        {store.storefront.featuredImageUrl ? (
+                          <>
+                            <img
+                              src={store.storefront.featuredImageUrl}
+                              alt={store.merchantName}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                          </>
+                        ) : (
+                          <>
+                            <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
+                            <span className="text-5xl relative z-10">{icon}</span>
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-12" />
+                          </>
+                        )}
                         <div className="absolute bottom-2 right-2">
                           <TrustBadge badge={store.trustBadge} size="sm" />
                         </div>
+                        {/* Store logo overlay */}
+                        {store.storefront.logoUrl && (
+                          <div className="absolute bottom-2 left-2">
+                            <img
+                              src={store.storefront.logoUrl}
+                              alt=""
+                              className="w-8 h-8 rounded-lg object-cover border-2 border-white shadow-sm"
+                            />
+                          </div>
+                        )}
                       </div>
 
                       <CardContent className="p-4">

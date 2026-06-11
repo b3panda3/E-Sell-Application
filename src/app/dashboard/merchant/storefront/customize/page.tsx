@@ -21,6 +21,7 @@ interface Storefront {
   bankDetails: string | null;
   isActive: boolean;
   logoUrl: string | null;
+  featuredImageUrl: string | null;
   currency: string;
 }
 
@@ -66,6 +67,8 @@ export default function CustomizeStorefrontPage() {
   const [newStaff, setNewStaff] = useState({ name: '', role: '', email: '', phone: '', bio: '' });
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [featuredImageUrl, setFeaturedImageUrl] = useState<string | null>(null);
+  const [uploadingFeatured, setUploadingFeatured] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -79,6 +82,7 @@ export default function CustomizeStorefrontPage() {
             setAboutUs(sf.aboutUs || '');
             setAddress(sf.address || '');
             setLogoUrl(sf.logoUrl || null);
+            setFeaturedImageUrl(sf.featuredImageUrl || null);
             if (sf.socialLinks) {
               try {
                 setSocialLinks(JSON.parse(sf.socialLinks));
@@ -132,6 +136,7 @@ export default function CustomizeStorefrontPage() {
           address: addressWithContact,
           socialLinks: socialLinksJson,
           logoUrl: logoUrl || undefined,
+          featuredImageUrl: featuredImageUrl || undefined,
         }),
       });
 
@@ -171,6 +176,32 @@ export default function CustomizeStorefrontPage() {
       console.error('Logo upload error:', error);
     } finally {
       setUploadingLogo(false);
+    }
+  };
+
+  const handleFeaturedImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingFeatured(true);
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('folder', 'featured');
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setFeaturedImageUrl(data.url);
+      }
+    } catch (error) {
+      console.error('Featured image upload error:', error);
+    } finally {
+      setUploadingFeatured(false);
     }
   };
 
@@ -283,24 +314,87 @@ export default function CustomizeStorefrontPage() {
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                   {t('storefront.logoHint')}
                 </p>
-                <label className="cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <label className="cursor-pointer">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                      {uploadingLogo ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Upload className="h-3.5 w-3.5" />
+                      )}
+                      {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      disabled={uploadingLogo}
+                      className="hidden"
+                    />
+                  </label>
+                  {logoUrl && (
+                    <button
+                      onClick={() => setLogoUrl(null)}
+                      className="text-xs text-red-500 hover:text-red-600"
+                    >
+                      Remove logo
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Featured / Store Image Upload */}
+        <Card className="dark:bg-gray-900 dark:border-gray-800">
+          <CardHeader>
+            <CardTitle className="text-base">Store Image</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="w-full h-32 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden">
+                {featuredImageUrl ? (
+                  <img src={featuredImageUrl} alt="Store featured image" className="w-full h-full object-cover rounded-xl" />
+                ) : (
+                  <div className="text-center">
+                    <Upload className="h-8 w-8 text-gray-400 mx-auto mb-1" />
+                    <p className="text-xs text-gray-400">This appears on your store card</p>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Upload an image that represents your store. This will be displayed on the browse page card and as a banner on your storefront.
+                  </p>
+                </div>
+                <label className="cursor-pointer shrink-0">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    {uploadingLogo ? (
+                    {uploadingFeatured ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     ) : (
                       <Upload className="h-3.5 w-3.5" />
                     )}
-                    {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
+                    {uploadingFeatured ? 'Uploading...' : 'Upload Image'}
                   </span>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleLogoUpload}
-                    disabled={uploadingLogo}
+                    onChange={handleFeaturedImageUpload}
+                    disabled={uploadingFeatured}
                     className="hidden"
                   />
                 </label>
               </div>
+              {featuredImageUrl && (
+                <button
+                  onClick={() => setFeaturedImageUrl(null)}
+                  className="text-xs text-red-500 hover:text-red-600"
+                >
+                  Remove image
+                </button>
+              )}
             </div>
           </CardContent>
         </Card>

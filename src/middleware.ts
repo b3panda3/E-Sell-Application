@@ -29,22 +29,26 @@ export async function middleware(request: NextRequest) {
   }
 
   const role = token.role as string;
+  const isAdmin = token.isAdmin as boolean | undefined;
 
   // Role-based access control
-  if (isAdminRoute && role !== 'ADMIN' && role !== 'SUPER_ADMIN') {
-    // Non-admin trying to access admin dashboard - redirect based on role
-    if (role === 'MERCHANT') {
-      return NextResponse.redirect(new URL('/dashboard/merchant', request.url));
+  if (isAdminRoute) {
+    // Allow access if user has ADMIN/SUPER_ADMIN role in JWT OR isAdmin flag in JWT
+    if (role !== 'ADMIN' && role !== 'SUPER_ADMIN' && !isAdmin) {
+      // Non-admin trying to access admin dashboard - redirect based on role
+      if (role === 'MERCHANT') {
+        return NextResponse.redirect(new URL('/dashboard/merchant', request.url));
+      }
+      return NextResponse.redirect(new URL('/dashboard/customer', request.url));
     }
-    return NextResponse.redirect(new URL('/dashboard/customer', request.url));
   }
 
-  if (isMerchantRoute && role !== 'MERCHANT') {
+  if (isMerchantRoute && role !== 'MERCHANT' && role !== 'ADMIN') {
     // Customer trying to access merchant dashboard - redirect to customer dashboard
     return NextResponse.redirect(new URL('/dashboard/customer', request.url));
   }
 
-  if (isCustomerRoute && role !== 'CUSTOMER') {
+  if (isCustomerRoute && role !== 'CUSTOMER' && role !== 'ADMIN') {
     // Merchant trying to access customer dashboard - redirect to merchant dashboard
     return NextResponse.redirect(new URL('/dashboard/merchant', request.url));
   }

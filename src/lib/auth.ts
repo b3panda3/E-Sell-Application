@@ -126,6 +126,17 @@ export const authOptions: NextAuthOptions = {
         token.role = (user as unknown as Record<string, unknown>).role as string;
         token.esellCode = (user as unknown as Record<string, unknown>).esellCode as string | null;
         token.image = user.image || (user as unknown as Record<string, unknown>).image as string | null;
+        // Check if user is admin via AdminUser table
+        if (token.sub) {
+          try {
+            const adminUser = await db.adminUser.findUnique({
+              where: { userId: token.sub },
+            });
+            token.isAdmin = !!adminUser;
+          } catch {
+            token.isAdmin = false;
+          }
+        }
       }
       // Handle session update (e.g. after profile picture change)
       if (trigger === 'update' && updateData) {
@@ -139,6 +150,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub!;
         (session.user as Record<string, unknown>).role = token.role;
         (session.user as Record<string, unknown>).esellCode = token.esellCode;
+        (session.user as Record<string, unknown>).isAdmin = token.isAdmin;
         if (token.image) session.user.image = token.image as string;
       }
       return session;
