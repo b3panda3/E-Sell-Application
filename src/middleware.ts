@@ -35,11 +35,11 @@ export async function middleware(request: NextRequest) {
   if (isAdminRoute) {
     // Allow access if user has ADMIN/SUPER_ADMIN role in JWT OR isAdmin flag in JWT
     if (role !== 'ADMIN' && role !== 'SUPER_ADMIN' && !isAdmin) {
-      // Non-admin trying to access admin dashboard - redirect based on role
-      if (role === 'MERCHANT') {
-        return NextResponse.redirect(new URL('/dashboard/merchant', request.url));
-      }
-      return NextResponse.redirect(new URL('/dashboard/customer', request.url));
+      // Allow through to /dashboard/admin so they can see the "Setup Admin" button
+      // (the page itself handles the access-denied + self-promotion flow)
+      // Only block if admins already exist AND this user isn't one — but we can't
+      // check the DB in middleware, so we let the page handle it.
+      // The page will show "Access Denied" with a "Setup Admin" button if no admins exist yet.
     }
   }
 

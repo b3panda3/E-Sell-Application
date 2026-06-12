@@ -209,12 +209,15 @@ export default function AdminDashboardPage() {
         body: JSON.stringify({ email: session.user.email }),
       });
       if (res.ok) {
-        // Re-check admin status
+        // Re-check admin status from database
         const checkRes = await fetch('/api/admin/check');
         if (checkRes.ok) {
           const data = await checkRes.json();
           setIsAdmin(data.isAdmin === true);
         }
+        // Force a page reload to refresh the JWT token with isAdmin flag
+        // This ensures middleware also recognizes the admin status
+        setTimeout(() => window.location.reload(), 500);
       }
     } catch (error) {
       console.error('Setup admin error:', error);
