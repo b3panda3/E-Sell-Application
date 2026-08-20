@@ -32,8 +32,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    if (order.paymentStatus === 'confirmed') {
+      return NextResponse.json({ error: 'Order already paid' }, { status: 400 });
+    }
+
     const reference = `PSK-${nanoid(12)}`;
     const paystackKey = process.env.PAYSTACK_SECRET_KEY;
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
     // If no real Paystack key, return test mode response
     if (!paystackKey || paystackKey === 'sk_test_placeholder') {
@@ -48,7 +53,7 @@ export async function POST(req: NextRequest) {
       });
 
       return NextResponse.json({
-        authorization_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/dashboard/customer/purchases?reference=${reference}&test=true`,
+        authorization_url: `${baseUrl}/dashboard/customer/purchases?reference=${reference}&test=true`,
         reference,
         access_code: `test_access_${nanoid(8)}`,
         testMode: true,
@@ -80,7 +85,8 @@ export async function POST(req: NextRequest) {
               },
             ],
           },
-          callback_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/payments/paystack/verify`,
+          callback_url: `${baseUrl}/api/payments/paystack/verify`,
+          channels: ['card', 'bank', 'ussd', 'bank_transfer', 'mobile_money', 'qr'],
         }),
       }
     );

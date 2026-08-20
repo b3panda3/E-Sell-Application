@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Storefront not found' }, { status: 404 });
     }
 
-    const config: any = storefront.aethexConfig;
+    const config = storefront.aethexConfig;
     const isEnabled = config?.isEnabled ?? true;
 
     if (!isEnabled) {

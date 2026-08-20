@@ -41,10 +41,14 @@ const YOUTUBE_VIDEOS = [
 
 interface FeaturedStore {
   merchantName: string;
+  merchantImage: string | null;
   esellCode: string | null;
   businessCategory: string | null;
   trustBadge: string;
   storefront: {
+    storeName: string | null;
+    logoUrl: string | null;
+    featuredImageUrl: string | null;
     theme: { name: string } | null;
     products: { id: string }[];
   };
@@ -268,8 +272,36 @@ export default function HomePage() {
                   <motion.div key={store.esellCode || store.merchantName} variants={fadeUp}>
                     <Link href={`/store/${store.esellCode}`}>
                       <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group dark:bg-gray-800 dark:border-gray-700">
-                        <div className={`h-24 bg-gradient-to-br ${gradient} relative flex items-center justify-center`}>
-                          <span className="text-3xl font-bold text-white/80">{store.merchantName.charAt(0)}</span>
+                        <div className={`h-32 bg-gradient-to-br ${gradient} relative overflow-hidden`}>
+                          {store.storefront.featuredImageUrl ? (
+                            <img
+                              src={store.storefront.featuredImageUrl}
+                              alt={store.merchantName}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          ) : store.storefront.logoUrl ? (
+                            <img
+                              src={store.storefront.logoUrl}
+                              alt={store.merchantName}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          ) : store.merchantImage ? (
+                            <img
+                              src={store.merchantImage}
+                              alt={store.merchantName}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <span className="text-3xl font-bold text-white/80">{store.merchantName.charAt(0)}</span>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                          <div className="absolute bottom-2 left-3">
+                            <p className="text-white text-xs font-medium truncate max-w-[180px]">
+                              {store.storefront.storeName || store.merchantName}
+                            </p>
+                          </div>
                           <div className="absolute bottom-2 right-2">
                             <TrustBadge badge={store.trustBadge} size="sm" />
                           </div>
