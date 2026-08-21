@@ -473,7 +473,7 @@ export default function ContractsPage() {
         </div>
       )}
 
-      {/* Deploy Result */
+      {/* Deploy Result */}
       {deployResult && (
         <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-6">
           <div className="flex items-center gap-2 mb-4">
